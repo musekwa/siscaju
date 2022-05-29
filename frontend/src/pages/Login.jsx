@@ -1,0 +1,195 @@
+import { useState, useEffect } from "react";
+import { FaSignInAlt } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import { reset, login } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../components/Spinner";
+import { BootstrapButton } from "../components/Buttons";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Paper,
+  Stack,
+  styled,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { LockOpen } from "@mui/icons-material";
+import { purple } from "@mui/material/colors";
+import { Link } from "react-router-dom";
+
+
+function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Credenciais inválidas!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (isSuccess && user) {
+      toast.success(`Bem-vindo de volta, ${user?.fullname.split(" ")[0]}`, {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value.trim(),
+    }));
+  };
+
+  // validating email
+  const validateEmail = (email) => {
+    const pattern =
+      /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const result = pattern.test(email);
+    if (result === false) {
+      // if the email is invalid
+      return true;
+    }
+    // if the email is valid
+    return false;
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateEmail(email) || !password) {
+      toast.error("Email e password inválidos", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      const userData = {
+        email,
+        password,
+      };
+      dispatch(login(userData));
+    }
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100vh",
+      }}
+    >
+      <Paper sx={{ width: "400px", height: "80vh", position: "relative" }}>
+        <Box sx={{ postion: "absolute", marginTop: "25px" }}>
+          <LockOpen fontSize="large" color="primary" />
+          <Typography
+            variant="h6"
+            fontWeight={200}
+            component="p"
+            sx={{ p: "10px 0px 5px 0px" }}
+          >
+            Login
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            autoComplete="off"
+            onSubmit={onSubmit}
+          >
+            <div style={{ padding: "30px 40px 15px 40px" }}>
+              <TextField
+                // error
+                required
+                fullWidth
+                label="Email"
+                id="fullWidth"
+                name="email"
+                type="email"
+                placeholder="Email"
+                size="small"
+                focused
+                value={email}
+                onChange={onChange}
+              />
+            </div>
+            <div style={{ padding: "15px 40px 20px 40px" }}>
+              <TextField
+                required
+                fullWidth
+                label="Password"
+                id="fullWidth"
+                name="password"
+                type="password"
+                placeholder="Password"
+                size="small"
+                value={password}
+                onChange={onChange}
+              />
+            </div>
+            <div style={{ padding: "15px 40px 20px 40px", margin: "20px 0px 0px 0px" }}>
+              <BootstrapButton variant="contained" type="submit">
+                Entrar
+              </BootstrapButton>
+            </div>
+            <div style={{ padding: "15px 40px 20px 40px" }}>
+              <Stack
+                direction={"row"}
+                sx={{
+                  justifyContent: "space-between",
+                }}
+              >
+                <Link to={"/forgotpassword"} style={{ textDecoration: "none" }}>
+                  <Typography variant="body2" color={"primary"}>
+                    Recuperar<br /> password
+                  </Typography>
+                </Link>
+                <Link to={"/register"} style={{ textDecoration: "none" }}>
+                  <Typography variant="body2" color={"primary"}>
+                    Criar <br />nova conta
+                  </Typography>
+                </Link>
+              </Stack>
+            </div>
+          </Box>
+        </Box>
+      </Paper>
+      <ToastContainer />
+    </Box>
+  );
+}
+
+export default Login;
