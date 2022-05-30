@@ -6,6 +6,7 @@ import GoalForm from '../components/GoalForm';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import AddButton from '../components/AddButton';
 
 
 function Dashboard() {
@@ -24,9 +25,8 @@ function Dashboard() {
     <>
       <Navbar />
       <Sidebar />
-
+      <AddButton />
       <Footer />
-
     </>
   );
 }

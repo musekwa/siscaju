@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import { ThemeProvider } from "@mui/material"
 import { outerTheme } from "./outerTheme";
 import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             {/* <Route path="/register2" element={<Register2 />} />

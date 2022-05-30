@@ -7,8 +7,8 @@ export const BootstrapButton = styled(Button)({
   padding: "6px 12px",
   border: "1px solid",
   lineHeight: 1.5,
-  backgroundColor: "#0063cc",
-  borderColor: "#0063cc",
+  backgroundColor: "rebeccapurple",
+  borderColor: "rebeccapurple",
   fontFamily: [
     "-apple-system",
     "BlinkMacSystemFont",
@@ -28,8 +28,8 @@ export const BootstrapButton = styled(Button)({
   },
   "&:active": {
     boxShadow: "none",
-    backgroundColor: "#0062cc",
-    borderColor: "#005cbf",
+    backgroundColor: "rebeccapurple",
+    borderColor: "rebeccapurple",
   },
   "&:focus": {
     boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",

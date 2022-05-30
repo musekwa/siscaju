@@ -115,7 +115,7 @@ function Login() {
     >
       <Paper sx={{ width: "400px", height: "80vh", position: "relative" }}>
         <Box sx={{ postion: "absolute", marginTop: "25px" }}>
-          <LockOpen fontSize="large" color="primary" />
+          <LockOpen fontSize="large" sx={{ color: "rebeccapurple" }} />
           <Typography
             variant="h6"
             fontWeight={200}
@@ -132,7 +132,6 @@ function Login() {
           >
             <div style={{ padding: "30px 40px 15px 40px" }}>
               <TextField
-                // error
                 required
                 fullWidth
                 label="Email"
@@ -160,7 +159,12 @@ function Login() {
                 onChange={onChange}
               />
             </div>
-            <div style={{ padding: "15px 40px 20px 40px", margin: "20px 0px 0px 0px" }}>
+            <div
+              style={{
+                padding: "15px 40px 20px 40px",
+                margin: "20px 0px 0px 0px",
+              }}
+            >
               <BootstrapButton variant="contained" type="submit">
                 Entrar
               </BootstrapButton>
@@ -173,13 +177,15 @@ function Login() {
                 }}
               >
                 <Link to={"/forgotpassword"} style={{ textDecoration: "none" }}>
-                  <Typography variant="body2" color={"primary"}>
-                    Recuperar<br /> password
+                  <Typography variant="body2" sx={{ color: "rebeccapurple" }}>
+                    Recuperar
+                    <br /> password
                   </Typography>
                 </Link>
                 <Link to={"/register"} style={{ textDecoration: "none" }}>
-                  <Typography variant="body2" color={"primary"}>
-                    Criar <br />nova conta
+                  <Typography variant="body2" sx={{ color: "rebeccapurple" }}>
+                    Criar <br />
+                    nova conta
                   </Typography>
                 </Link>
               </Stack>

@@ -5,6 +5,7 @@ import {
   LegendToggle,
   PersonAdd,
   LocationOn,
+  Group,
 } from "@mui/icons-material";
 import { Avatar, BottomNavigation, BottomNavigationAction, Box, CssBaseline, List, ListItem, ListItemAvatar, ListItemText, Paper } from "@mui/material";
 
@@ -56,33 +57,11 @@ const Footer = () => {
         >
           <BottomNavigationAction label="Meu Painel" icon={<Dashboard />} />
           <BottomNavigationAction label="Monitoria" icon={<LegendToggle />} />
-          <BottomNavigationAction label="Produtores" icon={<PersonAdd />} />
+          <BottomNavigationAction label="Produtores" icon={<Group />} />
           <BottomNavigationAction label="Pomares" icon={<Forest />} />
         </BottomNavigation>
       </Paper>
     </Box>
-    // <BottomNavigation sx={{ width: 500, backgroundColor: "rebeccapurple" }} value={"recents"} onChange={()=>{}}>
-    //   <BottomNavigationAction
-    //     label="Recents"
-    //     value="recents"
-    //     icon={<Restore />}
-    //   />
-    //   <BottomNavigationAction
-    //     label="Favorites"
-    //     value="favorites"
-    //     icon={<Favorite />}
-    //   />
-    //   <BottomNavigationAction
-    //     label="Nearby"
-    //     value="nearby"
-    //     icon={<LocationOn />}
-    //   />
-    //   <BottomNavigationAction
-    //     label="Folder"
-    //     value="folder"
-    //     icon={<Folder />}
-    //   />
-    // </BottomNavigation>
   );
 };
 
