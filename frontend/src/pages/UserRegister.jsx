@@ -36,7 +36,21 @@ import { Link } from "react-router-dom";
 
 // })
 
-function Register() {
+const styledTextField = {
+  "& label.Mui-focused": {
+    color: "rebeccapurple"
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "rebeccapurple"
+    }
+  }
+}
+
+
+
+
+function UserRegister() {
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -217,6 +231,7 @@ function Register() {
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <div style={{ padding: "20px 10px 15px 10px" }}>
             <TextField
+              sx={styledTextField}
               required
               fullWidth
               label="Nome completo"
@@ -227,11 +242,11 @@ function Register() {
               size="small"
               onChange={onChange}
               // value={fullname}
-              focused
             />
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
             <TextField
+              sx={styledTextField}
               required
               fullWidth
               label="Email"
@@ -246,6 +261,7 @@ function Register() {
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
             <TextField
+              sx={styledTextField}
               required
               fullWidth
               label="Password"
@@ -260,6 +276,7 @@ function Register() {
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
             <TextField
+              sx={styledTextField}
               required
               fullWidth
               label="Confirmar password"
@@ -293,7 +310,7 @@ function Register() {
                   setInputRole(newInputRole);
                 }}
                 renderInput={(params) => (
-                  <TextField name="role" {...params} required label="Perfil" />
+                  <TextField sx={styledTextField} name="role" {...params} required label="Perfil" />
                 )}
               />
             </div>
@@ -314,7 +331,7 @@ function Register() {
                   setInputGender(newInputGender);
                 }}
                 renderInput={(params) => (
-                  <TextField name="gender" {...params} required label="Gênro" />
+                  <TextField sx={styledTextField} name="gender" {...params} required label="Gênro" />
                 )}
               />
             </div>
@@ -341,6 +358,7 @@ function Register() {
                 }}
                 renderInput={(params) => (
                   <TextField
+                    sx={styledTextField}
                     name="province"
                     {...params}
                     label="Província"
@@ -373,6 +391,7 @@ function Register() {
                 }}
                 renderInput={(params) => (
                   <TextField
+                    sx={styledTextField}
                     name="district"
                     {...params}
                     label="Distrito"
@@ -409,6 +428,7 @@ function Register() {
                 }}
                 renderInput={(params) => (
                   <TextField
+                    sx={styledTextField}
                     name="adminPost"
                     {...params}
                     label="Posto Admin"
@@ -419,6 +439,7 @@ function Register() {
             </div>
             <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
               <TextField
+                sx={styledTextField}
                 fullWidth
                 label="Telefone"
                 id="fullWidth phone"
@@ -442,4 +463,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default UserRegister;

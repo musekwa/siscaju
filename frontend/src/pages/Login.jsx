@@ -25,6 +25,17 @@ import { LockOpen } from "@mui/icons-material";
 import { purple } from "@mui/material/colors";
 import { Link } from "react-router-dom";
 
+const styledTextField = {
+  "& label.Mui-focused": {
+    color: "rebeccapurple"
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "rebeccapurple"
+    }
+  }
+}
+
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -132,6 +143,7 @@ function Login() {
           >
             <div style={{ padding: "30px 40px 15px 40px" }}>
               <TextField
+                sx={styledTextField}
                 required
                 fullWidth
                 label="Email"
@@ -140,13 +152,13 @@ function Login() {
                 type="email"
                 placeholder="Email"
                 size="small"
-                focused
                 value={email}
                 onChange={onChange}
               />
             </div>
             <div style={{ padding: "15px 40px 20px 40px" }}>
               <TextField
+                sx={styledTextField}
                 required
                 fullWidth
                 label="Password"

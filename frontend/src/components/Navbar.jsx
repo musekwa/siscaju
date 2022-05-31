@@ -23,7 +23,6 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: "20px",
   "&:hover": {
     cursor: "pointer",
   },
@@ -35,7 +34,6 @@ const Icons = styled(Box)(({ theme }) => ({
 const UserBox = styled(Box)(({ theme }) => ({
   display: "none",
   alignItems: "center",
-  gap: "10px",
   "&:hover": {
     cursor: "pointer",
   },
@@ -44,16 +42,26 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ pageDescription }) => {
 
     const [open, setOpen] = useState(false)
   return (
-    <AppBar position="sticky">
+    <AppBar  sx={{ width: "100%", position:"sticky", top: 0, right: 0 }}>
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
           SisCaju
         </Typography>
-
+        <Box sx={{ width: "100%", textAlign: "center",}}>
+        <Typography
+          variant="body1"
+          fontWeight={100}
+          component="p"
+         
+          sx={{ p: "2px 0px 2px 0px",  }}
+        >
+          {pageDescription}
+        </Typography>
+        </Box>
         <Icons onClick={(e) => setOpen(true)}>
           <Avatar
             onClick={() => {}}

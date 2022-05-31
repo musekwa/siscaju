@@ -18,6 +18,16 @@ function refreshMessages() {
 }
 
 
+const styledBottomNavigation = {
+  "& .Mui-selected": {
+    color: "rebeccapurple",
+  },
+  "&	.MuiIcon-colorAction": {
+    color: "rebeccapurple",
+  }
+}
+
+
 const Footer = () => {
 
  const [value, setValue] = useState(0);
@@ -49,6 +59,7 @@ const Footer = () => {
         elevation={3}
       >
         <BottomNavigation
+        sx={styledBottomNavigation}
           showLabels
           value={value}
           onChange={(event, newValue) => {
