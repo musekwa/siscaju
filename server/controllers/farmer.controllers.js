@@ -7,7 +7,7 @@ import {
   deleteFarmerService,
 } from "../services/farmer.services.js";
 import asyncHandler from 'express-async-handler'
-
+import Farmer from "../models/farmer.model.js";
 //@desc
 //@route
 //@access
@@ -18,31 +18,25 @@ const getFarmers = asyncHandler (async (req, res) => {
   // try {
     switch (user.role) {
       case "Extensionista":
-        farmers = await getFarmerByDistrictService(user.role);
+        farmers = await Farmer.find({
+          district: { adress: { district } },
+        }).populate("farmlands");
         break;
       case "Produtor":
-        farmers = await getFarmerByIdService(user.id);
+        farmers = await Farmer.findById(ObjectId(user._id)).populate(
+      "farmlands"
+    );
         break;
       case "Gestor":
-        farmers = await getFarmersService();
+        farmers = await Farmer.find({});
       default:
         res.status(401);
         throw new Error("Nao autorizado");
-    }
-
-    // let farmers = await getFarmersService();
-    if (!farmers) {
-      res.status(404);
-      throw new Error("Produtores nao encontrados");
     }
     return res.status(200).json({
       status: "OK",
       data: farmers,
     });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
 });
 
 //@desc

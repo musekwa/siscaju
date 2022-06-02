@@ -14,27 +14,14 @@ import { BootstrapButton } from "../components/Buttons";
 import {
   Autocomplete,
   Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  OutlinedInput,
   Paper,
   Stack,
-  styled,
   TextField,
   Typography,
 } from "@mui/material";
-// import { LockOpen } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-// const RegisterUI = styled('div')(({ theme })=>({
 
-//   [theme.breakpoints.down('sm')]: {
-
-//   }
-
-// })
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -51,6 +38,7 @@ const styledTextField = {
 
 
 function UserRegister() {
+  
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -70,7 +58,7 @@ function UserRegister() {
   const [inputAdminPost, setInputAdminPost] = useState("");
   const [countReload, setCountReload] = useState(0);
 
-  const { fullname, email, password, password2 } = formData;
+  const { fullname, email, password, password2, phone } = formData;
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -87,8 +75,12 @@ function UserRegister() {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
-    } else if (isSuccess && !user) {
-      navigate("/dashboard");
+    } else if (isSuccess && user.fullname) {
+        toast.success(`Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`, {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      navigate("/");
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -160,7 +152,7 @@ function UserRegister() {
       return;
     }
     if (password !== password2) {
-      toast.error("Password não corresponde", {
+      toast.error("Passwords não correspondem", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         hideProgressBar: false,
@@ -171,10 +163,8 @@ function UserRegister() {
       });
       return;
     }
-    if (
-      !role ||
-      (role !== "Extensionista" && role !== "Produtor" && role !== "Gestor")
-    ) {
+    if (!(roles.indexOf(role) >= 0)) {
+      console.log('indexOf role: ', roles.indexOf(role))
       toast.error("Perfil inválido", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -188,11 +178,16 @@ function UserRegister() {
     }
 
     const userData = {
-      fullname,
-      email,
-      password,
+      ...formData,
       role,
+      sex: gender,
+      address: {
+        province,
+        district,
+        territory: adminPost,
+      }
     };
+    
     dispatch(register(userData));
   };
 
@@ -340,7 +335,7 @@ function UserRegister() {
             direction="row"
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
+            <div style={{ width: "49%", padding: "10px 10px 5px 10px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -369,7 +364,7 @@ function UserRegister() {
               />
             </div>
 
-            <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
+            <div style={{ width: "49%", padding: "10px 10px 5px 10px" }}>
               <Autocomplete
                 fullWidth
                 required
@@ -452,7 +447,7 @@ function UserRegister() {
             </div>
           </Stack>
 
-          <div style={{ padding: "15px 10px 20px 10px" }}>
+          <div style={{ padding: "5px 10px 20px 10px" }}>
             <BootstrapButton variant="contained" type="submit">
               Criar conta
             </BootstrapButton>

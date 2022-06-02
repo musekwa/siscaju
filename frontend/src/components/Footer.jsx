@@ -8,6 +8,11 @@ import {
   Group,
 } from "@mui/icons-material";
 import { Avatar, BottomNavigation, BottomNavigationAction, Box, CssBaseline, List, ListItem, ListItemAvatar, ListItemText, Paper } from "@mui/material";
+import Farmers from '../pages/Farmers';
+import Home from '../pages/Home';
+import { farmers } from '../fakeData/farmers';
+import { farmlands } from '../fakeData/farmlands';
+import { Link, useNavigate } from 'react-router-dom'
 
 function refreshMessages() {
   const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
@@ -18,42 +23,95 @@ function refreshMessages() {
 }
 
 
+
 const styledBottomNavigation = {
   "& .Mui-selected": {
     color: "rebeccapurple",
   },
-  "&	.MuiIcon-colorAction": {
+  "& .MuiIcon-colorAction": {
     color: "rebeccapurple",
+    backgroundColor: "rebeccapurple"
   }
 }
 
 
-const Footer = () => {
+const Footer = ( ) => {
 
  const [value, setValue] = useState(0);
- const ref = useRef(null);
- const [messages, setMessages] = useState(() => refreshMessages());
 
+ const ref = useRef(null);
+ const [itemList, setItemList] =  useState([]) // useState(() => refreshMessages());
+
+ const navigate = useNavigate()
  useEffect(() => {
    ref.current.ownerDocument.body.scrollTop = 0;
-   setMessages(refreshMessages());
- }, [value, setMessages]);
+  //  if (value === 2) {
+  //   setItemList(farmers);
+  //  }
+  //  else if (value === 3) {
+  //   setItemList(farmlands);
+  //  }
+   
+ }, [value, setItemList]);
 
+    console.log('footer')
 
+    const toDashboard = ()=>{
+        navigate('/')
+    }
+
+    const toFarmersList = ()=>{
+      navigate('/farmers-list')
+    }
+
+    const toFarmlandsList = ()=>{
+      navigate('/farmlands-list')
+    }
+
+    const toMonitorings = ()=>{
+      navigate('/monitorings')
+    }
 
   return (
     <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
       <CssBaseline />
-      <List>
-        {messages.map(({ primary, secondary, person }, index) => (
-          <ListItem button key={index + person}>
-            <ListItemAvatar>
-              <Avatar alt="Profile Picture" src={person} />
-            </ListItemAvatar>
-            <ListItemText primary={primary} secondary={secondary} />
-          </ListItem>
-        ))}
-      </List>
+    
+    {/* { value === 1 ?
+       <List>
+            {itemList.map(({ primary, secondary, person }, index) => (
+              <ListItem button key={index + person}>
+                <ListItemAvatar>
+                  <Avatar alt="Profile Picture" src={person} />
+                </ListItemAvatar>
+                <ListItemText primary={primary} secondary={secondary} />
+              </ListItem>
+            ))}
+          </List>
+      : value === 2 ?
+       <List>
+            {itemList.map(({ fullname, image, subcategory, phone, birthDate }, index) => (
+              <ListItem button key={index + fullname}>
+                <ListItemAvatar>
+                  <Avatar alt="Profile Picture" src={"image"} />
+                </ListItemAvatar>
+                <ListItemText primary={fullname} secondary={subcategory} />
+              </ListItem>
+            ))}
+          </List>
+      : value === 3 ?
+       <List>
+            {itemList.map(({ primary, secondary, person }, index) => (
+              <ListItem button key={index + person}>
+                <ListItemAvatar>
+                  <Avatar alt="Profile Picture" src={person} />
+                </ListItemAvatar>
+                <ListItemText primary={primary} secondary={secondary} />
+              </ListItem>
+            ))}
+          </List>
+      : null      
+    } */}
+      {/* <Home value={ value} itemList={itemList } /> */}
       <Paper
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
         elevation={3}
@@ -61,15 +119,15 @@ const Footer = () => {
         <BottomNavigation
         sx={styledBottomNavigation}
           showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+        //   value={value}
+        //   onChange={(event, newValue) => {
+        //     setValue(newValue);
+        //   }}
         >
-          <BottomNavigationAction label="Meu Painel" icon={<Dashboard />} />
-          <BottomNavigationAction label="Monitoria" icon={<LegendToggle />} />
-          <BottomNavigationAction label="Produtores" icon={<Group />} />
-          <BottomNavigationAction label="Pomares" icon={<Forest />} />
+          <BottomNavigationAction onClick={toDashboard} label="Painel" icon={<Dashboard sx={{}} />} />
+          <BottomNavigationAction disabled onClick={toMonitorings} label="Monitoria" icon={<LegendToggle />} />
+          <BottomNavigationAction onClick={toFarmersList} label="Produtores" icon={<Group />} />
+          <BottomNavigationAction onClick={toFarmlandsList} label="Pomares" icon={<Forest />} />
         </BottomNavigation>
       </Paper>
     </Box>

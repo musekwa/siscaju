@@ -2,7 +2,7 @@ import { Add } from "@mui/icons-material";
 import { Fab, Tooltip } from "@mui/material";
 import React from "react";
 
-const AddButton = () => {
+const AddButton = (onClick) => {
   return (
     <Tooltip
       onClick={() => {}}

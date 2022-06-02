@@ -58,7 +58,7 @@ function Login() {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
-    } else if (isSuccess && user) {
+    } else if (isSuccess && user.fullname) {
       toast.success(`Bem-vindo de volta, ${user?.fullname.split(" ")[0]}`, {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
@@ -107,6 +107,7 @@ function Login() {
         password,
       };
       dispatch(login(userData));
+
     }
   };
 

@@ -6,14 +6,17 @@ import {
   MenuItem,
   styled,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-end",
-  backgroundColor: "rebeccapurple",
+  height: "100%",
+  // backgroundColor: "rebeccapurple",
   [theme.breakpoints.up("sm")]: {
     display: "flex",
     justifyContent: "space-between",
@@ -33,6 +36,7 @@ const Icons = styled(Box)(({ theme }) => ({
 
 const UserBox = styled(Box)(({ theme }) => ({
   display: "none",
+  gap: "10px",
   alignItems: "center",
   "&:hover": {
     cursor: "pointer",
@@ -42,11 +46,24 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Navbar = ({ pageDescription }) => {
+const Navbar = ({ pageDescription, user }) => {
+
+  const navigate = useNavigate()
+
+  const onLogout = ()=>{
+  //   localStorage.removeItem('user');
+  //   navigate('/login')
+  }
 
     const [open, setOpen] = useState(false)
+
+    // useEffect(()=>{
+
+    // }, [navigate])
+
   return (
-    <AppBar  sx={{ width: "100%", position:"sticky", top: 0, right: 0 }}>
+    <Box  sx={{zIndex: 1, position: "sticky", top: 0, right: 0, left: 0, }}>
+    <AppBar  sx={{ height: "60px", backgroundColor: "rebeccapurple",   }}>
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
           SisCaju
@@ -62,20 +79,22 @@ const Navbar = ({ pageDescription }) => {
           {pageDescription}
         </Typography>
         </Box>
+        <Tooltip title={`${user?.fullname.split(' ')[0]}`}>
         <Icons onClick={(e) => setOpen(true)}>
           <Avatar
             onClick={() => {}}
-            sx={{ width: "30px", height: "30px" }}
+            sx={{ width: "40px", height: "40px",  }}
             src=""
           />
         </Icons>
+        </Tooltip>
         <UserBox onClick={(e) => setOpen(true)}>
           <Avatar
             onClick={() => {}}
-            sx={{ width: "30px", height: "30px" }}
-            src=""
+            sx={{ width: "40px", height: "40px" }}
+            src={`${user?.image}`}
           />
-          <Typography variant="body2">Evariste</Typography>
+          <Typography variant="body2">{user?.fullname.split(' ')[0]}</Typography>
         </UserBox>
       </StyledToolbar>
       <Menu
@@ -90,10 +109,11 @@ const Navbar = ({ pageDescription }) => {
         }}
       >
         <MenuItem onClick={() => {}}>Minha conta</MenuItem>
-        <MenuItem onClick={() => {}}>Terminar a sessão</MenuItem>
+        <MenuItem onClick={onLogout}>Terminar a sessão</MenuItem>
         <MenuItem onClick={() => {}}>Configurações</MenuItem>
       </Menu>
     </AppBar>
+    // </Box>
   );
 };
 

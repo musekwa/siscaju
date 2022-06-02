@@ -213,18 +213,9 @@ function FarmerRegister() {
         display: "flex",
         justifyContent: "center",
         width: "100%",
+        marginTop: "45px"
       }}
     >
-    
-      {/* <Paper
-        sx={{
-          maxWidth: "500px",
-          height: "auto",
-          textAlign: "center",
-          mb: "5px",
-        }}
-      > */}
-
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
         <Paper
             sx={{
@@ -232,6 +223,7 @@ function FarmerRegister() {
             height: "auto",
             textAlign: "center",
             m: "5px",
+           
             }}
         >  
           <div style={{ padding: "10px 10px 10px 10px" }}>
@@ -498,9 +490,7 @@ function FarmerRegister() {
               Registar Produtor
             </BootstrapButton>
           </div>
-        </Box>
-      {/* </Paper> */}
-      
+        </Box>      
     </Box>
     <Footer />
     </Box>

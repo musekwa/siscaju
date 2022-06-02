@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "/users/";
-const LOGIN_URL = "/login/";
+const API_URL = "http://localhost:8080/users";
+const LOGIN_URL = "http://localhost:8080/login";
 
 // register user
 const register = async (userData) => {
@@ -28,6 +28,8 @@ const updateRegister = async (userData) => {
 // login user
 const login = async (userData) => {
   const response = await axios.post(LOGIN_URL, userData);
+  // const response = await axios.get("https://dummyjson.com/users");
+  console.log('results: ', response.data)
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }

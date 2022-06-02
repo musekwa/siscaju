@@ -14,6 +14,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import FarmerRegister from './pages/FarmerRegister'
 import FarmlandRegister from "./pages/FarmlandRegister";
+import Monitorings from './pages/Monitorings'
+import FarmersList from "./pages/FarmersList";
+import FarmlandsList from "./pages/FarmlandsList";
 
 function App() {
   return (
@@ -21,14 +24,15 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<UserRegister />} />
+            <Route path="/farmers-list" element={<FarmersList />} />
+            <Route path="/farmlands-list" element={<FarmlandsList />} />
             <Route path="/farmers" element={<FarmerRegister />} />
             <Route path="/farmlands" element={<FarmlandRegister />} />
-            {/* <Route path="/register2" element={<Register2 />} />
-            <Route path="/register3" element={<Register3 />} /> */}
+            <Route path="/monitorings" element={<Monitorings />} />
           </Routes>
         </div>
       </Router>

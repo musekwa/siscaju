@@ -1,4 +1,3 @@
 
 export const plantingTechniques = [
-    'enxertia', 'sementes', 'misto'
-]
+    'enxertia', 'sementes' ]
