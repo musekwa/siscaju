@@ -7,17 +7,17 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Navbar from '../components/Navbar';
+import Navbar from '../../components/Navbar';
 import { Box } from '@mui/material';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 
-const FarmersList = ()=> {
+const FarmlandsList = ()=> {
 
-    const [farmersList, setFarmersList] = useState([])
+    const [farmlandsList, setFarmlandsList] = useState([])
 
   return (
     <Box>
-        <Navbar pageDescription={"Produtores"} />
+        <Navbar pageDescription={"Pomares"} />
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
@@ -91,4 +91,4 @@ const FarmersList = ()=> {
 }
 
 
-export default FarmersList
+export default FarmlandsList

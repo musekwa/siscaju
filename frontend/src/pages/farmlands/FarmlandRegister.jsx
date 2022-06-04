@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
-import Spinner from "../components/Spinner";
-import { clones } from '../app/clones'
-import { plantingTechniques } from '../app/plantingTechniques'
-import { BootstrapButton } from "../components/Buttons";
+import { register, reset } from "../../features/auth/authSlice";
+import Spinner from "../../components/Spinner";
+import { clones } from '../../app/clones'
+import { plantingTechniques } from '../../app/plantingTechniques'
+import { BootstrapButton } from "../../components/Buttons";
 
 import {
   Autocomplete,
@@ -25,11 +25,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 import { AddCircle, AddLocation } from "@mui/icons-material";
-import Division from "../components/Division";
+import Division from "./Division";
 
 
 
@@ -68,9 +68,9 @@ function FarmlandRegister() {
 
  
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+  const { farmer } = useSelector((state)=>state.farmer)
+  const { farmland } = useSelector((state)=>state.farmland)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,6 +88,14 @@ function FarmlandRegister() {
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+
+  useEffect(()=>{
+    if (!farmer) {
+      navigate('/')
+    }
+  }, [farmer])
+
 
   useEffect(() => {
     // if ((province && district) || province) {
@@ -209,16 +217,14 @@ function FarmlandRegister() {
         marginTop: "45px"
       }}
     >
-    <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
-        <Avatar sx={{ width: "50px", height: "50px"}} src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-        <Box sx={{ textAlign: "left" }}>
-            <Typography variant='body1'>Evariste Musekwa Iguna</Typography>
-            <Typography variant='body2'>(Subcategoria Indefinida)</Typography>
-        </Box>
-    </UserStack>
-
+      <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
+          <Avatar sx={{ width: "50px", height: "50px"}} src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+          <Box sx={{ textAlign: "left" }}>
+              <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
+              <Typography variant='body2'>(Subcategoria Indefinida)</Typography>
+          </Box>
+      </UserStack>
     </Box>
-
     {/* Farmland field names */}
     <Box
       sx={{
@@ -278,8 +284,8 @@ function FarmlandRegister() {
           </div>
 
             {/* Divisions start here! */}
-        { divisions  && divisions.map((division, key)=><Division />) }
-        {/* <Division /> */}
+        {/* { divisions  && divisions.map((division, key)=><Division />) } */}
+        <Division />
 
         {/* Add division button */}
 

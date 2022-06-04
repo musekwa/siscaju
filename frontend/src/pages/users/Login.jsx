@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
-import { reset, login } from "../features/auth/authSlice";
+import { reset, login } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
-import { BootstrapButton } from "../components/Buttons";
+import Spinner from "../../components/Spinner";
+import { BootstrapButton } from "../../components/Buttons";
 import {
   Autocomplete,
   Box,
@@ -122,11 +122,11 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: "100vh",
+        height: "80vh",
       }}
     >
       <Paper sx={{ width: "400px", height: "80vh", position: "relative" }}>
-        <Box sx={{ postion: "absolute", marginTop: "25px" }}>
+        <Box sx={{ postion: "absolute", marginTop: "25px",  }}>
           <LockOpen fontSize="large" sx={{ color: "rebeccapurple" }} />
           <Typography
             variant="h6"

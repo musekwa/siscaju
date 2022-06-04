@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 const farmersSchema = mongoose.Schema(
   {
     fullname: { type: String, trim: true, required: true },
-    sex: {
+    gender: {
       type: String,
       enum: {
         values: ["F", "M"],
@@ -32,41 +32,41 @@ const farmersSchema = mongoose.Schema(
     address: {
       province: {
         type: String,
-        enum: {
-          values: ["Nampula"],
-          message: "Por enquanto, {VALUE} não é uma provincia autorizada!",
-        },
+        // enum: {
+        //   values: ["Nampula"],
+        //   message: "Por enquanto, {VALUE} não é uma provincia autorizada!",
+        // },
       },
       district: {
         type: String,
-        enum: {
-          values: [
-            "Angoche",
-            "Eráti",
-            "Ilha de Moçambique",
-            "Lalaua",
-            "Larde",
-            "Liúpo",
-            "Malema",
-            "Meconta",
-            "Mecubúri",
-            "Memba",
-            "Mogincual",
-            "Mogovolas",
-            "Moma",
-            "Monapo",
-            "Mossuril",
-            "Muecate",
-            "Murrupula",
-            "Nacala-a-Velha",
-            "Nacala-Porto",
-            "Nacarôa",
-            "Nampula",
-            "Rapale",
-            "Ribáuè",
-          ],
-          message: "Por enquanto, {VALUE} não é uma distrito autorizado!",
-        },
+        // enum: {
+        //   values: [
+        //     "Angoche",
+        //     "Eráti",
+        //     "Ilha de Moçambique",
+        //     "Lalaua",
+        //     "Larde",
+        //     "Liúpo",
+        //     "Malema",
+        //     "Meconta",
+        //     "Mecubúri",
+        //     "Memba",
+        //     "Mogincual",
+        //     "Mogovolas",
+        //     "Moma",
+        //     "Monapo",
+        //     "Mossuril",
+        //     "Muecate",
+        //     "Murrupula",
+        //     "Nacala-a-Velha",
+        //     "Nacala-Porto",
+        //     "Nacarôa",
+        //     "Nampula",
+        //     "Rapale",
+        //     "Ribáuè",
+        //   ],
+        //   message: "Por enquanto, {VALUE} não é uma distrito autorizado!",
+        // },
       },
       territory: { type: String, trim: true },
       village: { type: String, trim: true },
@@ -76,7 +76,7 @@ const farmersSchema = mongoose.Schema(
       trim: true,
       validate: {
         validator: function (v) {
-          return /\d{9}/.test(v);
+          return /\d{9}/.test(v) || v === '';
         },
         message: (props) =>
           `${props.value} não é um numero de telefone valido!`,

@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
-import Spinner from "../components/Spinner";
-import { clones } from '../app/clones'
-import { plantingTechniques } from '../app/plantingTechniques'
-import { BootstrapButton } from "../components/Buttons";
+import { register, reset } from "../../features/auth/authSlice";
+import Spinner from "../../components/Spinner";
+import { clones } from '../../app/clones'
+import { plantingTechniques } from '../../app/plantingTechniques'
+import { BootstrapButton } from "../../components/Buttons";
 
 import {
   Autocomplete,
@@ -24,8 +24,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 import { AddCircle, Clear, Close, Delete, Save, Send } from "@mui/icons-material";
 
@@ -222,7 +222,6 @@ const Division = () => {
             placeholder="Ano de plantio"
             size="small"
             onChange={onChange}
-            // value={fullname}
         />
         </div>
 
@@ -239,7 +238,6 @@ const Division = () => {
             placeholder="Número de cajueiros"
             size="small"
             onChange={onChange}
-            // value={fullname}
         />
         </div>
             

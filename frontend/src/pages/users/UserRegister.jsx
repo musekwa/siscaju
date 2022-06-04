@@ -2,14 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
-import Spinner from "../components/Spinner";
-import { roles } from "../app/roles";
-import { provinces } from "../app/provinces";
-import { genders } from "../app/genders";
-import { districtsByProvince as districts } from "../app/districts";
-import { administrativePosts as adminPosts } from "../app/administrativePosts";
-import { BootstrapButton } from "../components/Buttons";
+import { register, reset } from "../../features/auth/authSlice";
+import Spinner from "../../components/Spinner";
+import { roles } from "../../app/roles";
+import { provinces } from "../../app/provinces";
+import { genders } from "../../app/genders";
+import { districtsByProvince as districts } from "../../app/districts";
+import { administrativePosts as adminPosts } from "../../app/administrativePosts";
+import { BootstrapButton } from "../../components/Buttons";
 
 import {
   Autocomplete,
@@ -39,26 +39,33 @@ const styledTextField = {
 
 function UserRegister() {
   
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
     fullname: "",
     email: "",
     password: "",
     password2: "",
+    gender: "",
+    role: "",
     phone: "",
+    address: {
+      province: "",
+      district: "",
+      territory: ""
+    }
   });
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
-  const [gender, setGender] = useState("");
-  const [adminPost, setAdminPost] = useState("");
+  // const [gender, setGender] = useState("");
+  const [territory, setTerritory] = useState("");
   const [inputRole, setInputRole] = useState("");
   const [inputProvince, setInputProvince] = useState("");
   const [inputDistrict, setInputDistrict] = useState("");
   const [inputGender, setInputGender] = useState("");
-  const [inputAdminPost, setInputAdminPost] = useState("");
+  const [inputTerritory, setInputTerritory] = useState("");
   const [countReload, setCountReload] = useState(0);
 
-  const { fullname, email, password, password2, phone } = formData;
+  const { fullname, email, password, password2, gender, role, phone, address } = userData;
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -85,31 +92,31 @@ function UserRegister() {
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  useEffect(() => {
-    if ((province && district) || province) {
-      setDistrict("");
-    }
-  }, [province]);
 
   useEffect(() => {
-    if ((district && adminPost) || district) {
-      setAdminPost("");
+    if ((address.province && address.district) || address.province) {
+      setUserData((prevState)=>({
+        ...prevState,
+        address: { ...prevState.address, district: "", territory: "" }
+      }))
     }
-  }, [district]);
+  }, [address.province]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value.trim(),
-    }));
-  };
+  useEffect(() => {
+    if ((address.district && address.territory) || address.district) {
+      setUserData((prevState)=>({
+        ...prevState,
+        address: { ...prevState.address, territory: "" }
+      }))
+    }
+  }, [address.district]);
 
-  // const onChangeAddress = (e)=>{
-  //   setAddress((prevState)=>({
+  // const onChange = (e) => {
+  //   setFormData((prevState) => ({
   //     ...prevState,
   //     [e.target.name]: e.target.value.trim(),
-  //   }))
-  // }
+  //   }));
+  // };
 
   // validating email
   const validateEmail = (email) => {
@@ -163,7 +170,7 @@ function UserRegister() {
       });
       return;
     }
-    if (!(roles.indexOf(role) >= 0)) {
+    if (!(roles.indexOf(role) > -1)) {
       console.log('indexOf role: ', roles.indexOf(role))
       toast.error("Perfil inválido", {
         autoClose: 5000,
@@ -177,16 +184,11 @@ function UserRegister() {
       return;
     }
 
-    const userData = {
-      ...formData,
-      role,
-      sex: gender,
-      address: {
-        province,
-        district,
-        territory: adminPost,
-      }
+    const normalizedUserData = {
+      ...userData,
     };
+
+    console.log('user data: ', userData)
     
     dispatch(register(userData));
   };
@@ -235,8 +237,12 @@ function UserRegister() {
               type="text"
               placeholder="Nome completo"
               size="small"
-              onChange={onChange}
-              // value={fullname}
+              onChange={(event)=>{
+                setUserData((prevState)=>({
+                  ...prevState,
+                  fullname: event.target.value,
+                }))
+              }}
             />
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
@@ -251,7 +257,12 @@ function UserRegister() {
               placeholder="Email"
               size="small"
               value={email}
-              onChange={onChange}
+              onChange={(event)=>{
+                setUserData((prevState)=>({
+                  ...prevState,
+                  email: event.target.value,
+                }))
+              }}
             />
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
@@ -266,7 +277,12 @@ function UserRegister() {
               placeholder="Password"
               size="small"
               value={password}
-              onChange={onChange}
+              onChange={(event)=>{
+                setUserData((prevState)=>({
+                  ...prevState,
+                  password: event.target.value,
+                }))
+              }}
             />
           </div>
           <div style={{ padding: "10px 10px 15px 10px" }}>
@@ -280,8 +296,12 @@ function UserRegister() {
               type="password"
               placeholder="Password"
               size="small"
-              // value={password2}
-              onChange={onChange}
+              onChange={(event)=>{
+                setUserData((prevState)=>({
+                  ...prevState,
+                  password2: event.target.value,
+                }))
+              }}
             />
           </div>
           <Stack
@@ -297,8 +317,11 @@ function UserRegister() {
                 id="combo-box-demo"
                 value={role}
                 options={roles}
-                onChange={(event, newRole) => {
-                  setRole(newRole);
+                onChange={(event, newRole)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    role: newRole,
+                  }))
                 }}
                 inputValue={inputRole}
                 onInputChange={(event, newInputRole) => {
@@ -307,6 +330,8 @@ function UserRegister() {
                 renderInput={(params) => (
                   <TextField sx={styledTextField} name="role" {...params} required label="Perfil" />
                 )}
+                isOptionEqualToValue={(option, value) =>
+                  value === undefined || value === "" || option === value }
               />
             </div>
             <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>
@@ -318,8 +343,11 @@ function UserRegister() {
                 id="combo-box-demo"
                 value={gender}
                 options={genders}
-                onChange={(event, newGender) => {
-                  setGender(newGender);
+                onChange={(event, newGender)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    gender: newGender,
+                  }))
                 }}
                 inputValue={inputGender}
                 onInputChange={(event, newInputGender) => {
@@ -328,6 +356,8 @@ function UserRegister() {
                 renderInput={(params) => (
                   <TextField sx={styledTextField} name="gender" {...params} required label="Gênro" />
                 )}
+                isOptionEqualToValue={(option, value) =>
+                  value === undefined || value === "" || option === value }
               />
             </div>
           </Stack>
@@ -342,10 +372,13 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                // value={province}
                 options={provinces}
-                onChange={(event, newProvince) => {
-                  setProvince(newProvince);
+                value={address.province}
+                onChange={(event, newProvince)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    address: { ...prevState.address, province: newProvince }
+                  }))
                 }}
                 inputValue={inputProvince}
                 onInputChange={(event, newInputProvince) => {
@@ -358,9 +391,11 @@ function UserRegister() {
                     {...params}
                     label="Província"
                     required
-                    helperText="residência"
+                    helperText="Residência"
                   />
                 )}
+                isOptionEqualToValue={(option, value) =>
+                  value === undefined || value === "" || option === value }
               />
             </div>
 
@@ -371,14 +406,33 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                value={district}
+                value={address.district}
                 options={
-                  province
-                    ? districts[province]
-                    : ["Selecciona primeiro a província"]
+                  address.province
+                    ? districts[address.province]
+                    : ["Primeiro, selecciona a província"]
                 }
                 onChange={(event, newDistrict) => {
-                  setDistrict(newDistrict);
+                if (!Array.isArray(districts[address.province])) {
+                  toast.error('Primeiro, seleciona a província!', {
+                    autoClose: 5000,
+                    position: toast.POSITION.TOP_RIGHT,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  })
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    address: { ...prevState.address, district: "" }
+                  }))
+                  return ;
+                }
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    address: { ...prevState.address, district: newDistrict }
+                  }))
                 }}
                 inputValue={inputDistrict}
                 onInputChange={(event, newInputDistrict) => {
@@ -394,6 +448,8 @@ function UserRegister() {
                     helperText="residência"
                   />
                 )}
+                isOptionEqualToValue={(option, value) =>
+                      value === undefined || value === "" || option === value }
               />
             </div>
           </Stack>
@@ -408,18 +464,34 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                value={adminPost}
+                value={address.territory}
                 options={
-                  district
-                    ? adminPosts[district]
-                    : ["Selecciona primeiro o distrito"]
+                  address.district
+                    ? adminPosts[address.district]
+                    : ["Primeiro, selecciona o distrito"]
                 }
-                onChange={(event, newAdminPost) => {
-                  setAdminPost(newAdminPost);
+                onChange={(event, newTerritory) => {
+                  if (!Array.isArray(adminPosts[address.district])) {
+                    toast.error('Primeiro, seleciona o distrito!', {
+                      autoClose: 5000,
+                      position: toast.POSITION.TOP_RIGHT,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    })
+                    setTerritory('')
+                    return ;
+                  }
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    address: { ...prevState.address, territory: newTerritory }
+                  }))
                 }}
-                inputValue={inputAdminPost}
-                onInputChange={(event, newInputAdminPost) => {
-                  setInputAdminPost(newInputAdminPost);
+                inputValue={inputTerritory}
+                onInputChange={(event, newInputTerritory) => {
+                  setInputTerritory(newInputTerritory);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -442,7 +514,12 @@ function UserRegister() {
                 type="number"
                 placeholder="Telefone"
                 size="small"
-                onChange={onChange}
+                onChange={(event)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    phone: event.target.value
+                  }))
+                }}
               />
             </div>
           </Stack>

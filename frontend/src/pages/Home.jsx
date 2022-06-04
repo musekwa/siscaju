@@ -4,8 +4,8 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Monitorings from './Monitorings'
 import Dashboard from './Dashboard'
-import Farmlands from './Farmlands'
-import Farmers from './Farmers'
+import Farmlands from './farmlands/Farmlands'
+import Farmers from './farmers/Farmers'
 import { farmers } from "../fakeData/farmers";
 import { farmlands } from "../fakeData/farmlands";
 import { useRef, useState, useEffect } from "react";

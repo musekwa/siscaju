@@ -1,7 +1,7 @@
 
 import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import React from 'react'
-import Footer from '../components/Footer'
+import Footer from '../../components/Footer'
 
 
 const Farmers = ({ itemList }) => {

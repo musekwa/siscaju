@@ -3,9 +3,9 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
-import Spinner from '../components/Spinner'
-import { districtsByProvince as districts } from "../app/districts";
+import { register, reset } from "../../features/auth/authSlice";
+import Spinner from '../../components/Spinner'
+import { districtsByProvince as districts } from "../../app/districts";
 
 import { 
   Autocomplete, 

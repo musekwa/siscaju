@@ -24,15 +24,18 @@ const login = asyncHandler(async (req, res) => {
 
   let user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    return res.status(201).json({
-      fullname: user.fullname,
-      address: user.address,
-      email: user.email,
-      role: user.role,
-      _id: user._id,
-      createdAt: user.createdAt,
-      token: generateToken(user._id),
-    });
+    return res
+      .status(201)
+      .type("application/json")
+      .json({
+        fullname: user.fullname,
+        address: user.address,
+        email: user.email,
+        role: user.role,
+        _id: user._id,
+        createdAt: user.createdAt,
+        token: generateToken(user._id),
+      });
   } else {
     res.status(400);
     throw new Error("Credenciais invalidas");
@@ -47,15 +50,18 @@ const register = asyncHandler(async (req, res) => {
 
   let savedUser = await user.save();
 
-  return res.status(201).json({
-    fullname: savedUser.fullname,
-    address: savedUser.address,
-    email: savedUser.email,
-    role: savedUser.role,
-    _id: savedUser._id,
-    createdAt: savedUser.createdAt,
-    token: generateToken(savedUser._id),
-  });
+  return res
+    .status(201)
+    .type("application/json")
+    .json({
+      fullname: savedUser.fullname,
+      address: savedUser.address,
+      email: savedUser.email,
+      role: savedUser.role,
+      _id: savedUser._id,
+      createdAt: savedUser.createdAt,
+      token: generateToken(savedUser._id),
+    });
 });
 
 //@desc
@@ -87,15 +93,11 @@ const getUsers = asyncHandler(async (req, res) => {
 //@access
 const addUser = asyncHandler(async (req, res) => {
   const { body } = req;
-
-  // try {
   const newUser = new User(body);
   let savedUser = await newUser.save();
 
   const { fullname, address, email, role, _id, createdAt } = savedUser;
-
   return res.status(201).json({
-    // ...savedUser._doc,
     fullname,
     address,
     email,

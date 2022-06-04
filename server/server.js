@@ -14,7 +14,7 @@ import dbConnection from "../config/db.js";
 
 import {
   errorHandler,
-  invalidPathHandler,
+  // invalidPathHandler,
   errorLogger,
 } from "./middleware/errorMiddleware.js";
 import path from "path";

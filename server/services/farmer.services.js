@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Farmer from "../models/farmer.model.js";
-import Performance from "../models/performance.model.js";
+import Performance from "../models/userPerformance.model.js";
 import { registerFarmerService } from "./performance.services.js";
 
 const ObjectId = mongoose.Types.ObjectId;

@@ -3,41 +3,48 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import UserRegister from "./pages/UserRegister";
-import Register2 from "./pages/Register2"
-import Register3 from "./pages/Register3";
-import Header from "./components/Header";
+import Login from "./pages/users/Login";
+import UserRegister from "./pages/users/UserRegister";
 import { ThemeProvider } from "@mui/material"
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { outerTheme } from "./outerTheme";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import FarmerRegister from './pages/FarmerRegister'
-import FarmlandRegister from "./pages/FarmlandRegister";
+import FarmerRegister from './pages/farmers/FarmerRegister'
+import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
 import Monitorings from './pages/Monitorings'
-import FarmersList from "./pages/FarmersList";
-import FarmlandsList from "./pages/FarmlandsList";
+import FarmersList from "./pages/farmers/FarmersList";
+import FarmerExitRegister from "./pages/farmers/FarmerExitRegister";
+import FarmlandsList from "./pages/farmlands/FarmlandsList";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <ThemeProvider theme={outerTheme}>
-      <Router>
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<UserRegister />} />
-            <Route path="/farmers-list" element={<FarmersList />} />
-            <Route path="/farmlands-list" element={<FarmlandsList />} />
-            <Route path="/farmers" element={<FarmerRegister />} />
-            <Route path="/farmlands" element={<FarmlandRegister />} />
-            <Route path="/monitorings" element={<Monitorings />} />
-          </Routes>
-        </div>
-      </Router>
-      <ToastContainer /> {/*closeButton={CloseButton} */}
-    </ThemeProvider>
+    <div className="container">
+      <ThemeProvider theme={outerTheme}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<UserRegister />} />
+
+              {/**  Parent Route */}
+              <Route path="/" element={<Dashboard />} />
+              <Route path="farmers" element={<FarmerRegister />} />
+              <Route path="farmers/success" element={<FarmerExitRegister />} />
+              <Route path="farmlands" element={<FarmlandRegister />} />
+              <Route path="home" element={<Home />} />
+              <Route path="farmers-list" element={<FarmersList />} />
+              <Route path="farmlands-list" element={<FarmlandsList />} />
+              {/* <Route path="monitorings" element={<Monitorings />} /> */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </LocalizationProvider>
+        <ToastContainer />
+      </ThemeProvider>
+    </div>
   );
 }
 

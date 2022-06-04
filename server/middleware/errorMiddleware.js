@@ -12,7 +12,7 @@ const errorHandler = (error, req, res, next)=>{
     //     message: error.message,
     //     stack: config.env === 'production' ? null : error.stack,
     // })
-    res.send(error.message)
+    res.json(error.message)
     next(error)
 }
 
@@ -21,13 +21,13 @@ const errorLogger = (error, req, res, next)=>{
     next(error);
 }
 
-const invalidPathHandler = (req, res, next)=>{
-    res.status(404);
-    response.send('Invalid path')
-}
+// const invalidPathHandler = (req, res, next)=>{
+//     res.status(404);
+//     response.json({message: 'Invalid path'})
+// }
 
 export {
     errorHandler,
     errorLogger,
-    invalidPathHandler,
+    // invalidPathHandler,
 }

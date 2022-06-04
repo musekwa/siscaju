@@ -4,7 +4,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
       <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
         <Grid item xs={4}>
           <Item>        
-            <Link to={'/farmers'}>
+            <Link to='/farmers' >
               <PersonAdd fontSize="large" sx={{ color: "rebeccapurple" }}  />
               <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Registar<br />Produtor</Typography>
             </Link>
@@ -45,7 +45,7 @@ const Dashboard = () => {
 
         <Grid item xs={4}>
           <Item> 
-        <Link to={'/farmlands'}>
+        <Link to='/farmlands' >
           <Forest fontSize="large" sx={{ color: "rebeccapurple" }}  />
           <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Registar<br />Pomar</Typography>
         </Link>
@@ -54,7 +54,7 @@ const Dashboard = () => {
 
         <Grid item xs={4}>
           <Item>
-        <Link to={'/monitorings'}>
+        <Link to='/monitorings' >
           <LegendToggle fontSize="large" sx={{ color: "rebeccapurple" }}  />
           <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Monitorar<br />Pomar</Typography>
         </Link>
@@ -71,20 +71,20 @@ const Dashboard = () => {
       <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
         <Grid item sx={{ }} xs={4} >
           
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Produtores<br />registados</Typography>
         </Link>
         </Grid>
         <Grid item sx={{  }} xs={4}>
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Pomares<br />registados</Typography>
         </Link>
         </Grid>
 
         <Grid item sx={{  }} xs={4}>
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Pomares<br />Monitorados</Typography>
         </Link>
@@ -99,20 +99,20 @@ const Dashboard = () => {
       <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
         <Grid item sx={{ }} xs={4} >
           
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Produtores<br />registados</Typography>
         </Link>
         </Grid>
         <Grid item sx={{  }} xs={4}>
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Pomares<br />registados</Typography>
         </Link>
         </Grid>
 
         <Grid item sx={{  }} xs={4}>
-        <Link to={'/farmers'}>
+        <Link to='/farmers' >
           <Typography variant="body1">{0}</Typography>
           <Typography variant="body1">Pomares<br />Monitorados</Typography>
         </Link>
@@ -120,9 +120,8 @@ const Dashboard = () => {
 
         </Grid>
         </Box>
-
-
         <Footer />
+
     </Box>
   )
 }

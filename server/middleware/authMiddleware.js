@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
+import asyncHandler from "express-async-handler";
 
 
 const generateToken = (id) => {
@@ -9,7 +10,7 @@ const generateToken = (id) => {
 };
 
 
-const protect = async (req, res, next)=>{
+const protect = asyncHandler(async (req, res, next)=>{
 
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -33,6 +34,6 @@ const protect = async (req, res, next)=>{
         res.status(401);
         throw new Error("Nao autorizado por falta de 'token'")
     }
-}
+});
 
 export { protect, generateToken };

@@ -44,31 +44,23 @@ const getFarmers = asyncHandler (async (req, res) => {
 //@access
 // Duplicates must not be allowed
 const addFarmer = asyncHandler (async (req, res) => {
-  const { body, user } = req;
-  if (!body.fullname || !body.birthDate || !body.birthPlace) {
-    res.status(400);
-    throw new Error(
-      "Os campos de dados: fullname, birthDate e birthPlace sao obrigatorio"
-    );
-  }
-
+  const { body } = req;
   // assign the user province and district to farmer's address.
   // no user  should register farmer outside their own district
-  body.address.province = user.address.province;
-  body.address.district = user.address.district;
-  // console.log('user id:', user.id)
-  // console.log("user _id:", user._id);
+  // body.address.province = user.address.province;
+  // body.address.district = user.address.district;
 
-  // try {
-    let savedFarmer = await addFarmerService(user.id, body);
+    const newFarmer = new Farmer(body);
+    const savedFarmer = await newFarmer.save();
+    const { fullname, gender, birthDate, birthPlace, address, phone } = savedFarmer
     return res.status(201).json({
-      status: "OK",
-      data: savedFarmer,
+      fullname,
+      gender,
+      birthDate,
+      birthPlace,
+      address,
+      phone,
     });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
 });
 
 //@desc
@@ -92,7 +84,7 @@ const getFarmerById = asyncHandler (async (req, res) => {
       res.status(404);
       throw new Error("Produtor nao encontrado");
     }
-    return res.status(200).json({
+    return res.status(200).type("application/json").json({
       status: "OK",
       data: foundFarmer,
     });

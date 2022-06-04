@@ -62,7 +62,7 @@ const Navbar = ({ pageDescription, user }) => {
     // }, [navigate])
 
   return (
-    <Box  sx={{zIndex: 1, position: "sticky", top: 0, right: 0, left: 0, }}>
+    <Box  sx={{zIndex: 10, position: "sticky", top: 0, right: 0, left: 0, }}>
     <AppBar  sx={{ height: "60px", backgroundColor: "rebeccapurple",   }}>
       <StyledToolbar>
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>

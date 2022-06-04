@@ -1,5 +1,5 @@
 import config from "./config/config.js";
-import { errorLogger, errorHandler, invalidPathHandler } from "./server/middleware/errorMiddleware.js";
+import { errorLogger, errorHandler } from "./server/middleware/errorMiddleware.js";
 import {
   app,
   userRoutes,
@@ -10,13 +10,6 @@ import {
 } from "./server/server.js";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-// const options = {
-//   target: 'http://localhost:3000',
-//   changeOrigin: true,
-//   pathRewrite: {
-//     [`^/farmlands`]: '/'
-//   }
-// }
 
 app.use(userRoutes);
 app.use(farmerRoutes);
@@ -26,12 +19,12 @@ app.use(monitoringRoutes);
 
 app.use(errorHandler);
 app.use(errorLogger);
-app.use(invalidPathHandler)
+// app.use(invalidPathHandler)
 
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
 
 app.listen(config.port, (err) => {
   if (err) {

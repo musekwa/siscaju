@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import Performance from "../models/performance.model.js";
+import Performance from "../models/userPerformance.model.js";
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;

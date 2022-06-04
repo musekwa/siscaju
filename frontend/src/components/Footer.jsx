@@ -8,7 +8,7 @@ import {
   Group,
 } from "@mui/icons-material";
 import { Avatar, BottomNavigation, BottomNavigationAction, Box, CssBaseline, List, ListItem, ListItemAvatar, ListItemText, Paper } from "@mui/material";
-import Farmers from '../pages/Farmers';
+import Farmers from '../pages/farmers/Farmers';
 import Home from '../pages/Home';
 import { farmers } from '../fakeData/farmers';
 import { farmlands } from '../fakeData/farmlands';
@@ -54,8 +54,6 @@ const Footer = ( ) => {
    
  }, [value, setItemList]);
 
-    console.log('footer')
-
     const toDashboard = ()=>{
         navigate('/')
     }
@@ -69,48 +67,13 @@ const Footer = ( ) => {
     }
 
     const toMonitorings = ()=>{
-      navigate('/monitorings')
+      navigate('/to-be-defined')
     }
 
   return (
     <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>
       <CssBaseline />
     
-    {/* { value === 1 ?
-       <List>
-            {itemList.map(({ primary, secondary, person }, index) => (
-              <ListItem button key={index + person}>
-                <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={person} />
-                </ListItemAvatar>
-                <ListItemText primary={primary} secondary={secondary} />
-              </ListItem>
-            ))}
-          </List>
-      : value === 2 ?
-       <List>
-            {itemList.map(({ fullname, image, subcategory, phone, birthDate }, index) => (
-              <ListItem button key={index + fullname}>
-                <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={"image"} />
-                </ListItemAvatar>
-                <ListItemText primary={fullname} secondary={subcategory} />
-              </ListItem>
-            ))}
-          </List>
-      : value === 3 ?
-       <List>
-            {itemList.map(({ primary, secondary, person }, index) => (
-              <ListItem button key={index + person}>
-                <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={person} />
-                </ListItemAvatar>
-                <ListItemText primary={primary} secondary={secondary} />
-              </ListItem>
-            ))}
-          </List>
-      : null      
-    } */}
       {/* <Home value={ value} itemList={itemList } /> */}
       <Paper
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
@@ -125,7 +88,7 @@ const Footer = ( ) => {
         //   }}
         >
           <BottomNavigationAction onClick={toDashboard} label="Painel" icon={<Dashboard sx={{}} />} />
-          <BottomNavigationAction disabled onClick={toMonitorings} label="Monitoria" icon={<LegendToggle />} />
+          <BottomNavigationAction onClick={toMonitorings} label="Monitoria" icon={<LegendToggle />} />
           <BottomNavigationAction onClick={toFarmersList} label="Produtores" icon={<Group />} />
           <BottomNavigationAction onClick={toFarmlandsList} label="Pomares" icon={<Forest />} />
         </BottomNavigation>

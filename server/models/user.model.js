@@ -91,7 +91,7 @@ var usersSchema = new Schema(
       trim: true,
       validate: {
         validator: function (v) {
-          return /\d{9}/.test(v);
+          return /\d{9}/.test(v) || v === '';
         },
         message: (props) =>
           `${props.value} não é um numero de telefone valido!`,

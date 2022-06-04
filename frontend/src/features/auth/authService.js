@@ -29,7 +29,6 @@ const updateRegister = async (userData) => {
 const login = async (userData) => {
   const response = await axios.post(LOGIN_URL, userData);
   // const response = await axios.get("https://dummyjson.com/users");
-  console.log('results: ', response.data)
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }

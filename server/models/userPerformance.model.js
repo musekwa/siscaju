@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-const performancesSchema = mongoose.Schema({
+const userPerformancesSchema = mongoose.Schema({
   user: ObjectId,
+  district: { type: String, required: true },
   farmers: [ObjectId],
   farmlands: [ObjectId],
   monitorings: [
@@ -28,6 +29,6 @@ const performancesSchema = mongoose.Schema({
   ],
 });
 
-const Performance = mongoose.model("Performance", performancesSchema);
+const UserPerformance = mongoose.model("UserPerformance", userPerformancesSchema);
 
-export default Performance;
+export default UserPerformance;
