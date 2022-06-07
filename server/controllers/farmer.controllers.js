@@ -6,8 +6,14 @@ import {
   updateFarmerService,
   deleteFarmerService,
 } from "../services/farmer.services.js";
+import mongoose from "mongoose";
 import asyncHandler from 'express-async-handler'
 import Farmer from "../models/farmer.model.js";
+import UserPerformance from '../models/userPerformance.model.js'
+import DistrictPerformance from '../models/districtPerformance.model.js'
+
+const ObjectId = mongoose.Types.ObjectId;
+
 //@desc
 //@route
 //@access
@@ -44,23 +50,49 @@ const getFarmers = asyncHandler (async (req, res) => {
 //@access
 // Duplicates must not be allowed
 const addFarmer = asyncHandler (async (req, res) => {
-  const { body } = req;
+  const { body, user } = req;
+
   // assign the user province and district to farmer's address.
   // no user  should register farmer outside their own district
-  // body.address.province = user.address.province;
-  // body.address.district = user.address.district;
 
-    const newFarmer = new Farmer(body);
-    const savedFarmer = await newFarmer.save();
-    const { fullname, gender, birthDate, birthPlace, address, phone } = savedFarmer
-    return res.status(201).json({
-      fullname,
-      gender,
-      birthDate,
-      birthPlace,
-      address,
-      phone,
+  body.address.province = user.address.province;
+  body.address.district = user.address.district;
+
+  const newFarmer = new Farmer(body);
+  const savedFarmer = await newFarmer.save();
+
+  // save performance by user
+  let userPerformance = await UserPerformance.findOne({ user: user?._id });
+
+  if (!userPerformance) {
+    let newUserPerformace = new UserPerformance({
+      user: ObjectId(user?._id),
+      farmers: new Array(ObjectId(savedFarmer._id)),
     });
+    await newUserPerformace.save();
+  } else {
+    userPerformance.farmers.push(ObjectId(savedFarmer._id));
+    await userPerformance.save();
+  }
+
+  // -----------------------------------------------------
+  // save performance by district
+  let districtPerformance = await DistrictPerformance.findOne({
+    district: user?.address.district,
+  });
+
+  if (!districtPerformance) {
+    let newDistrictPerformace = new DistrictPerformance({
+      district: user?.address.district,
+      farmlands: new Array(ObjectId(savedFarmer._id)),
+    });
+    await newDistrictPerformace.save();
+    // return newPerformace;
+  } else {
+    districtPerformance.farmers.push(ObjectId(savedFarmer._id));
+    await districtPerformance.save();
+  }
+  return res.status(201).json(savedFarmer);
 });
 
 //@desc

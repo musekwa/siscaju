@@ -43,7 +43,6 @@ export const clones = [
 "2.5VM",
 "29EM",
 "IM5",
-"2.7NASS",
 "30EM",
 "CHP5",
 "CHP3",
@@ -64,8 +63,6 @@ export const clones = [
 "PJJEM1",
 "PJJEM2",
 "PJJEM6",
-"2.5VM",
-"29EM",
 "2.7NASS",
 
 

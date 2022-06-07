@@ -4,7 +4,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const userPerformancesSchema = mongoose.Schema({
   user: ObjectId,
-  district: { type: String, required: true },
+  district: { type: String },
   farmers: [ObjectId],
   farmlands: [ObjectId],
   monitorings: [

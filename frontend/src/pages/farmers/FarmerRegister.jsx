@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { farmerRegister, reset } from "../../features/farmers/farmerSlice";
 import Spinner from "../../components/Spinner";
-import { roles } from "../../app/roles";
 import { provinces } from "../../app/provinces";
 import { genders } from "../../app/genders";
 import { districtsByProvince as districts } from "../../app/districts";
@@ -14,32 +13,16 @@ import { BootstrapButton } from "../../components/Buttons";
 import {
   Autocomplete,
   Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  OutlinedInput,
   Paper,
   Stack,
-  styled,
   TextField,
-  Typography,
 } from "@mui/material";
-// import { LockOpen } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import {  DatePicker } from '@mui/x-date-pickers';
+import CustomizedModal from "../../components/FarmerRegisterModal.jsx";
+import FarmerRegisterModal from "../../components/FarmerRegisterModal.jsx";
 
-
-
-// const RegisterUI = styled('div')(({ theme })=>({
-
-//   [theme.breakpoints.down('sm')]: {
-
-//   }
-
-// })
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -80,6 +63,10 @@ function FarmerRegister() {
   const [inputBirthTerritory, setInputBirthTerritory] = useState('')
   const [inputResidenceTerritory, setInputResidenceTerritory] = useState('')
 
+  // open and close Farmer registration Modal
+  const [open, setOpen] = useState(false)
+  const [close, setClose] = useState(true)
+
 
   // get user's state from redux store
   // the user's address is needed to complete the farmer's address
@@ -88,12 +75,15 @@ function FarmerRegister() {
   const { farmer, isLoading, isError, isSuccess, message } = useSelector((state)=>state.farmer)
 
 
-  const { fullname, gender, birthDate, birthPlace, address, phone } = farmerData;
+  const { fullname, gender, birthDate, birthPlace, address } = farmerData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!user){
+      navigate('/login')
+    }
     if (isError) {
       toast.error(message, {
         autoClose: 5000,
@@ -101,12 +91,29 @@ function FarmerRegister() {
         position: toast.POSITION.TOP_CENTER,
       });
     } else if (isSuccess) {
-      toast.success(`Produtor ${farmer.fullname.split(' ')[0]} registado com sucesso!`, {
-        autoClose: 5000,
-        hideProgressBar: true,
-        position: toast.POSITION.TOP_CENTER,
-      });
-      navigate("/farmers/success");
+      // toast.success(`Produtor ${farmer.fullname.split(' ')[0]} registado com sucesso!`, {
+      //   autoClose: 5000,
+      //   hideProgressBar: true,
+      //   position: toast.POSITION.TOP_CENTER,
+      // });
+      // navigate("/farmers/success");
+      setOpen(true)
+      setFarmerData({
+        fullname: '',
+        gender: '',
+        birthDate: "",
+        birthPlace : {
+          province: "",
+          district: "",
+          territory: '',
+          village: '',
+        },
+        address: {
+          territory2: '',
+          village2: '',
+        },
+        phone: '',
+      })
     }
     dispatch(reset());
   }, [user, farmer, isError, isSuccess, message, navigate, dispatch]);
@@ -134,7 +141,7 @@ function FarmerRegister() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-  
+
     if (fullname.split(" ").length < 2) {
       toast.error("Nome deve ser completo", {
         autoClose: 5000,
@@ -223,8 +230,8 @@ function FarmerRegister() {
     const normalizedFarmerData = {
       ...farmerData,
       address: {
-        province: user.address.province, // user's province
-        district: user.address.district,  // user's district
+        // province: user.address.province, // user's province
+        // district: user.address.district,  // user's district
         territory: farmerData.address.territory2,
         village: farmerData.address.village2,
       }
@@ -274,7 +281,6 @@ function FarmerRegister() {
                 fullname: event.target.value
               }))
             }}
-            // value={fullname}
           />
         </div>
 
@@ -298,11 +304,9 @@ function FarmerRegister() {
                   ...prevState,
                   gender: newGender,
                 }))
-                // setGender(newGender);
               }}
               inputValue={inputGender}
               onInputChange={(event, newInputGender) => {
-                // setInputGender(newInputGender);
                 setInputGender(newInputGender)
               }}
               renderInput={(params) => (
@@ -314,26 +318,6 @@ function FarmerRegister() {
           </div>
 
           <div style={{ width: "49%", padding: "10px 10px 10px 10px" }}>
-              {/* <TextField
-                  id="date"
-                  size="small"
-                  label="Data de Nascimento"
-                  type="date"
-                  name="birthDate"
-                  value={birthDate}
-                  onChange={(event)=>{
-                    setFarmerData((prevState)=>({
-                      ...prevState,
-                      birthDate: event.target.value
-                    }))
-                  }}
-                  fullWidth
-                  defaultValue="2017-05-27"
-                  sx={styledTextField}
-                  InputLabelProps={{
-                  shrink: true,
-                  }}
-              /> */}
               <DatePicker 
                 label="Data de Nascimento" 
                 onChange={(newDate)=>{
@@ -348,11 +332,9 @@ function FarmerRegister() {
                     id="date"
                     size="small"
                     name="birthDate"
-                    // value={birthDate}
                     fullWidth 
                     sx={styledTextField}
-                  />)}
-                
+                  />)}          
                  />
           </div>
         </Stack>
@@ -377,10 +359,9 @@ function FarmerRegister() {
               size="small"
               disablePortal
               id="combo-box-demo"
-              // value={province}
+              value={birthPlace.province}
               options={provinces}
               onChange={(event, newProvince) => {
-                // setProvince(newProvince);
                 setFarmerData((prevState)=>({
                   ...prevState,
                   birthPlace: { ...prevState.birthPlace, province: newProvince }
@@ -515,6 +496,7 @@ function FarmerRegister() {
               id="fullWidth vaillage"
               name="village"
               type="text"
+              value={birthPlace.village}
               placeholder="Localidade"
               helperText="Nascimento"
               size="small"
@@ -584,6 +566,7 @@ function FarmerRegister() {
               id="fullWidth village"
               name="village2"
               type="text"
+              value={address.village2}
               placeholder="Localidade"
               helperText="Residência"
               size="small"
@@ -622,6 +605,12 @@ function FarmerRegister() {
         </div>
       </Box>      
     </Box>
+    
+    {/* Modal for successfully farmer registration! */}
+    <FarmerRegisterModal open={open} setOpen={setOpen} farmer={farmer}   />
+
+
+
     <Footer />
     </Box>
   );

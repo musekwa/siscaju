@@ -10,7 +10,7 @@ import { BootstrapButton } from "../../components/Buttons";
 import { Save } from '@mui/icons-material'
 import Footer from '../../components/Footer'
 import { useSelector, useDispatch } from 'react-redux'
-import { farmlandRegister, reset } from '../../features/farmlands/farmlandSlice'
+import { farmlandDivisionRegister, reset } from '../../features/farmlandDivisions/farmlandDivisionSlice'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
@@ -32,13 +32,10 @@ const UserStack = styled(Stack)(({theme})=>({
 }))
 
 
-const FarmlandRegister = () => {
+const FarmlandDivisionRegister = () => {
 
   // collecting all data from the this farmland form
-  const [farmlandData, setFarmlandData] = useState({
-    label: '',
-    declaredArea: '',
-    interCrops: [],
+  const [divisionData, setDivisionData] = useState({
     trees: '',
     sowingYear: '',
     plantedArea: '',
@@ -57,26 +54,24 @@ const FarmlandRegister = () => {
 
   const [inputSeedling, setInputSeedling] = useState('')
   const { 
-          label, 
-          declaredArea, 
-          interCrops, 
           trees, 
           sowingYear, 
           plantedArea, 
           spacing, 
-          plantingTechniques } = farmlandData;
+          plantingTechniques } = divisionData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
   const { user } = useSelector((state)=>state.auth)
   const { farmer } = useSelector((state)=>state.farmer)
-  const { farmland, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmland)
+  const { farmland } = useSelector((state)=>state.farmland)
+  const { farmlandDivision, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmlandDivision)
 
 
-  useEffect(()=>{
-    setTimeout(2000);
-  }, [])
+  // useEffect(()=>{
+  //   setTimeout(2000);
+  // }, [])
 
 
   useEffect(()=>{
@@ -89,16 +84,14 @@ const FarmlandRegister = () => {
       })
     }
     else if (isSuccess) {
-      toast.success(`Foi registado com sucesso o pomar ${label} de ${farmer.fullname}!`, {
+      toast.success('Registado uma divisão com sucesso!', {
         autoClose: 5000,
         hideProgressBar: true,
         position: toast.POSITION.TOP_CENTER,        
-      })     
+      });
+
       setOpen(true)
-      setFarmlandData({
-        label: '',
-        declaredArea: '',
-        interCrops: [],
+      setDivisionData({
         trees: '',
         sowingYear: '',
         plantedArea: '',
@@ -115,10 +108,10 @@ const FarmlandRegister = () => {
     }
     dispatch(reset())
 
-  }, [farmland, isError, isSuccess, message, navigate, dispatch])
+  }, [farmlandDivision, isError, isSuccess, message, navigate, dispatch])
 
   useEffect(()=>{
-    if (!user || !farmer) {
+    if (!user || !farmland) {
       navigate('/')
     }
   })
@@ -129,56 +122,8 @@ const FarmlandRegister = () => {
     event.preventDefault();
 
     // input data validation
-    if (!declaredArea) {
-      toast.error('Área da percela em hectares',{
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-      return ;
-    }
-
-
-    if (!label) {
-      toast.error('Localização geográfica deste pomar',{
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-      return ;
-    }
-
     if (!(sowingYear > 1900 && sowingYear <= new Date().getFullYear())) {
-      console.log('sowing year: ', sowingYear)
-      toast.error('Ano de plantio tem de ser válido!', {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-      return ;
-    }
-
-    if (
-        typeof trees === 'undefined' 
-        || typeof declaredArea === 'undefined'
-        || typeof plantedArea === 'undefined') {
-      console.log('trees', typeof trees)
-      console.log('declared', typeof declaredArea)
-      console.log('planted', typeof plantedArea)
-      console.log(typeof trees)
-      toast.error('Completa dados em falta!', {
+      toast.error('Ano de plantio tem de ser válido!',{
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         hideProgressBar: false,
@@ -191,30 +136,50 @@ const FarmlandRegister = () => {
     }
 
 
-    const normalizedFarmlandData = {
-      label,
-      interCrops,
-      declaredArea,
-      divisions: [
-        {
-          trees,
-          sowingYear,
-          plantedArea,
-          spacing: {
-            x: spacing?.x,
-            y: spacing?.y,
-          },
-          plantingTechniques: {
-            seedling: plantingTechniques.seedling,
-            grafting: plantingTechniques.seedling === 'enxertia' ? plantingTechniques.grafting : null
-          }
-        }
-      ],
+    if (!plantedArea || isNaN(plantedArea)) {
+      toast.error('Área plantada tem de ser válido',{
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+      return ;
+    }
+
+    if (!trees || isNaN(trees)) {
+      toast.error('Número de cajueiros tem de ser válido',{
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+      return ;
+    }
+
+
+   const normalizedDivisionData = {
+      trees,
+      sowingYear,
+      plantedArea,
+      spacing: {
+        x: spacing?.x,
+        y: spacing?.y,
+      },
+      plantingTechniques: {
+        seedling: plantingTechniques.seedling,
+        grafting: plantingTechniques.seedling === 'enxertia' ? plantingTechniques.grafting : null
+      },
       // sending the farmerId to be used as a query param in the URL (backend)
-      farmerId: farmer._id
+      farmlandId: farmland._id
     }
     // pass the farmerId as query param to be attached to the URL
-    dispatch(farmlandRegister(normalizedFarmlandData))
+    dispatch(farmlandDivisionRegister(normalizedDivisionData))
   }
 
   if (isLoading) {
@@ -248,107 +213,35 @@ const FarmlandRegister = () => {
     {/* End Farmer's Profile & Start Farmland Registration form */}
 
       <Box sx={{
-        display: "flex",
-        justifyContent: "center",
+        // display: "flex",
+        // justifyContent: "center",
         width: "100%",
       }}>
 
+        <Box sx={{
+          maxWidth: "500px",
+          height: "auto",
+          textAlign: "center",
+          m: "5px",
+          }}
+        >
+          <Stack direction="column" sx={{ padding: "10px 10px 5px 10px" }} gap={2}>
+            <Typography variant='body2'>
+              Pomar localizado: <span style={{ color: "rebeccapurple"}}>{`${farmland?.label}`}</span>
+            </Typography>
+
+            <Typography variant="body2">
+                Registar outra divisão deste pomar segundo o 
+                ano de plantio dos seus cajueiros.
+            </Typography>
+        
+          </Stack>
+          </Box>
+
+
         {/* Farmalnd form */}
-        <Box component="form" noValidate autoComplete='off' onSubmit={onSubmit}>
-          <Paper sx={{
-            maxWidth: "500px",
-            height: "auto",
-            textAlign: "center",
-            m: "5px",
-            }}  >
-            
-            {/* Farmland label and declared area */}
-            <Stack 
-              direction="row"  
-              sx={{ display: "flex", justifyContent: "space-between" }}
-               >
-                <Box component="div" sx={{  padding: "10px 10px 10px 10px" }}>
-                    <TextField
-                    sx={styledTextField}
-                    fullWidth
-                    label="Área declarada"
-                    id="fullWidth "
-                    value={farmlandData.declaredArea}
-                    name="declaredArea"
-                    type="number"
-                    placeholder="Área (hectares)"
-                    size="small"
-                    onChange={(event)=>{
-                      setFarmlandData((prevState)=>({
-                        ...prevState,
-                        declaredArea: event.target.value
-                      }));
-                    }}
-                    />
-                </Box>
-
-                <Box component="div" sx={{ padding: "10px 10px 10px 10px" }}>
-                <TextField
-                    sx={styledTextField}
-                    required
-                    fullWidth
-                    label="Localização geográfica "
-                    id="fullWidth"
-                    value={farmlandData.label}
-                    name="label"
-                    type="text"
-                    placeholder="Localização geográfica "
-                    size="small"
-                    onChange={(event)=>{
-                      setFarmlandData((prevState)=>({
-                        ...prevState,
-                        label: event.target.value
-                      }));
-                    }}
-                />
-                </Box>
-            </Stack>
-            
-            {/* Farmland interCrops */}
-            <Stack direction="row">
-              <Box component="div" sx={{ width: "100%", padding: "10px 10px 10px 10px" }}>
-                <Autocomplete
-                    multiple
-                    id="tags-outlined"
-                    options={interCropsList}
-                    getOptionLabel={(crop) => crop}
-                    defaultValue={[]}
-                    filterSelectedOptions
-                    onChange={(event, newCrops) => {
-                        setFarmlandData((prevState) =>({
-                          ...prevState,
-                          interCrops: newCrops,
-                        }))
-                      }}
-                    renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Culturas consorciadas"
-                        placeholder="Selecciona culturas"
-                        size="small"
-                        sx={styledTextField}
-                    />
-                    )}
-                    isOptionEqualToValue={(option, value) =>
-                      value === undefined || value === "" || option === value }
-                />
-              </Box>
-            </Stack>
-            </Paper>
-           
-            <Stack direction="row" sx={{ padding: "10px 10px 5px 10px" }}>
-              <Typography variant="body2">
-                  Registar divisões deste pomar segundo os 
-                  anos de plantio dos seus cajueiros.
-              </Typography>
-            </Stack>
-
-             {/* Start Division */}
+        <Box component="form" noValidate autoComplete='off' onSubmit={onSubmit} sx={{ mt: 5}}>
+           {/* Start Division */}
 
             <Paper
               sx={{
@@ -370,13 +263,13 @@ const FarmlandRegister = () => {
                       fullWidth
                       label="Ano de plantio"
                       id="fullWidth"
-                      value={farmlandData.sowingYear}
+                      value={divisionData.sowingYear}
                       name="sowingYear"
                       type="number"
                       placeholder="Ano de plantio"
                       size="small"
                       onChange={(event)=>{
-                        setFarmlandData((prevState)=>({
+                        setDivisionData((prevState)=>({
                           ...prevState,
                           sowingYear: event.target.value
                         }))
@@ -390,13 +283,13 @@ const FarmlandRegister = () => {
                       fullWidth
                       label="Número de cajueiros"
                       id="fullWidth"
-                      value={farmlandData.trees}
+                      value={divisionData.trees}
                       name="trees"
                       type="number"
                       placeholder="Número de cajueiros"
                       size="small"
                       onChange={(event)=>{
-                        setFarmlandData((prevState)=>({
+                        setDivisionData((prevState)=>({
                           ...prevState,
                           trees: event.target.value
                         }))
@@ -415,13 +308,13 @@ const FarmlandRegister = () => {
                       fullWidth
                       label="Área plantada"
                       id="fullWidth"
-                      value={farmlandData.plantedArea}
+                      value={divisionData.plantedArea}
                       name="plantedArea"
                       type="number"
                       placeholder="Área (hectares)"
                       size="small"
                       onChange={(event)=>{
-                        setFarmlandData((prevState)=>({
+                        setDivisionData((prevState)=>({
                           ...prevState,
                           plantedArea: event.target.value
                         }))
@@ -438,13 +331,13 @@ const FarmlandRegister = () => {
                         fullWidth
                         label="Compasso"
                         id="fullWidth"
-                        value={farmlandData?.spacing.x}
+                        value={divisionData?.spacing.x}
                         name="x"
                         type="number"
                         placeholder=""
                         size="small"
                         onChange={(event)=>{
-                          setFarmlandData((prevState)=>({
+                          setDivisionData((prevState)=>({
                             ...prevState,
                             spacing: {...prevState.spacing, x: event.target.value }
                           }))
@@ -458,13 +351,13 @@ const FarmlandRegister = () => {
                             fullWidth
                             label="Compasso"
                             id="fullWidth"
-                            value={farmlandData.spacing.y}
+                            value={divisionData.spacing.y}
                             name="y"
                             type="number"
                             placeholder=""
                             size="small"
                             onChange={(event)=>{
-                              setFarmlandData((prevState)=>({
+                              setDivisionData((prevState)=>({
                                 ...prevState,
                                     spacing: {...prevState.spacing, y: event.target.value }
                               }))
@@ -488,7 +381,7 @@ const FarmlandRegister = () => {
                       id="combo-box-demo"
                       options={plantingTechniquesList}
                       onChange={(event, newSeedling) => {
-                        setFarmlandData((prevState)=>({
+                        setDivisionData((prevState)=>({
                           ...prevState,
                           plantingTechniques: { ...prevState.plantingTechniques, seedling: newSeedling }
                         }));
@@ -501,7 +394,7 @@ const FarmlandRegister = () => {
                         <TextField
                           sx={styledTextField}
                           name="seedling"
-                          value={farmlandData?.plantingTechniques.seedling}
+                          value={divisionData?.plantingTechniques.seedling}
                           {...params}
                           label="Tipo de plantios"
                         />
@@ -510,7 +403,7 @@ const FarmlandRegister = () => {
                   </Box>
                 </Stack>
               {
-                farmlandData.plantingTechniques.seedling === 'enxertia' 
+                divisionData.plantingTechniques.seedling === 'enxertia' 
                 ? (
             
                 <Box component="div" sx={{ width: "100%", padding: "10px 10px 10px 10px" }}>
@@ -522,7 +415,7 @@ const FarmlandRegister = () => {
                       defaultValue={[]}
                       filterSelectedOptions
                       onChange={(event, newClone) => {
-                        setFarmlandData((prevState) =>({
+                        setDivisionData((prevState) =>({
                           ...prevState,
                           plantingTechniques: { ...prevState.plantingTechniques, grafting: newClone },
                         }))
@@ -548,22 +441,22 @@ const FarmlandRegister = () => {
             maxWidth: "500px",
             height: "auto",
             textAlign: "center",
-            margin: "10px 5px 5px 5px",
+            margin: "20px 5px 5px 5px",
             pt: "5px",
             }}
             >
               <BootstrapButton sx={{ width: "100%"}} variant="contained" type="submit" startIcon={<Save />}>
-                Salvar Pomar
+                Salvar Divisão 
               </BootstrapButton>
           </Paper>
         </Box>
          {/* End Farmland registration form */}
       </Box>
             {/* Modal for the successfully farmland registration */}
-            <FarmlandRegisterModal open={open} setOpen={setOpen} farmer={farmer} farmland={farmland} />
+            <FarmlandRegisterModal open={open} setOpen={setOpen} farmer={farmer} farmland={farmland} farmlandDivision={farmlandDivision} />
       <Footer />
     </Box>
   )
 }
 
-export default FarmlandRegister
+export default FarmlandDivisionRegister

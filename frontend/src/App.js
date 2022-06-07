@@ -18,6 +18,7 @@ import FarmersList from "./pages/farmers/FarmersList";
 import FarmerExitRegister from "./pages/farmers/FarmerExitRegister";
 import FarmlandsList from "./pages/farmlands/FarmlandsList";
 import NotFound from "./pages/NotFound";
+import FarmlandDivisionRegister from "./pages/farmlands/FarmlandDivisionRegister";
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Router>
             <Routes>
+              <Route path="/divisions" element={<FarmlandDivisionRegister />} />
+              <Route path="/farmlands" element={<FarmlandRegister />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<UserRegister />} />
 
@@ -33,11 +36,12 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="farmers" element={<FarmerRegister />} />
               <Route path="farmers/success" element={<FarmerExitRegister />} />
-              <Route path="farmlands" element={<FarmlandRegister />} />
+
               <Route path="home" element={<Home />} />
               <Route path="farmers-list" element={<FarmersList />} />
               <Route path="farmlands-list" element={<FarmlandsList />} />
               {/* <Route path="monitorings" element={<Monitorings />} /> */}
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>

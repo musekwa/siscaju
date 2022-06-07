@@ -38,12 +38,12 @@ const styledTextField = {
 
 
 function Login() {
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
 
-  const { email, password } = formData;
+  const { email, password } = userData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,12 +68,12 @@ function Login() {
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value.trim(),
-    }));
-  };
+  // const onChange = (e) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value.trim(),
+  //   }));
+  // };
 
   // validating email
   const validateEmail = (email) => {
@@ -154,7 +154,12 @@ function Login() {
                 placeholder="Email"
                 size="small"
                 value={email}
-                onChange={onChange}
+                onChange={(event)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    email: event.target.value.toLowerCase()
+                  }))
+                }}
               />
             </div>
             <div style={{ padding: "15px 40px 20px 40px" }}>
@@ -169,7 +174,12 @@ function Login() {
                 placeholder="Password"
                 size="small"
                 value={password}
-                onChange={onChange}
+                onChange={(event)=>{
+                  setUserData((prevState)=>({
+                    ...prevState,
+                    password: event.target.value
+                  }))
+                }}
               />
             </div>
             <div

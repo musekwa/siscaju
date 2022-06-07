@@ -260,7 +260,7 @@ function UserRegister() {
               onChange={(event)=>{
                 setUserData((prevState)=>({
                   ...prevState,
-                  email: event.target.value,
+                  email: event.target.value.toLowerCase(),
                 }))
               }}
             />

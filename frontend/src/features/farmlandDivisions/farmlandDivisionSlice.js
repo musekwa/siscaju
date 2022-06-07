@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import farmlandService from "./farmlandService";
+import farmlandDivisionService from "./farmlandDivisionService";
 
 // get user from localsStorage
 // const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
-  farmland: null,
+  farmlandDivision: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -13,11 +13,11 @@ const initialState = {
 };
 
 // register a farmland
-export const farmlandRegister = createAsyncThunk(
-  "farmland/register",
-  async (farmland, thunkAPI) => {
+export const farmlandDivisionRegister = createAsyncThunk(
+  "farmlandDivision/register",
+  async (farmlandDivision, thunkAPI) => {
     try {
-      return await farmlandService.farmlandRegister(farmland);
+      return await farmlandDivisionService.farmlandDivisionRegister(farmlandDivision);
     } catch (error) {
       const message =
         (error.response &&
@@ -46,8 +46,8 @@ export const farmlandRegister = createAsyncThunk(
 //   await authService.logout();
 // });
 
-export const farmlandSlice = createSlice({
-  name: "farmland",
+export const farmlandDivisionSlice = createSlice({
+  name: "farmlandDivision",
   initialState,
   reducers: {
     reset: (state) => {
@@ -59,18 +59,18 @@ export const farmlandSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(farmlandRegister.pending, (state) => {
+      .addCase(farmlandDivisionRegister.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(farmlandRegister.fulfilled, (state, action) => {
+      .addCase(farmlandDivisionRegister.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.farmland = action.payload;
+        state.farmlandDivision = action.payload;
       })
-      .addCase(farmlandRegister.rejected, (state, action) => {
+      .addCase(farmlandDivisionRegister.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
-        state.farmland = null;
+        state.farmlandDivision = null;
         state.message = action.payload;
       });
     //   .addCase(login.pending, (state) => {
@@ -93,5 +93,5 @@ export const farmlandSlice = createSlice({
   },
 });
 
-export const { reset } = farmlandSlice.actions;
-export default farmlandSlice.reducer;
+export const { reset } = farmlandDivisionSlice.actions;
+export default farmlandDivisionSlice.reducer;

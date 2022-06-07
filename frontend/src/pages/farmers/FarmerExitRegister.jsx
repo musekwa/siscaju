@@ -1,5 +1,5 @@
 
-import { Box, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const FarmerExitRegister = () => {
     if (!farmer) {
       navigate('/')
     }
-  }, [farmer])
+  }, [farmer, navigate])
 
   return (
     <>
@@ -29,7 +29,7 @@ const FarmerExitRegister = () => {
         height: "30vh",
       }}>
       <Box  sx={{ border: "2px solid rebeccapurple", width: "250px",  }}>
-        { farmer && <Typography variant='body1'>Foi registad{ (farmer.gender === 'M') ? `o o produtor` : `a a produtora` }<Box sx={{ width: "100%"}}> {`${farmer.fullname}`} </Box></Typography> }
+        { farmer && <Typography variant='body1'>Foi registad{ (farmer.gender === 'M') ? `o o produtor` : `a a produtora` }<Box component="span" sx={{ color: "rebeccapurple", width: "100%"}}> {`${farmer.fullname}`} </Box></Typography> }
       </Box>
       </Box>
       <Box sx={{ height: "30vh" }}>
@@ -52,7 +52,6 @@ const FarmerExitRegister = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
           height: "30vh" }}>
           <Link to={"/farmers"}>
             <ArrowBack fontSize='large'  sx={{color: "rebeccapurple"}} />

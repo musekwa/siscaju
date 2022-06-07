@@ -2,6 +2,8 @@ import _ from "lodash";
 import mongoose from "mongoose";
 import Farmer from "../models/farmer.model.js";
 import Farmland from "../models/farmland.model.js";
+import UserPerformance from "../models/userPerformance.model.js";
+import DistrictPerformance from '../models/districtPerformance.model.js'
 import {
   getFarmlandsByFarmerIdService,
   addFarmlandService,
@@ -25,22 +27,61 @@ const addFarmland = asyncHandler (async (req, res) => {
     user,
   } = req;
 
-  if (!farmerId || !body) {
+  // create a new farmland document
+  let newFarmland = new Farmland(body);
+
+  // find the farmland's owner
+  let foundFarmer = await Farmer.findById(ObjectId(farmerId));
+
+  if (!foundFarmer) {
     res.status(400);
-    throw new Error(
-      "Deve indicar ou o parametro 'farmerId' ou dados do pomar!"
-    );
+    throw new Error("Nao pode adicionar pomar de um produtor que nao existe.");
   }
-  // try {
-    let savedFarmland = await addFarmlandService(user.id, farmerId, body);
-    return res.status(201).json({
-      status: "OK",
-      data: { farmer: savedFarmland.farmer, farmland: savedFarmland.farmland },
+
+  // reference the farmland to their owner
+  foundFarmer.farmlands.push(newFarmland);
+
+  // save changes
+  let updatedFarmer = await foundFarmer.save();
+
+  // reference the farmer to their farmland
+  newFarmland.farmer = updatedFarmer;
+
+  // save the farmland
+  let updatedFarmland = await newFarmland.save();
+
+  // -----------------------------------------------------------
+
+  // save performance by user
+  let userPerformance = await UserPerformance.findOne({ user: user?._id });
+
+  if (!userPerformance) {
+    let newUserPerformace = new UserPerformance({
+      user: ObjectId(user?._id),
+      farmlands: new Array(ObjectId(farmerId)),
     });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
+    await newUserPerformace.save();
+  } else {
+    userPerformance.farmlands.push(ObjectId(updatedFarmland._id));
+    await userPerformance.save();
+  }
+
+  // -----------------------------------------------------
+  // save performance by district
+  let districtPerformance = await DistrictPerformance.findOne({ district: user?.address.district });
+
+  if (!districtPerformance) {
+    let newDistrictPerformace = new DistrictPerformance({
+      district: user?.address.district,
+      farmlands: new Array(ObjectId(updatedFarmland._id)),
+    });
+    await newDistrictPerformace.save();
+  } else {
+    districtPerformance.farmlands.push(ObjectId(updatedFarmland._id));
+    await districtPerformance.save();
+  }
+
+  return res.status(201).json(updatedFarmland);
 });
 
 //@desc
@@ -52,7 +93,6 @@ const getFarmlands = asyncHandler (async (req, res) => {
     user,
   } = req;
 
-  // try {
     let farmlands;
     if (!farmerId && !farmlandId) {
       // get all registered farmlands
@@ -72,10 +112,6 @@ const getFarmlands = asyncHandler (async (req, res) => {
       status: "OK",
       data: farmlands,
     });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
 });
 
 //@desc
@@ -85,13 +121,8 @@ const getFarmlandById = asyncHandler (async (req, res) => {
   const {
     params: { farmlandId },
   } = req;
-  // try {
     let foundFarmland = await getFarmlandByFarmlandIdService(farmlandId);
     return res.status(200).json({ status: "OK", data: foundFarmland });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
 });
 
 //@desc
@@ -108,7 +139,6 @@ const updateFarmland = asyncHandler (async (req, res) => {
     throw new Error("Deve especificar 'farmerId' e 'farmlandId'");
   }
 
-  // try {
     let updatedFarmland = await updateFarmlandService(farmlandId, body);
     if (!updatedFarmland) {
       res.status(404);
@@ -116,10 +146,6 @@ const updateFarmland = asyncHandler (async (req, res) => {
     }
 
     return res.status(200).json({ status: "OK", data: updatedFarmland });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
 });
 
 //@desc
@@ -136,15 +162,11 @@ const deleteFarmland = asyncHandler (async (req, res) => {
     throw new Error("Deve especificar 'farmerId' e 'farmlandId'");
   }
 
-  // try {
     let deletionResult = await deleteFarmlandService(farmerId, farmlandId);
     return res
       .status(204)
       .json({ status: "OK", message: "Pomar eliminado", data: deletionResult });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
+
 });
 
 export {

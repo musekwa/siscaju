@@ -3,18 +3,20 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/farmlands";
 // const LOGIN_URL = "http://localhost:8080/login";
 
-const user = JSON.parse(localStorage.getItem("user"));
+let user = JSON.parse(localStorage.getItem("user"));
 
 // register user
 const farmlandRegister = async (farmlandData) => {
-  // console.log('farmer data: ', farmerData)
+
+  user = JSON.parse(localStorage.getItem("user"));
+
   try {
-    const response = await axios.post(API_URL, farmlandData, {
+    // URL pattern: http://localhost:8080/farmlands?farmerId=43rr3h85tds6u8
+    const response = await axios.post(API_URL + `?farmerId=${farmlandData.farmerId}`, farmlandData, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    // console.log('response: ', response)
     return response.data;
   } catch (error) {
     throw new Error("O registo de pomar falhou!");

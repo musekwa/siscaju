@@ -24,22 +24,17 @@ const addDivision = asyncHandler (async (req, res) => {
     params: { farmlandId },
   } = req;
 
-  // try {
     if (!farmlandId) {
       res.status(400);
       throw new Error("Deve especificar o 'farmlandId' do pomar");
     }
 
-    let farmland = await addDivisionService(farmlandId, body);
-    return res.status(200).json({
-      status: "OK",
-      data: farmland,
-    });
-  // } catch (error) {
-  //   res.status(error?.status || 500);
-  //   throw new Error(error.message);
-  // }
-});
+    let farmland = await await Farmland.findById(ObjectId(farmlandId));
+    farmland.divisions.push(body)
+    await farmland.save()
+    return res.status(200).json(farmland);
+})
+
 
 //@desc 
 //@route 

@@ -12,6 +12,20 @@ const farmersSchema = mongoose.Schema(
         message: "{VALUE} não é um genero autorizado",
       },
     },
+    category: {
+      type: String,
+      enum: {
+        values: [
+          "Subcategoria não definida",
+          "Produtor familiar",
+          "Produtor comercial",
+        ],
+        message: "{VALUE} nao e uma categoria de produtores",
+      },
+      default: function () {
+        return "Subcategoria não definida";
+      },
+    },
     birthDate: {
       type: Date,
       required: true,
@@ -32,41 +46,9 @@ const farmersSchema = mongoose.Schema(
     address: {
       province: {
         type: String,
-        // enum: {
-        //   values: ["Nampula"],
-        //   message: "Por enquanto, {VALUE} não é uma provincia autorizada!",
-        // },
       },
       district: {
         type: String,
-        // enum: {
-        //   values: [
-        //     "Angoche",
-        //     "Eráti",
-        //     "Ilha de Moçambique",
-        //     "Lalaua",
-        //     "Larde",
-        //     "Liúpo",
-        //     "Malema",
-        //     "Meconta",
-        //     "Mecubúri",
-        //     "Memba",
-        //     "Mogincual",
-        //     "Mogovolas",
-        //     "Moma",
-        //     "Monapo",
-        //     "Mossuril",
-        //     "Muecate",
-        //     "Murrupula",
-        //     "Nacala-a-Velha",
-        //     "Nacala-Porto",
-        //     "Nacarôa",
-        //     "Nampula",
-        //     "Rapale",
-        //     "Ribáuè",
-        //   ],
-        //   message: "Por enquanto, {VALUE} não é uma distrito autorizado!",
-        // },
       },
       territory: { type: String, trim: true },
       village: { type: String, trim: true },
@@ -76,7 +58,7 @@ const farmersSchema = mongoose.Schema(
       trim: true,
       validate: {
         validator: function (v) {
-          return /\d{9}/.test(v) || v === '';
+          return /\d{9}/.test(v) || v === "";
         },
         message: (props) =>
           `${props.value} não é um numero de telefone valido!`,

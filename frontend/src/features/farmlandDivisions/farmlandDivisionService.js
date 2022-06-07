@@ -1,26 +1,29 @@
-
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/farmers";
+const API_URL = "http://localhost:8080/farmlands";
 // const LOGIN_URL = "http://localhost:8080/login";
 
 let user = JSON.parse(localStorage.getItem("user"));
 
-// register user
-const farmerRegister = async (farmerData) => {
-  
-    user = JSON.parse(localStorage.getItem("user"));
-    try {
-        const response = await axios.post(API_URL, farmerData, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-        return response.data;
-    }
-    catch(error) {
-        throw new Error("O registo de produtor falhou!")
-    }
+// register farmland division
+const farmlandDivisionRegister = async (divisionData) => {
+  user = JSON.parse(localStorage.getItem("user"));
+
+  try {
+    // URL pattern: http://localhost:8080/farmlands/:farmelandId/divisions
+    const response = await axios.post(
+      API_URL + `/${divisionData.farmlandId}/divisions`,
+      divisionData,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("O registo da divisão falhou!");
+  }
 };
 
 // login user
@@ -52,10 +55,10 @@ const farmerRegister = async (farmerData) => {
 //   localStorage.removeItem("user");
 // };
 
-const farmerService = {
-  farmerRegister,
-//   login,
-//   logout,
+const farmlandDivisionService = {
+  farmlandDivisionRegister,
+  //   login,
+  //   logout,
 };
 
-export default farmerService;
+export default farmlandDivisionService;

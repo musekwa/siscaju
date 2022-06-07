@@ -24,9 +24,8 @@ const divisionsSchema = mongoose.Schema(
         }
       },
     },
-    plantingTechniques: [String],
+    // plantingTechniques: [String],
     seedlingTypes: [String],
-    interCrops: [String],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -43,3 +42,6 @@ const divisionsSchema = mongoose.Schema(
 const Division = mongoose.model("Division", divisionsSchema);
 
 export default Division;
+
+
+

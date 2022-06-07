@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
 
 const districtPerformancesSchema = mongoose.Schema({
-  district: { type: String, required: true },
+  district: { type: String },
   farmers: [ObjectId],
   farmlands: [ObjectId],
   monitorings: [
