@@ -8,82 +8,58 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../components/Navbar';
-import { Box } from '@mui/material';
+import { Box, Fab, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
+import { Add } from '@mui/icons-material';
+import { farmers} from '../../fakeData/farmers.js'
+import { useNavigate } from 'react-router-dom';
 
 const FarmersList = ()=> {
 
     const [farmersList, setFarmersList] = useState([])
 
+    const navigate = useNavigate()
+
+    const onAddFarmer = ()=>{
+        navigate('/farmers')
+    }
+
   return (
     <Box>
         <Navbar pageDescription={"Produtores"} />
+        <Tooltip onClick={onAddFarmer} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
+            <Fab  aria-label="add" color="rebecca">
+                <Add fontSize='large' color="white" />
+            </Fab>
+        </Tooltip>
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListItem alignItems="flex-start">
+            {
+                farmers.map((farmer, key)=>(
+            <Box key={key.toString()}>
+            <ListItem alignItems="flex-start" >
                 <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
                 <ListItemText
-                primary="Brunch this weekend?"
-                secondary={
-                    <Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        Ali Connors
-                    </Typography>
-                    {" — I'll be in your neighborhood doing errands this…"}
-                    </Fragment>
-                }
+                    primary={`${farmer?.fullname} (${farmer.category ? farmer.category : 'desconhecida'})` }
+                    secondary={
+                        <Fragment>
+                        <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                        >
+                            Ali Connors
+                        </Typography>
+                        {" — I'll be in your neighborhood doing errands this…"}
+                        </Fragment>
+                    }
                 />
             </ListItem>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Summer BBQ"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        to Scott, Alex, Jennifer
-                    </Typography>
-                    {" — Wish I could come, but I'm out of town this…"}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Oui Oui"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        Sandra Adams
-                    </Typography>
-                    {' — Do you have Paris recommendations? Have you ever…'}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
+            </Box>))
+            }
         </List>
         <Footer />
     </Box>

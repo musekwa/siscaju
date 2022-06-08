@@ -2,6 +2,8 @@ import {
   AppBar,
   Avatar,
   Box,
+  Grid,
+  InputBase,
   Menu,
   MenuItem,
   styled,
@@ -14,14 +16,20 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "space-between",
   height: "100%",
+  
   // backgroundColor: "rebeccapurple",
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
+  // [theme.breakpoints.up("md")]: {
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  // },
 }));
+
+//  const StyledToolbar = styled(Toolbar)({
+//      display: "flex",
+//      justifyContent: "space-between"
+//  }
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -46,7 +54,21 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Navbar = ({ pageDescription, user }) => {
+
+const Search = styled("div")(({theme})=>({
+    backgroundColor: "white",
+    padding: "0 10px",
+    width: "80%",
+    marginLeft: "25px",
+    marginRight: "10px",
+    borderRadius: theme.shape.borderRadius,
+    [theme.breakpoints.up('md')]: {
+      width: "40%",
+    },
+    
+}))
+
+const Navbar = ({ pageDescription, user, flag }) => {
 
   const navigate = useNavigate()
 
@@ -57,9 +79,6 @@ const Navbar = ({ pageDescription, user }) => {
 
     const [open, setOpen] = useState(false)
 
-    // useEffect(()=>{
-
-    // }, [navigate])
 
   return (
     <Box  sx={{zIndex: 10, position: "sticky", top: 0, right: 0, left: 0, }}>
@@ -68,16 +87,23 @@ const Navbar = ({ pageDescription, user }) => {
         <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
           SisCaju
         </Typography>
-        <Box sx={{ width: "100%", textAlign: "center",}}>
-        <Typography
-          variant="body1"
-          fontWeight={100}
-          component="p"
+
+
+        <Box sx={{width: "100%", textAlign: "center" }}>
+        
+          <Search>
+            <InputBase placeholder="Procurar produtor..." />
+          </Search> 
          
-          sx={{ p: "2px 0px 2px 0px",  }}
-        >
-          {pageDescription}
-        </Typography>
+          {/* <Typography
+            variant="body1"
+            fontWeight={100}
+            component="p"
+          
+            sx={{ p: "2px 0px 2px 0px",   }}
+          >
+            {pageDescription}
+          </Typography> */}
         </Box>
         <Tooltip title={`${user?.fullname.split(' ')[0]}`}>
         <Icons onClick={(e) => setOpen(true)}>

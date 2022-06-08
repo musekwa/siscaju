@@ -49,7 +49,7 @@ const register = asyncHandler(async (req, res) => {
   const user = new User(req.body);
 
   let savedUser = await user.save();
-
+  
   return res
     .status(201)
     .type("application/json")

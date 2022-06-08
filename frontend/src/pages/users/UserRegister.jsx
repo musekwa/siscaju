@@ -78,11 +78,12 @@ function UserRegister() {
 
   useEffect(() => {
     if (isError) {
+      // let errorMessage = message ? message : 'O registo falhou'
       toast.error(message, {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
-    } else if (isSuccess && user.fullname) {
+    } else if (isSuccess && user?.fullname) {
         toast.success(`Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`, {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,

@@ -91,11 +91,11 @@ function FarmerRegister() {
         position: toast.POSITION.TOP_CENTER,
       });
     } else if (isSuccess) {
-      // toast.success(`Produtor ${farmer.fullname.split(' ')[0]} registado com sucesso!`, {
-      //   autoClose: 5000,
-      //   hideProgressBar: true,
-      //   position: toast.POSITION.TOP_CENTER,
-      // });
+      toast.success(`Foi registado com sucesso o Produtor ${farmer.fullname.split(' ')[0]}!`, {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+      });
       // navigate("/farmers/success");
       setOpen(true)
       setFarmerData({
