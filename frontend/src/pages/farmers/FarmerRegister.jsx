@@ -360,11 +360,11 @@ function FarmerRegister() {
               disablePortal
               id="combo-box-demo"
               value={birthPlace.province}
-              options={provinces}
+              options={provinces || ['']}
               onChange={(event, newProvince) => {
                 setFarmerData((prevState)=>({
                   ...prevState,
-                  birthPlace: { ...prevState.birthPlace, province: newProvince }
+                  birthPlace: { ...prevState?.birthPlace, province: newProvince }
                 }))
               }}
               inputValue={inputBirthProvince}
@@ -393,14 +393,14 @@ function FarmerRegister() {
               size="small"
               disablePortal
               id="combo-box-demo"
-              value={birthPlace.district}
+              value={birthPlace?.district}
               options={
-                birthPlace.province
+                birthPlace?.province
                   ? districts[birthPlace.province]
                   : ["Primeiro, selecciona a província!"]
               }
               onChange={(event, newDistrict) => {
-                if (!Array.isArray(districts[birthPlace.province])) {
+                if (!Array.isArray(districts[birthPlace?.province])) {
                     toast.error("Primeiro, selecciona a província!", {
                       autoClose: 5000,
                       position: toast.POSITION.TOP_RIGHT,
@@ -447,14 +447,14 @@ function FarmerRegister() {
               size="small"
               disablePortal
               id="combo-box-demo"
-              value={birthPlace.territory}
+              value={birthPlace?.territory}
               options={
                 birthPlace.district
-                  ? adminPosts[birthPlace.district]
+                  ? adminPosts[birthPlace?.district]
                   : ["Primeiro, selecciona o distrito"]
               }
               onChange={(event, newTerritory) => {
-                if (!Array.isArray(adminPosts[birthPlace.district]) ) {
+                if (!Array.isArray(adminPosts[birthPlace?.district]) ) {
                     toast.error("Primeiro, selecciona a província!", {
                       autoClose: 5000,
                       position: toast.POSITION.TOP_RIGHT,

@@ -41,7 +41,7 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
                   sx={{ textAlign: "center"  }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
-                  >Foi registado o pomar de <span style={{ color: "rebeccapurple"}}> {`${farmer?.fullname}`}</span> localizado
+                  >Pomar de <Box component="span" style={{ color: "rebeccapurple", width: "100%"}}> {`${farmer?.fullname}`}</Box> localizado
                  <span style={{ color: "rebeccapurple"}}> {`${farmland?.label}`}</span>!
                 </Typography> 
               }
@@ -51,7 +51,7 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
                   sx={{ textAlign: "center", }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
-                  >Foi registada uma divisão do pomar de <span style={{ color: "rebeccapurple"}}> {`${farmer?.fullname}`}</span> localizado
+                  >Pomar de <Box component="span" style={{ color: "rebeccapurple", width: "100%", }}> {`${farmer?.fullname}`}</Box> localizado
                  <span style={{ color: "rebeccapurple"}}> {`${farmland?.label}`}</span>!
                 </Typography> 
               }

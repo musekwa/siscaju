@@ -373,12 +373,12 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                options={provinces}
-                value={address.province}
+                options={provinces || ['']}
+                value={address?.province}
                 onChange={(event, newProvince)=>{
                   setUserData((prevState)=>({
                     ...prevState,
-                    address: { ...prevState.address, province: newProvince }
+                    address: { ...prevState?.address, province: newProvince }
                   }))
                 }}
                 inputValue={inputProvince}
@@ -407,14 +407,14 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                value={address.district}
+                value={address?.district}
                 options={
-                  address.province
-                    ? districts[address.province]
+                  address?.province
+                    ? districts[address?.province]
                     : ["Primeiro, selecciona a província"]
                 }
                 onChange={(event, newDistrict) => {
-                if (!Array.isArray(districts[address.province])) {
+                if (!Array.isArray(districts[address?.province])) {
                   toast.error('Primeiro, seleciona a província!', {
                     autoClose: 5000,
                     position: toast.POSITION.TOP_RIGHT,
@@ -426,13 +426,13 @@ function UserRegister() {
                   })
                   setUserData((prevState)=>({
                     ...prevState,
-                    address: { ...prevState.address, district: "" }
+                    address: { ...prevState?.address, district: "" }
                   }))
                   return ;
                 }
                   setUserData((prevState)=>({
                     ...prevState,
-                    address: { ...prevState.address, district: newDistrict }
+                    address: { ...prevState?.address, district: newDistrict }
                   }))
                 }}
                 inputValue={inputDistrict}
@@ -465,14 +465,14 @@ function UserRegister() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                value={address.territory}
+                value={address?.territory}
                 options={
-                  address.district
-                    ? adminPosts[address.district]
+                  address?.district
+                    ? adminPosts[address?.district]
                     : ["Primeiro, selecciona o distrito"]
                 }
                 onChange={(event, newTerritory) => {
-                  if (!Array.isArray(adminPosts[address.district])) {
+                  if (!Array.isArray(adminPosts[address?.district])) {
                     toast.error('Primeiro, seleciona o distrito!', {
                       autoClose: 5000,
                       position: toast.POSITION.TOP_RIGHT,

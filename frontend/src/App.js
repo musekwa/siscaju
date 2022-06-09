@@ -27,15 +27,23 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Router>
             <Routes>
+              {/* User Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/users" element={<UserRegister />} />
+
+              {/* Farmer Routes */}
+              <Route path="farmers" element={<FarmerRegister />} />
+
+              {/* Farmland Routes */}
+
+              {/* Monitoring Routes */}
               <Route path="/flist" element={<FarmersList />} />
               <Route path="/divisions" element={<FarmlandDivisionRegister />} />
               <Route path="/farmlands" element={<FarmlandRegister />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<UserRegister />} />
 
-              {/**  Parent Route */}
+              {/**  Dashboard */}
               <Route path="/" element={<Dashboard />} />
-              <Route path="farmers" element={<FarmerRegister />} />
+
               <Route path="farmers/success" element={<FarmerExitRegister />} />
 
               <Route path="home" element={<Home />} />

@@ -43,7 +43,7 @@ const FarmerRegisterModal = ({ open, setOpen,  farmer }) => {
                   sx={{ textAlign: "center", width: "250px", mt: 3,  }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
-                  >Foi registad{ (farmer?.gender === 'M') ? `o o produtor` : `a a produtora` }
+                  >{ (farmer?.gender === 'M') ? `Produtor de caju:` : `Produtora de caju:` }
                       <Box 
                         component="span" 
                         sx={{ color: "rebeccapurple", width: "100%",  display: "block"}}
