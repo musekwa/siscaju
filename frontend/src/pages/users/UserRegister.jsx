@@ -188,8 +188,6 @@ function UserRegister() {
     const normalizedUserData = {
       ...userData,
     };
-
-    console.log('user data: ', userData)
     
     dispatch(register(userData));
   };

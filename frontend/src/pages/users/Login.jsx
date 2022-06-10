@@ -205,7 +205,7 @@ function Login() {
                     <br /> password
                   </Typography>
                 </Link>
-                <Link to={"/users"} style={{ textDecoration: "none" }}>
+                <Link to={"/signup"} style={{ textDecoration: "none" }}>
                   <Typography variant="body2" sx={{ color: "rebeccapurple" }}>
                     Criar <br />
                     nova conta

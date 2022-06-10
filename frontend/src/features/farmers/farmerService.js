@@ -7,7 +7,7 @@ const API_URL = "http://localhost:8080/farmers";
 let user = JSON.parse(localStorage.getItem("user"));
 
 // register user
-const farmerRegister = async (farmerData) => {
+const addFarmer = async (farmerData) => {
   
     user = JSON.parse(localStorage.getItem("user"));
     try {
@@ -21,6 +21,21 @@ const farmerRegister = async (farmerData) => {
     catch(error) {
         throw new Error("O registo de produtor falhou!")
     }
+};
+
+
+const getFarmers = async () => {
+  user = JSON.parse(localStorage.getItem("user"));
+  try {
+    const response = await axios.post(API_URL, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("A extracção de produtores falhou!");
+  }
 };
 
 // login user
@@ -53,7 +68,9 @@ const farmerRegister = async (farmerData) => {
 // };
 
 const farmerService = {
-  farmerRegister,
+  // farmerRegister,
+  addFarmer,
+  getFarmers,
 //   login,
 //   logout,
 };

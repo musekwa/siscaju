@@ -12,12 +12,31 @@ const initialState = {
   message: "",
 };
 
-// register user
-export const farmerRegister = createAsyncThunk(
+// register farmer
+export const addFarmer = createAsyncThunk(
   "farmer/register",
   async (farmer, thunkAPI) => {
     try {
-      return await farmerService.farmerRegister(farmer);
+      return await farmerService.addFarmer(farmer);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
+// get all farmers
+export const getFarmers = createAsyncThunk(
+  "farmers/list",
+  async (farmer, thunkAPI) => {
+    try {
+      return await farmerService.getFarmers();
     } catch (error) {
       const message =
         (error.response &&
@@ -59,20 +78,20 @@ export const farmerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(farmerRegister.pending, (state) => {
+      .addCase(addFarmer.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(farmerRegister.fulfilled, (state, action) => {
+      .addCase(addFarmer.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.farmer = action.payload;
       })
-      .addCase(farmerRegister.rejected, (state, action) => {
+      .addCase(addFarmer.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.farmer = null;
         state.message = action.payload;
-      })
+      });
     //   .addCase(login.pending, (state) => {
     //     state.isLoading = true;
     //   })

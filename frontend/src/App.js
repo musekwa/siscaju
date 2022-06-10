@@ -1,15 +1,9 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Routes, Route, } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/users/Login";
 import UserRegister from "./pages/users/UserRegister";
-import { ThemeProvider } from "@mui/material"
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { outerTheme } from "./outerTheme";
-// import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import FarmerRegister from './pages/farmers/FarmerRegister'
 import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
@@ -19,45 +13,58 @@ import FarmerExitRegister from "./pages/farmers/FarmerExitRegister";
 import FarmlandsList from "./pages/farmlands/FarmlandsList";
 import NotFound from "./pages/NotFound";
 import FarmlandDivisionRegister from "./pages/farmlands/FarmlandDivisionRegister";
+import { useSelector } from "react-redux";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+
+  // const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
   return (
-    <div className="container">
-      <ThemeProvider theme={outerTheme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Router>
-            <Routes>
-              {/* User Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/users" element={<UserRegister />} />
+    <Routes>
+      {/* User Routes */}
+      <Route path="/signin" element={<Login />} />
+      <Route path="/signup" element={<UserRegister />} />
 
-              {/* Farmer Routes */}
-              <Route path="farmers" element={<FarmerRegister />} />
+      {/**  Dashboard */}
+      <Route element={<ProtectedRoute user={user} />}>
+        <Route path="/" element={<Dashboard user={user} />} />
+        <Route path="/farmers" element={<FarmerRegister user={user} />} />
+        <Route path="/farmlands" element={<FarmlandRegister user={user} />} />
+        <Route path="/divisions" element={<FarmlandDivisionRegister user={user} />} />
+        <Route path="/farmers-list" element={<FarmersList />} />
+        <Route path="farmlands-list" element={<FarmlandsList />} />
+      </Route>
 
-              {/* Farmland Routes */}
+      {/* <Route
+        path="/"
+        element={
+          <ProtectedRoute user={user}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      /> */}
 
-              {/* Monitoring Routes */}
-              <Route path="/flist" element={<FarmersList />} />
-              <Route path="/divisions" element={<FarmlandDivisionRegister />} />
-              <Route path="/farmlands" element={<FarmlandRegister />} />
+      {/* Farmer Routes */}
+      {/* <Route path="farmers" element={<FarmerRegister />} /> */}
 
-              {/**  Dashboard */}
-              <Route path="/" element={<Dashboard />} />
+      {/* Farmland Routes */}
 
-              <Route path="farmers/success" element={<FarmerExitRegister />} />
+      {/* Monitoring Routes */}
+      {/* <Route path="/flist" element={<FarmersList />} /> */}
+      {/* <Route path="/divisions" element={<FarmlandDivisionRegister />} /> */}
+      {/* <Route path="/farmlands" element={<FarmlandRegister />} /> */}
 
-              <Route path="home" element={<Home />} />
+      {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}
 
-              <Route path="farmlands-list" element={<FarmlandsList />} />
-              {/* <Route path="monitorings" element={<Monitorings />} /> */}
+      {/* <Route path="home" element={<Home />} /> */}
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
-        </LocalizationProvider>
-        <ToastContainer />
-      </ThemeProvider>
-    </div>
+      {/* <Route path="farmlands-list" element={<FarmlandsList />} /> */}
+      {/* <Route path="monitorings" element={<Monitorings />} /> */}
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

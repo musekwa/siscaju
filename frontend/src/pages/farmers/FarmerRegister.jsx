@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { farmerRegister, reset } from "../../features/farmers/farmerSlice";
+import { addFarmer, reset } from "../../features/farmers/farmerSlice";
 import Spinner from "../../components/Spinner";
 import { provinces } from "../../app/provinces";
 import { genders } from "../../app/genders";
@@ -38,7 +38,7 @@ const styledTextField = {
 
 
 
-function FarmerRegister() {
+function FarmerRegister({ user }) {
 
   let [farmerData, setFarmerData] = useState({
     fullname: '',
@@ -71,7 +71,7 @@ function FarmerRegister() {
   // get user's state from redux store
   // the user's address is needed to complete the farmer's address
   // the user is not allowed to register farmers outside they district
-  const { user } = useSelector( (state) => state.auth);
+  // const { user } = useSelector( (state) => state.auth);
   const { farmer, isLoading, isError, isSuccess, message } = useSelector((state)=>state.farmer)
 
 
@@ -236,7 +236,7 @@ function FarmerRegister() {
         village: farmerData.address.village2,
       }
     }
-    dispatch(farmerRegister(normalizedFarmerData));
+    dispatch(addFarmer(normalizedFarmerData));
   };
 
   if (isLoading) {

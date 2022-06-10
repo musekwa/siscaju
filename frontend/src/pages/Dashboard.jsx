@@ -18,19 +18,21 @@ const Item = styled(Box)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
 
   const [transition, setTransition] = useState(true)
 
-  const navigate = useNavigate()
-  const { user } = useSelector((state)=>state.auth)
 
-  useEffect(()=>{
-      if (!user) {
-        navigate('/login')
-      }
-      // setTransition((prev)=>!prev)
-  }, [user, navigate, transition])
+  // if (!user) {
+  //    navigate('/login')
+  // }
+
+  // useEffect(()=>{
+  //     if (!user) {
+  //       navigate('/login')
+  //     }
+  //     // setTransition((prev)=>!prev)
+  // }, [user, navigate, transition])
 
 
   return (

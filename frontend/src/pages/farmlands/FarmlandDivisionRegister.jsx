@@ -32,7 +32,7 @@ const UserStack = styled(Stack)(({theme})=>({
 }))
 
 
-const FarmlandDivisionRegister = () => {
+const FarmlandDivisionRegister = ({ user }) => {
 
   // collecting all data from the this farmland form
   const [divisionData, setDivisionData] = useState({
@@ -63,7 +63,7 @@ const FarmlandDivisionRegister = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const { user } = useSelector((state)=>state.auth)
+  // const { user } = useSelector((state)=>state.auth)
   const { farmer } = useSelector((state)=>state.farmer)
   const { farmland } = useSelector((state)=>state.farmland)
   const { farmlandDivision, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmlandDivision)

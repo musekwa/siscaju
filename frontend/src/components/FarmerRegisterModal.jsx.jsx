@@ -81,7 +81,8 @@ const FarmerRegisterModal = ({ open, setOpen,  farmer }) => {
           </Grid>
           <Grid container sx={{ mt: 7 }}>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
-              <Button>
+              <Button onClick={()=>{
+                  setOpen(false) }} >
                 <Box sx={{ color: "rebeccapurple"}}>
                   <ArrowBack fontSize='large'  />
                   <Typography variant="body2">Voltar</Typography>

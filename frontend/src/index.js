@@ -6,12 +6,28 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './app/store'
+import { ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { outerTheme } from "./outerTheme";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ToastContainer } from 'react-toastify';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <App />
+      <div className="container">
+        <ThemeProvider theme={outerTheme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Router>
+              <App />
+            </Router>
+          </LocalizationProvider>
+          <ToastContainer />
+        </ThemeProvider>
+      </div>
     </Provider>
   </React.StrictMode>
 );
