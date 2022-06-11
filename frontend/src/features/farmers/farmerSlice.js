@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import farmerService from "./farmerService";
+
+
+
+const baseURL = `http://localhost:8080/farmers`
+
 
 // get user from localsStorage
 // const user = JSON.parse(localStorage.getItem("user"));
@@ -11,6 +17,29 @@ const initialState = {
   isLoading: false,
   message: "",
 };
+
+
+export const farmersApi = createApi({
+  reducerPath: "farmersApi",
+  keepUnusedDataFor: 1,
+  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  endpoints: (builder)=>({
+    getFarmers: builder.query({
+      query: ()=> `/`,
+    }),
+  }),
+})
+
+export const { useGetFarmersQuery} = farmersApi;
+
+
+
+
+
+
+
+
+
 
 // register farmer
 export const addFarmer = createAsyncThunk(
@@ -31,23 +60,24 @@ export const addFarmer = createAsyncThunk(
 );
 
 
+
 // get all farmers
-export const getFarmers = createAsyncThunk(
-  "farmers/list",
-  async (farmer, thunkAPI) => {
-    try {
-      return await farmerService.getFarmers();
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+// export const getFarmers = createAsyncThunk(
+//   "farmers/list",
+//   async (farmer, thunkAPI) => {
+//     try {
+//       return await farmerService.getFarmers();
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 
 // export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
 //   try {

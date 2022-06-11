@@ -1,5 +1,5 @@
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -8,20 +8,30 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../components/Navbar';
-import { Box, Fab, Tooltip } from '@mui/material';
+import { Box, Fab, ListItemButton, Stack, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
 import { Add } from '@mui/icons-material';
 import { farmers} from '../../fakeData/farmers.js'
 import { useNavigate } from 'react-router-dom';
+import { useGetFarmersQuery } from '../../features/farmers/farmerSlice';
+import Spinner from '../../components/Spinner';
+
+
 
 const FarmersList = ()=> {
 
-    const [farmersList, setFarmersList] = useState([])
+    const [farmersList, setFarmersList] = useState(null)
+
+    let { data, error, isLoading } = useGetFarmersQuery( );
 
     const navigate = useNavigate()
 
     const onAddFarmer = ()=>{
         navigate('/farmers')
+    }
+
+    if (isLoading) {
+        return <Spinner />
     }
 
   return (
@@ -34,28 +44,44 @@ const FarmersList = ()=> {
         </Tooltip>
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
-                farmers.map((farmer, key)=>(
-            <Box key={key.toString()}>
+                data.map((farmer, key)=>(
+            <Box key={farmer._id.toString()} >
             <ListItem alignItems="flex-start" >
+                {/* <ListItemButton> */}
                 <ListItemAvatar>
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
                 <ListItemText
-                    primary={`${farmer?.fullname} (${farmer.category ? farmer.category : 'desconhecida'})` }
+                    primary= {
+                        <Fragment>
+                            <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >{`${farmer?.fullname}` } <span style={{ fontSize: "12px"}}>{`(${new Date().getFullYear() - new Date (farmer.birthDate).getFullYear()} anos)`}</span></Typography>
+                            <Typography component="span" sx={{ fontSize: "11px", }}>{farmer?.category} (em {`${farmer?.address?.territory}`})</Typography>
+                        </Fragment>
+                    }
                     secondary={
                         <Fragment>
-                        <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                        >
-                            Ali Connors
-                        </Typography>
-                        {" — I'll be in your neighborhood doing errands this…"}
+                            <Stack direction="row">
+                                <Box sx={{ width: "50%"}}>
+                                {`Pomares: ${farmer?.farmlands?.length}`}
+                                </Box>
+                                <Box sx={{ width: "50%"}}>
+                                 {`Cajueiros: ${farmer?.totalTrees}`}
+                                </Box>
+                            </Stack>
+                            <Stack direction="row">
+                                <Box sx={{ width: "50%"}}>
+                                 <Typography component="div" sx={{ fontSize: "11px", textAlign: "left"}}>{`${farmer.phone ? farmer.phone : "Não tem telefone"}`}</Typography> 
+                                </Box>
+                               
+                            </Stack>
+
+                            <Box sx={{ width: "100%"}}>
+                                 <Typography component="div" sx={{ fontSize: "11px", textAlign: "right"}}>{`Registado por ${farmer?.user?.fullname}`}</Typography> 
+                              </Box>          
                         </Fragment>
                     }
                 />
+                {/* </ListItemButton> */}
             </ListItem>
             <Divider variant="inset" component="li" />
             </Box>))

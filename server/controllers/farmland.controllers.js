@@ -27,6 +27,12 @@ const addFarmland = asyncHandler (async (req, res) => {
     user,
   } = req;
 
+  body['user'] = {
+    fullname: user?.fullname,
+    email: user?.email,
+    phone: user?.phone
+  }
+
   // create a new farmland document
   let newFarmland = new Farmland(body);
 
@@ -49,6 +55,8 @@ const addFarmland = asyncHandler (async (req, res) => {
 
   // save the farmland
   let updatedFarmland = await newFarmland.save();
+
+  console.log('updated farmland: ', updatedFarmland)
 
   // -----------------------------------------------------------
 
@@ -96,22 +104,25 @@ const getFarmlands = asyncHandler (async (req, res) => {
     let farmlands;
     if (!farmerId && !farmlandId) {
       // get all registered farmlands
-      farmlands = await getFarmlandsService();
+      farmlands = await Farmland.find({}).populate("farmer");
     } else if (farmerId && !farmlandId) {
       // get all farmlands belonging to the farmerId's owner
-      farmlands = await getFarmlandsByFarmerIdService(farmerId);
+      farmlands = await Farmland.find({ farmer: ObjectId(farmerId) }).populate(
+        "farmer"
+      );
     } else if (farmerId && farmlandId) {
       // get one farmland by farmlandId and farmerId
-      farmlands = await getOneFarmlandByFarmerIdService(farmerId, farmlandId);
+      farmlands = await Farmland.find({
+        _id: ObjectId(farmlandId),
+        farmer: ObjectId(farmerId),
+      }).populate("farmer");
     }
     if (!farmlands) {
       res.status(404);
       throw new Error("Pomares nao encontrados!");
     }
-    return res.status(200).json({
-      status: "OK",
-      data: farmlands,
-    });
+    // let farmlands  = await 
+    return res.status(200).json(farmlands);
 });
 
 //@desc

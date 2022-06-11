@@ -8,7 +8,7 @@ import {
 } from "../controllers/farmer.controllers.js";
 import { protect } from '../middleware/authMiddleware.js'
 
-router.route("/farmers").post(protect, addFarmer).get(protect, getFarmers);
+router.route("/farmers").post(protect, addFarmer).get(getFarmers);
 
 router
   .route("/farmers/:farmerId")

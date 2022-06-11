@@ -16,14 +16,14 @@ const farmersSchema = mongoose.Schema(
       type: String,
       enum: {
         values: [
-          "Subcategoria não definida",
+          "Subcategoria desconhecida",
           "Produtor familiar",
           "Produtor comercial",
         ],
         message: "{VALUE} nao e uma categoria de produtores",
       },
       default: function () {
-        return "Subcategoria não definida";
+        return "Subcategoria desconhecida";
       },
     },
     birthDate: {
@@ -63,6 +63,15 @@ const farmersSchema = mongoose.Schema(
         message: (props) =>
           `${props.value} não é um numero de telefone valido!`,
       },
+    },
+    user:{
+      fullname: String,
+      email: String,
+      phone: String,
+    },
+    totalTrees: {
+      type: Number,
+      default: 0,
     },
     image: String,
     farmlands: [

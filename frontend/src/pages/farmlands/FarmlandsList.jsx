@@ -8,82 +8,98 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../components/Navbar';
-import { Box } from '@mui/material';
+import { Box, Fab, Grid, Stack, Table, TableCell, TableRow, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Add } from '@mui/icons-material';
+import {  useGetFarmlandsQuery } from '../../features/farmlands/farmlandSlice'
+import { useGetFarmersQuery } from '../../features/farmers/farmerSlice'
+
+import Spinner from '../../components/Spinner'
 
 const FarmlandsList = ()=> {
 
-    const [farmlandsList, setFarmlandsList] = useState([])
+    // const [farmlandsList, setFarmlandsList] = useState([])
+    const navigate = useNavigate()
+
+    const { data, error, isLoading } = useGetFarmlandsQuery()
+        
+
+    console.log('farmlands: ', data)
+
+    const onAddFarmland = ()=>{
+        navigate('/')
+    }
+
+    const getTreesAverageAge = (divisions)=>{
+        let sum = 0;
+        divisions.forEach((div)=>{
+            sum += div.sowingYear;
+        })
+        return new Date().getFullYear() - Math.ceil(sum / divisions?.length)
+    }
+
+    if (isLoading) {
+        return <Spinner />
+    }
 
   return (
     <Box>
         <Navbar pageDescription={"Pomares"} />
+        <Tooltip onClick={onAddFarmland} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
+            <Fab  aria-label="add" color="rebecca">
+                <Add fontSize='large' color="white" />
+            </Fab>
+        </Tooltip>
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            {
+            data.map((farmland, key)=>(
+            <Box key={farmland._id.toString()}>
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
                 <ListItemText
-                primary="Brunch this weekend?"
+                primary={
+                    <Fragment>
+                        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: "11px"}}  >{`${farmland?.farmer?.fullname}`} </Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >{`${farmland?.farmlandType}`} <span style={{ fontWeight: 400, fontSize: "11px"}} >({`${farmland.farmer.address.territory}: ${farmland.label}`})</span></Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 400, fontSize: "11px"}}  ></Typography>
+                    </Fragment>
+                }
                 secondary={
                     <Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        Ali Connors
-                    </Typography>
-                    {" — I'll be in your neighborhood doing errands this…"}
+                        {/* <Table sx={{ }} aria-label="simple table"> */}
+                        <Stack direction="row">
+                            <Box sx={{ width: "50%"}}>
+                                {`Declarada: ${farmland.declaredArea} ha`}
+                            </Box>
+                            <Box sx={{ width: "50%"}}>
+                                 {`Plantada: ${farmland.actualArea} ha`}
+                            </Box>
+                        </Stack>
+                        <Stack direction="row">
+                            <Box sx={{ width: "50%"}}>
+                                {`Cajueiros: ${farmland.totalTrees}`}
+                            </Box>
+                            <Box sx={{ width: "50%"}}>
+                                 {`Idade : `} 
+                                 { 
+
+                                 getTreesAverageAge(farmland.divisions)
+                                 
+                                 } {` anos`}
+                            </Box>
+                        </Stack>
+                    <Typography  component="div" sx={{ width: "100%", fontSize: "11px", textAlign: "right"}}>{`- Registado por ${farmland?.user?.fullname}`}</Typography>
                     </Fragment>
                 }
                 />
             </ListItem>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Summer BBQ"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        to Scott, Alex, Jennifer
-                    </Typography>
-                    {" — Wish I could come, but I'm out of town this…"}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                primary="Oui Oui"
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        Sandra Adams
-                    </Typography>
-                    {' — Do you have Paris recommendations? Have you ever…'}
-                    </React.Fragment>
-                }
-                />
-            </ListItem>
+            </Box>
+            ))
+            }
         </List>
         <Footer />
     </Box>

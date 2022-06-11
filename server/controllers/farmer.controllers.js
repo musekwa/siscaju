@@ -9,6 +9,7 @@ import {
 import mongoose from "mongoose";
 import asyncHandler from 'express-async-handler'
 import Farmer from "../models/farmer.model.js";
+import Farmland from "../models/farmland.model.js";
 import UserPerformance from '../models/userPerformance.model.js'
 import DistrictPerformance from '../models/districtPerformance.model.js'
 
@@ -19,30 +20,54 @@ const ObjectId = mongoose.Types.ObjectId;
 //@access
 const getFarmers = asyncHandler (async (req, res) => {
   const { user } = req;
-  let farmers;
+  let farmers = await Farmer.find({});
+  // let farmlands = await Farmland.find({})
+
+  // farmers = farmers.map((farmer)=>{
+  //   let cashewTrees = 0;
+
+  //   // add the number of cashew trees this farmer owns 
+  //   if (farmer.farmlands && farmer.farmlands.length > 0) {
+  //     let foundFarmland = farmer.farmlands.find(farmlandId=>ObjectId(farmlands._id) === ObjectId(farmlandId))
+  //     cashewTrees += foundFarmland?.totalTrees;
+  //     farmer.trees = cashewTrees 
+  //     console.log('trees: ', farmer)     
+  //   }
+  //   return farmers;
+  // })
+
+
+
 
   // try {
-    switch (user.role) {
-      case "Extensionista":
-        farmers = await Farmer.find({
-          district: { adress: { district } },
-        }).populate("farmlands");
-        break;
-      case "Produtor":
-        farmers = await Farmer.findById(ObjectId(user._id)).populate(
-      "farmlands"
-    );
-        break;
-      case "Gestor":
-        farmers = await Farmer.find({});
-      default:
-        res.status(401);
-        throw new Error("Nao autorizado");
-    }
-    return res.status(200).json({
-      status: "OK",
-      data: farmers,
-    });
+  // switch (user?.role) {
+  //   case "Extensionista":
+  //     farmers = await Farmer.find({
+  //       district: { adress: { district } },
+  //     }).populate("farmlands");
+  //     break;
+  //   case "Produtor":
+  //     farmers = await Farmer.findById(ObjectId(user._id)).populate(
+  //   "farmlands"
+  // );
+  //     break;
+  //   case "Gestor":
+  //     farmers = await Farmer.find({});
+  //     break;
+  //   default:
+  //     res.status(401);
+  //     throw new Error("Nao autorizado");
+  // }
+  // farmers = await Farmer.find({});
+  
+  // sort by the update date
+  if (farmers){
+      farmers = farmers.sort(function(a, b){
+          return new Date(b.updatedAt) - new Date(a.updatedAt)
+      })
+  }
+
+  return res.status(200).json(farmers);
 });
 
 //@desc
@@ -55,8 +80,15 @@ const addFarmer = asyncHandler (async (req, res) => {
   // assign the user province and district to farmer's address.
   // no user  should register farmer outside their own district
 
+  let registeredBy = {
+    fullname: user?.fullname,
+    email: user?.email,
+    phone: user?.phone,
+  }
+
   body.address.province = user.address.province;
   body.address.district = user.address.district;
+  body['user'] = registeredBy;  // add the user property (registeredBy)
 
   const newFarmer = new Farmer(body);
   const savedFarmer = await newFarmer.save();

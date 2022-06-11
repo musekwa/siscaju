@@ -123,6 +123,11 @@ const farmlandsSchema = mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Farmer",
     },
+    user: {
+      fullname: String,
+      email: String,
+      phone: String,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -140,10 +145,12 @@ farmlandsSchema.pre('save', async function(next){
     if (farmer) { 
       if (this.totalTrees >= 250 || this.actualArea > 5){
         farmer.category = "Produtor comercial";
+        
       }
       else if (this.totalTrees > 0) {
         farmer.category = "Produtor familiar";
       }
+      farmer.totalTrees = this.totalTrees;
     }
     await farmer.save()
     next();

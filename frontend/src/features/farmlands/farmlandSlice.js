@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery  } from "@reduxjs/toolkit/dist/query/react";
 import farmlandService from "./farmlandService";
+
+
+const baseURL = `http://localhost:8080/farmlands`
 
 // get user from localsStorage
 // const user = JSON.parse(localStorage.getItem("user"));
@@ -11,6 +15,23 @@ const initialState = {
   isLoading: false,
   message: "",
 };
+
+
+//get farmlands
+export const farmlandsApi = createApi({
+  reducerPath: "farmlandsApi",
+  keepUnusedDataFor: 1,
+  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  endpoints: (builder) => ({
+    getFarmlands: builder.query({
+      query: () => `/`,
+    }),
+  }),
+});
+
+export const { useGetFarmlandsQuery } = farmlandsApi;
+
+
 
 // register a farmland
 export const farmlandRegister = createAsyncThunk(
