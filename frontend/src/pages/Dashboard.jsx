@@ -22,18 +22,26 @@ const Item = styled(Box)(({ theme }) => ({
 
 const Dashboard = ({ user }) => {
 
-  const [transition, setTransition] = useState(true)
+  // const [transition, setTransition] = useState(true)
 
-  const { 
+  let { 
     data, 
     isLoading, 
-    error}  = useGetPerformancesQuery()
+    isFetching,
+    isError}  = useGetPerformancesQuery(
+      {refetch}
+    )
 
   console.log('performance: ', data)
 
+  
 
 
-  if (isLoading) {
+  useEffect(()=>{
+    
+  }, [data, error, useGetPerformancesQuery])
+
+  if (isLoading || isFetching) {
     return <Spinner />
   }
 
@@ -84,13 +92,13 @@ const Dashboard = ({ user }) => {
           <Grid item sx={{ }} xs={4} >
             
           <Link to='/farmers' sx={{}}>
-            <Typography variant="body1" sx={{}}>{0}</Typography>
+            <Typography variant="body1" sx={{}}>{data?.user?.farmers?.length || 0}</Typography>
             <Typography variant="body1"sx={{}}>Produtores<br />registados</Typography>
           </Link>
           </Grid>
           <Grid item sx={{  }} xs={4}>
           <Link to='/farmers' sx={{ }} >
-            <Typography variant="body1"sx={{}}>{0}</Typography>
+            <Typography variant="body1"sx={{}}>{data?.user?.farmlands?.length || 0}</Typography>
             <Typography variant="body1" sx={{}}>Pomares<br />registados</Typography>
           </Link>
           </Grid>
@@ -112,13 +120,13 @@ const Dashboard = ({ user }) => {
           <Grid item sx={{ }} xs={4} >
             
           <Link to='/farmers' sx={{}}>
-            <Typography variant="body1" sx={{}}>{0}</Typography>
+            <Typography variant="body1" sx={{}}>{data?.district?.farmers?.length || 0}</Typography>
             <Typography variant="body1" sx={{}}>Produtores<br />registados</Typography>
           </Link>
           </Grid>
           <Grid item sx={{  }} xs={4}>
           <Link to='/farmers' sx={{}}>
-            <Typography variant="body1" sx={{}}>{0}</Typography>
+            <Typography variant="body1" sx={{}}>{data?.district?.farmlands?.length || 0}</Typography>
             <Typography variant="body1" sx={{}}>Pomares<br />registados</Typography>
           </Link>
           </Grid>

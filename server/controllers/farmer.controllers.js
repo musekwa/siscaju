@@ -99,6 +99,7 @@ const addFarmer = asyncHandler (async (req, res) => {
   if (!userPerformance) {
     let newUserPerformace = new UserPerformance({
       user: ObjectId(user?._id),
+      district: user?.address?.district,
       farmers: new Array(ObjectId(savedFarmer._id)),
     });
     await newUserPerformace.save();
@@ -110,13 +111,13 @@ const addFarmer = asyncHandler (async (req, res) => {
   // -----------------------------------------------------
   // save performance by district
   let districtPerformance = await DistrictPerformance.findOne({
-    district: user?.address.district,
+    district: user?.address?.district,
   });
 
   if (!districtPerformance) {
     let newDistrictPerformace = new DistrictPerformance({
       district: user?.address.district,
-      farmlands: new Array(ObjectId(savedFarmer._id)),
+      farmers: new Array(ObjectId(savedFarmer._id)),
     });
     await newDistrictPerformace.save();
     // return newPerformace;

@@ -8,6 +8,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../components/Navbar';
+import NotFound from '../NotFound'
 import { Box, Fab, Grid, Stack, Table, TableCell, TableRow, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -43,6 +44,10 @@ const FarmlandsList = ()=> {
 
     if (isLoading) {
         return <Spinner />
+    }
+
+    if (!data) {
+        return  <NotFound />
     }
 
   return (

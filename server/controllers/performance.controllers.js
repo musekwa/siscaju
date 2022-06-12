@@ -25,14 +25,16 @@ const getPerformances = asyncHandler (async (req, res) => {
   //     .select("monitorings")
   //     .populate("monitorings");
   // } else {
-    userPerformances = await UserPerformance.find({user: ObjectId(userId), district});
-    districtPerformances = await DistrictPerformance.find({ district, });
+    userPerformances = await UserPerformance.findOne({user: ObjectId(userId), district});
+    districtPerformances = await DistrictPerformance.findOne({ district, });
   // } 
 
-  console.log("user performance: ", userPerformances);
-  console.log("district performance: ", districtPerformances);
+  const performance = {
+    user: userPerformances,
+    district: districtPerformances,
+  }
   
-  return res.status(200).json(userPerformances);
+  return res.status(200).json(performance);
 });
 
 
