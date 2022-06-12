@@ -30,6 +30,11 @@ const FarmersList = ()=> {
         navigate('/farmers')
     }
 
+    const getRegistrationDate = (date)=>{
+        let newDate = new Date(date).toDateString().split(' ')
+        return newDate.slice(1).join(" ")
+    }
+
     if (isLoading) {
         return <Spinner />
     }
@@ -56,16 +61,12 @@ const FarmersList = ()=> {
                         <Fragment>
                             <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >{`${farmer?.fullname}` } <span style={{ fontSize: "12px"}}>{`(${new Date().getFullYear() - new Date (farmer.birthDate).getFullYear()} anos)`}</span></Typography>
                             <Typography component="span" sx={{ fontSize: "11px", }}>{farmer?.category} (em {`${farmer?.address?.territory}`})</Typography>
-                        </Fragment>
-                    }
-                    secondary={
-                        <Fragment>
                             <Stack direction="row">
                                 <Box sx={{ width: "50%"}}>
-                                {`Pomares: ${farmer?.farmlands?.length}`}
+                                    <Typography component="span" variant='body2'>{`Pomares: ${farmer?.farmlands?.length}`}</Typography>
                                 </Box>
                                 <Box sx={{ width: "50%"}}>
-                                 {`Cajueiros: ${farmer?.totalTrees}`}
+                                 <Typography component="span" variant='body2'>{`Cajueiros: ${farmer?.totalTrees}`}</Typography>
                                 </Box>
                             </Stack>
                             <Stack direction="row">
@@ -74,11 +75,11 @@ const FarmersList = ()=> {
                                 </Box>
                                
                             </Stack>
-
-                            <Box sx={{ width: "100%"}}>
-                                 <Typography component="div" sx={{ fontSize: "11px", textAlign: "right"}}>{`Registado por ${farmer?.user?.fullname}`}</Typography> 
-                              </Box>          
                         </Fragment>
+                    }
+                    secondary={
+                        
+                        <Typography component="div" sx={{ width: "100%"}}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmer.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmer?.user?.fullname}`}</span></Typography> 
                     }
                 />
                 {/* </ListItemButton> */}

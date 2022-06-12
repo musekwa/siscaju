@@ -9,7 +9,6 @@ import FarmerRegister from './pages/farmers/FarmerRegister'
 import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
 import Monitorings from './pages/Monitorings'
 import FarmersList from "./pages/farmers/FarmersList";
-import FarmerExitRegister from "./pages/farmers/FarmerExitRegister";
 import FarmlandsList from "./pages/farmlands/FarmlandsList";
 import NotFound from "./pages/NotFound";
 import FarmlandDivisionRegister from "./pages/farmlands/FarmlandDivisionRegister";

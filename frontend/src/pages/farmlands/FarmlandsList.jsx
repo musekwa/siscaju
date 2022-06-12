@@ -24,9 +24,6 @@ const FarmlandsList = ()=> {
 
     const { data, error, isLoading } = useGetFarmlandsQuery()
         
-
-    console.log('farmlands: ', data)
-
     const onAddFarmland = ()=>{
         navigate('/')
     }
@@ -37,6 +34,11 @@ const FarmlandsList = ()=> {
             sum += div.sowingYear;
         })
         return new Date().getFullYear() - Math.ceil(sum / divisions?.length)
+    }
+
+    const getRegistrationDate = (date)=>{
+        let newDate = new Date(date).toDateString().split(' ')
+        return newDate.slice(1).join(" ")
     }
 
     if (isLoading) {
@@ -63,37 +65,37 @@ const FarmlandsList = ()=> {
                 primary={
                     <Fragment>
                         <Typography variant="body2" sx={{ fontWeight: 400, fontSize: "11px"}}  >{`${farmland?.farmer?.fullname}`} </Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >{`${farmland?.farmlandType}`} <span style={{ fontWeight: 400, fontSize: "11px"}} >({`${farmland.farmer.address.territory}: ${farmland.label}`})</span></Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 400, fontSize: "11px"}}  ></Typography>
-                    </Fragment>
-                }
-                secondary={
-                    <Fragment>
-                        {/* <Table sx={{ }} aria-label="simple table"> */}
+                        <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >
+                            {`${farmland?.farmlandType}`} <span style={{ fontWeight: 400, fontSize: "11px"}} >
+                                ({`${farmland.farmer.address.territory}: ${farmland.label}`})</span>
+                        </Typography>
                         <Stack direction="row">
                             <Box sx={{ width: "50%"}}>
-                                {`Declarada: ${farmland.declaredArea} ha`}
+                                <Typography component="span" variant='body2'> {`Declarada: ${farmland.declaredArea} ha`} </Typography>
                             </Box>
                             <Box sx={{ width: "50%"}}>
-                                 {`Plantada: ${farmland.actualArea} ha`}
+                                <Typography component="span" variant='body2'> {`Plantada: ${farmland.actualArea} ha`} </Typography>
                             </Box>
                         </Stack>
                         <Stack direction="row">
                             <Box sx={{ width: "50%"}}>
-                                {`Cajueiros: ${farmland.totalTrees}`}
+                                <Typography component="span" variant='body2'> {`Cajueiros: ${farmland.totalTrees}`} </Typography>
                             </Box>
                             <Box sx={{ width: "50%"}}>
-                                 {`Idade : `} 
+                                <Typography component="span" variant='body2'>  {`Idade : `} 
                                  { 
 
                                  getTreesAverageAge(farmland.divisions)
                                  
-                                 } {` anos`}
+                                 } {` anos`} </Typography>
                             </Box>
                         </Stack>
-                    <Typography  component="div" sx={{ width: "100%", fontSize: "11px", textAlign: "right"}}>{`- Registado por ${farmland?.user?.fullname}`}</Typography>
                     </Fragment>
                 }
+                secondary={
+                    <Typography  component="div" sx={{ width: "100%" }}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmland.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmland?.user?.fullname}`}</span></Typography>
+                }
+
                 />
             </ListItem>
             <Divider variant="inset" component="li" />

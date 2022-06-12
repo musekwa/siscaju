@@ -7,6 +7,7 @@ import {
   farmlandRoutes,
   divisionRoutes,
   monitoringRoutes,
+  userPerformanceRoutes,
 } from "./server/server.js";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
@@ -16,6 +17,7 @@ app.use(farmerRoutes);
 app.use(farmlandRoutes);
 app.use(divisionRoutes);
 app.use(monitoringRoutes);
+app.use(userPerformanceRoutes);
 
 app.use(errorHandler);
 app.use(errorLogger);

@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import farmerService from "./farmerService";
 
 
-
 const baseURL = `http://localhost:8080/farmers`
 
 
@@ -18,17 +17,26 @@ const initialState = {
   message: "",
 };
 
+let user = JSON.parse(localStorage.getItem("user"));
 
 export const farmersApi = createApi({
   reducerPath: "farmersApi",
   keepUnusedDataFor: 1,
-  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
-  endpoints: (builder)=>({
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseURL,
+    prepareHeaders: (headers, { getState }) => {
+      if (user) {
+        headers.set("authorization", `Bearer ${user.token}`);
+      }
+      return headers;
+    },
+  }),
+  endpoints: (builder) => ({
     getFarmers: builder.query({
-      query: ()=> `/`,
+      query: () => `/`,
     }),
   }),
-})
+});
 
 export const { useGetFarmersQuery} = farmersApi;
 

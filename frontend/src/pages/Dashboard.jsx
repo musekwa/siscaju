@@ -9,6 +9,8 @@ import FarmerRegisterModal from '../components/FarmerRegisterModal.jsx'
 import FarmlandRegisterModal from '../components/FarmlandRegisterModal'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import Spinner from '../components/Spinner'
+import { useGetPerformancesQuery } from '../features/performance/performanceSlice'
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,17 +24,20 @@ const Dashboard = ({ user }) => {
 
   const [transition, setTransition] = useState(true)
 
+  const { 
+    data, 
+    isLoading, 
+    error}  = useGetPerformancesQuery()
 
-  // if (!user) {
-  //    navigate('/login')
-  // }
+  console.log('performance: ', data)
 
-  // useEffect(()=>{
-  //     if (!user) {
-  //       navigate('/login')
-  //     }
-  //     // setTransition((prev)=>!prev)
-  // }, [user, navigate, transition])
+
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
+
 
 
   return (

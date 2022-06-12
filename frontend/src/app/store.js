@@ -9,6 +9,7 @@ import farmlandDivisionReducer from '../features/farmlandDivisions/farmlandDivis
 
 import { farmlandsApi } from "../features/farmlands/farmlandSlice";
 import { farmersApi } from '../features/farmers/farmerSlice';
+import { performancesApi } from '../features/performance/performanceSlice';
 
 
 export const store = configureStore({
@@ -22,11 +23,13 @@ export const store = configureStore({
     // RQT React Query
     [farmersApi.reducerPath]: farmersApi.reducer,
     [farmlandsApi.reducerPath]: farmlandsApi.reducer,
+    [performancesApi.reducerPath]: performancesApi.reducer,
   },
 
   middleware: (getDefaultMiddleware)=>getDefaultMiddleware()
                                             .concat(farmersApi.middleware)
-                                            .concat(farmlandsApi.middleware),
+                                            .concat(farmlandsApi.middleware)
+                                            .concat(performancesApi.middleware),
 });
 
 setupListeners(store.dispatch)

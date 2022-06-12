@@ -8,7 +8,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const registerFarmerService = async (userId, farmerId) => {
   try {
     let performance = await Performance.findOne({ user: userId });
-    console.log("performance:", performance)
+    // console.log("performance:", performance)
     if (!performance) {
       let newPerformace = new Performance({
         user: ObjectId(userId),

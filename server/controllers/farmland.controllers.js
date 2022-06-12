@@ -101,28 +101,36 @@ const getFarmlands = asyncHandler (async (req, res) => {
     user,
   } = req;
 
-    let farmlands;
-    if (!farmerId && !farmlandId) {
-      // get all registered farmlands
-      farmlands = await Farmland.find({}).populate("farmer");
-    } else if (farmerId && !farmlandId) {
-      // get all farmlands belonging to the farmerId's owner
-      farmlands = await Farmland.find({ farmer: ObjectId(farmerId) }).populate(
-        "farmer"
-      );
-    } else if (farmerId && farmlandId) {
-      // get one farmland by farmlandId and farmerId
-      farmlands = await Farmland.find({
-        _id: ObjectId(farmlandId),
-        farmer: ObjectId(farmerId),
-      }).populate("farmer");
-    }
-    if (!farmlands) {
-      res.status(404);
-      throw new Error("Pomares nao encontrados!");
-    }
-    // let farmlands  = await 
-    return res.status(200).json(farmlands);
+  let farmlands;
+  if (!farmerId && !farmlandId) {
+    // get all registered farmlands
+    farmlands = await Farmland.find({}).populate("farmer");
+  } else if (farmerId && !farmlandId) {
+    // get all farmlands belonging to the farmerId's owner
+    farmlands = await Farmland.find({ farmer: ObjectId(farmerId) }).populate(
+      "farmer"
+    );
+  } else if (farmerId && farmlandId) {
+    // get one farmland by farmlandId and farmerId
+    farmlands = await Farmland.find({
+      _id: ObjectId(farmlandId),
+      farmer: ObjectId(farmerId),
+    }).populate("farmer");
+  }
+  if (!farmlands) {
+    res.status(404);
+    throw new Error("Pomares nao encontrados!");
+  }
+
+  // sort by the update date
+  if (farmlands) {
+    farmlands = farmlands.sort(function (a, b) {
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
+  }
+
+  // let farmlands  = await
+  return res.status(200).json(farmlands);
 });
 
 //@desc

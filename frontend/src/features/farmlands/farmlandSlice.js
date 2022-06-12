@@ -16,12 +16,21 @@ const initialState = {
   message: "",
 };
 
+let user = JSON.parse(localStorage.getItem("user"));
 
 //get farmlands
 export const farmlandsApi = createApi({
   reducerPath: "farmlandsApi",
   keepUnusedDataFor: 1,
-  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseURL,
+    prepareHeaders: (headers, { getState }) => {
+      if (user) {
+        headers.set("authorization", `Bearer ${user.token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getFarmlands: builder.query({
       query: () => `/`,
