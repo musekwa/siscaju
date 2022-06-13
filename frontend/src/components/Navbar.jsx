@@ -3,14 +3,17 @@ import {
   Avatar,
   Box,
   Grid,
+  Icon,
   InputBase,
   Menu,
   MenuItem,
+  Stack,
   styled,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
+import { ManageSearch, Search as SearchIcon } from '@mui/icons-material';
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -68,16 +71,18 @@ const Search = styled("div")(({theme})=>({
     
 }))
 
-const Navbar = ({ pageDescription, user, flag }) => {
+const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
 
-  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+  const navigate = useNavigate();
+
 
   const onLogout = ()=>{
   //   localStorage.removeItem('user');
   //   navigate('/login')
   }
 
-    const [open, setOpen] = useState(false)
+    
 
 
   return (
@@ -89,22 +94,38 @@ const Navbar = ({ pageDescription, user, flag }) => {
         </Typography>
 
 
-        <Box sx={{width: "100%", textAlign: "center" }}>
+        <Stack direction="row" sx={{width: "100%", textAlign: "center" }} gap={3}>
         
-          <Search>
-            <InputBase placeholder="Procurar produtor..." />
-          </Search> 
-         
-          {/* <Typography
+        <Grid item xs={6}>
+          {pageDescription && <Typography
             variant="body1"
             fontWeight={100}
             component="p"
           
-            sx={{ p: "2px 0px 2px 0px",   }}
+            sx={{ p: "6px 0px 0px 0px",   }}
           >
             {pageDescription}
-          </Typography> */}
-        </Box>
+          </Typography> 
+          }
+        </Grid>
+        <Grid item xs={3}>
+        { isManageSearch &&
+
+          <ManageSearch fontSize="large" />
+          // <Search>
+          //   <InputBase placeholder="Procurar produtor..." />
+          // </Search>
+        }
+        </Grid>
+        <Grid item xs={3}>
+        {
+          isSearchIcon && 
+          <SearchIcon fontSize="large" />
+          
+        }
+        </Grid>
+ 
+        </Stack>
         <Tooltip title={`${user?.fullname.split(' ')[0]}`}>
         <Icons onClick={(e) => setOpen(true)}>
           <Avatar

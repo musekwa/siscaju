@@ -13,20 +13,26 @@ import { Box, Fab, Grid, Stack, Table, TableCell, TableRow, Tooltip } from '@mui
 import Footer from '../../components/Footer';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
-import {  useGetFarmlandsQuery } from '../../features/farmlands/farmlandSlice'
-import { useGetFarmersQuery } from '../../features/farmers/farmerSlice'
+import {  useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery  } from '../../features/farmlands/farmlandSlice'
+import { useGetFarmersQuery, useGetFarmersByDistrictQuery } from '../../features/farmers/farmerSlice'
 
 import Spinner from '../../components/Spinner'
+import SearchModal from '../../components/SearchModal';
 
-const FarmlandsList = ()=> {
+const FarmlandsList = ({ user })=> {
 
     // const [farmlandsList, setFarmlandsList] = useState([])
     const navigate = useNavigate()
 
-    const { data, error, isLoading } = useGetFarmlandsQuery()
+    const { data, error, isLoading } = useGetFarmlandsByDistrictQuery(user?.address?.district)
+
+    if (isLoading) {
+        return <Spinner />
+    }
+
         
     const onAddFarmland = ()=>{
-        navigate('/')
+        navigate('/farmland-add')
     }
 
     const getTreesAverageAge = (divisions)=>{
@@ -42,9 +48,6 @@ const FarmlandsList = ()=> {
         return newDate.slice(1).join(" ")
     }
 
-    if (isLoading) {
-        return <Spinner />
-    }
 
     if (!data) {
         return  <NotFound />
@@ -52,7 +55,7 @@ const FarmlandsList = ()=> {
 
   return (
     <Box>
-        <Navbar pageDescription={"Pomares"} />
+        <Navbar pageDescription={user?.address?.district} isManageSearch={true} isSearchIcon={true}  />
         <Tooltip onClick={onAddFarmland} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
             <Fab  aria-label="add" color="rebecca">
                 <Add fontSize='large' color="white" />
@@ -61,7 +64,7 @@ const FarmlandsList = ()=> {
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
             data.map((farmland, key)=>(
-            <Box key={farmland._id.toString()}>
+            <Box key={farmland?._id.toString()}>
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -72,25 +75,25 @@ const FarmlandsList = ()=> {
                         <Typography variant="body2" sx={{ fontWeight: 400, fontSize: "11px"}}  >{`${farmland?.farmer?.fullname}`} </Typography>
                         <Typography variant="body1" sx={{ fontWeight: 600, color: "gray"}}  >
                             {`${farmland?.farmlandType}`} <span style={{ fontWeight: 400, fontSize: "11px"}} >
-                                ({`${farmland.farmer.address.territory}: ${farmland.label}`})</span>
+                                ({`${farmland?.farmer?.address?.territory}: ${farmland?.label}`})</span>
                         </Typography>
                         <Stack direction="row">
                             <Box sx={{ width: "50%"}}>
-                                <Typography component="span" variant='body2'> {`Declarada: ${farmland.declaredArea} ha`} </Typography>
+                                <Typography component="span" variant='body2'> {`Declarada: ${farmland?.declaredArea} ha`} </Typography>
                             </Box>
                             <Box sx={{ width: "50%"}}>
-                                <Typography component="span" variant='body2'> {`Plantada: ${farmland.actualArea} ha`} </Typography>
+                                <Typography component="span" variant='body2'> {`Plantada: ${farmland?.actualArea} ha`} </Typography>
                             </Box>
                         </Stack>
                         <Stack direction="row">
                             <Box sx={{ width: "50%"}}>
-                                <Typography component="span" variant='body2'> {`Cajueiros: ${farmland.totalTrees}`} </Typography>
+                                <Typography component="span" variant='body2'> {`Cajueiros: ${farmland?.totalTrees}`} </Typography>
                             </Box>
                             <Box sx={{ width: "50%"}}>
                                 <Typography component="span" variant='body2'>  {`Idade : `} 
                                  { 
 
-                                 getTreesAverageAge(farmland.divisions)
+                                 getTreesAverageAge(farmland?.divisions)
                                  
                                  } {` anos`} </Typography>
                             </Box>
@@ -98,7 +101,7 @@ const FarmlandsList = ()=> {
                     </Fragment>
                 }
                 secondary={
-                    <Typography  component="div" sx={{ width: "100%" }}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmland.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmland?.user?.fullname}`}</span></Typography>
+                    <Typography  component="div" sx={{ width: "100%" }}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmland?.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmland?.user?.fullname}`}</span></Typography>
                 }
 
                 />
@@ -108,6 +111,7 @@ const FarmlandsList = ()=> {
             ))
             }
         </List>
+        <SearchModal open={false} />
         <Footer />
     </Box>
   );

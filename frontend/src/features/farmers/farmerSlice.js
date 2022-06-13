@@ -21,7 +21,7 @@ let user = JSON.parse(localStorage.getItem("user"));
 
 export const farmersApi = createApi({
   reducerPath: "farmersApi",
-  keepUnusedDataFor: 1,
+  keepUnusedDataFor: 0,
   baseQuery: fetchBaseQuery({
     baseUrl: baseURL,
     prepareHeaders: (headers, { getState }) => {
@@ -31,14 +31,21 @@ export const farmersApi = createApi({
       return headers;
     },
   }),
+  refetchOnMountOrArgChange: 1,
   endpoints: (builder) => ({
     getFarmers: builder.query({
       query: () => `/`,
     }),
+    getFarmerById: builder.query({
+      query: (farmerId)=>`/${farmerId}`
+    }),
+    getFarmersByDistrict: builder.query({
+      query: (district)=>`?district=${district}`
+    })
   }),
 });
 
-export const { useGetFarmersQuery} = farmersApi;
+export const { useGetFarmersQuery, useGetFarmerByIdQuery, useGetFarmersByDistrictQuery } = farmersApi;
 
 
 

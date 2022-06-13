@@ -2,6 +2,7 @@
 import { Forest, LegendToggle, PersonAdd } from '@mui/icons-material'
 import { Box, Divider, Grid, Typography, Zoom } from '@mui/material'
 import { styled } from '@mui/system'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
@@ -23,23 +24,17 @@ const Item = styled(Box)(({ theme }) => ({
 const Dashboard = ({ user }) => {
 
   // const [transition, setTransition] = useState(true)
+  const [myState, setMyState] = useState(false)
 
   let { 
     data, 
     isLoading, 
     isFetching,
     isError}  = useGetPerformancesQuery(
-      {refetch}
+      { refetchOnMountOrArgChange: true }
     )
 
-  console.log('performance: ', data)
-
-  
-
-
-  useEffect(()=>{
-    
-  }, [data, error, useGetPerformancesQuery])
+  // console.log('performance: ', data)
 
   if (isLoading || isFetching) {
     return <Spinner />
@@ -65,7 +60,7 @@ const Dashboard = ({ user }) => {
 
           <Grid item xs={4} sx={{}}>
             <Item sx={{}}> 
-          <Link to='/farmlands' sx={{} }>
+          <Link to='/farmland-add' sx={{} }>
             <Forest fontSize="large" sx={{ color: "rebeccapurple" }}  />
             <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Registar<br />Pomar</Typography>
           </Link>

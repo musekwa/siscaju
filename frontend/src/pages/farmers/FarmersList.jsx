@@ -14,16 +14,17 @@ import Footer from '../../components/Footer';
 import { Add } from '@mui/icons-material';
 import { farmers} from '../../fakeData/farmers.js'
 import { useNavigate } from 'react-router-dom';
-import { useGetFarmersQuery } from '../../features/farmers/farmerSlice';
+import { useGetFarmersQuery, useGetFarmersByDistrictQuery} from '../../features/farmers/farmerSlice';
 import Spinner from '../../components/Spinner';
+import SearchModal from '../../components/SearchModal';
 
 
 
-const FarmersList = ()=> {
+const FarmersList = ({ user })=> {
 
-    const [farmersList, setFarmersList] = useState(null)
+    // const [farmersList, setFarmersList] = useState(null)
 
-    let { data, error, isLoading } = useGetFarmersQuery( );
+    let { data, error, isLoading } = useGetFarmersByDistrictQuery(user?.address?.district);
 
     const navigate = useNavigate()
 
@@ -46,7 +47,7 @@ const FarmersList = ()=> {
 
   return (
     <Box>
-        <Navbar pageDescription={"Produtores"} />
+        <Navbar pageDescription={user?.address?.district} isManageSearch={true} isSearchIcon={true} />
         <Tooltip onClick={onAddFarmer} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
             <Fab  aria-label="add" color="rebecca">
                 <Add fontSize='large' color="white" />
@@ -93,6 +94,7 @@ const FarmersList = ()=> {
             </Box>))
             }
         </List>
+        <SearchModal open={false} />
         <Footer />
     </Box>
   );

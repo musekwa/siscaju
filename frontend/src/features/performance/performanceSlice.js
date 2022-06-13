@@ -8,7 +8,7 @@ let user = JSON.parse(localStorage.getItem("user"));
 
 export const performancesApi = createApi({
     reducerPath: "performancesApi",
-    keepUnusedDataFor: 1,
+    keepUnusedDataFor: 0,
     baseQuery: fetchBaseQuery({ 
         baseUrl: baseURL,
         prepareHeaders: (headers, { getState })=>{
@@ -18,6 +18,7 @@ export const performancesApi = createApi({
             return headers;
         },
     }),
+    refetchOnMountOrArgChange: 1,
     endpoints: (builder)=>({
         getPerformances: builder.query({
             query: ()=> `?userId=${user._id}&district=${user?.address?.district}`

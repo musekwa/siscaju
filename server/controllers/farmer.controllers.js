@@ -20,7 +20,14 @@ const ObjectId = mongoose.Types.ObjectId;
 //@access
 const getFarmers = asyncHandler (async (req, res) => {
   const { user } = req;
-  let farmers = await Farmer.find({});
+  const { district } = req.query;
+
+  // console.log("farmers from district: ", district);
+
+
+  let farmers = await Farmer.find({ "address.district": district });
+
+  
   // let farmlands = await Farmland.find({})
 
   // farmers = farmers.map((farmer)=>{
@@ -66,6 +73,8 @@ const getFarmers = asyncHandler (async (req, res) => {
           return new Date(b.updatedAt) - new Date(a.updatedAt)
       })
   }
+
+  console.log('farmers: ', farmers)
 
   return res.status(200).json(farmers);
 });

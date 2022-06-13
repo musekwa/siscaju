@@ -12,8 +12,9 @@ import Footer from '../../components/Footer'
 import { useSelector, useDispatch } from 'react-redux'
 import { farmlandRegister, reset } from '../../features/farmlands/farmlandSlice'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
+import { useGetFarmerByIdQuery } from '../../features/farmers/farmerSlice'
 
 
 const styledTextField = {
@@ -68,15 +69,30 @@ const FarmlandRegister = ({ user }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const location = useLocation()
 
-  // const { user } = useSelector((state)=>state.auth)
-  const { farmer } = useSelector((state)=>state.farmer)
+  // get the farmer from the FarmlandAdd component route location (state)
+   let farmer2 = location.state?.farmer;
+
+  let { farmer } = useSelector((state)=>state.farmer)
+
+  if (!farmer) {
+    farmer = farmer2;
+  }
+
+  // let farmer2 = useGetFarmerByIdQuery(farmerId)
   const { farmland, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmland)
 
+ 
+  if (!farmer || !user){
+    navigate('/')
+    // return ;
+  }
 
-  useEffect(()=>{
-    setTimeout(2000);
-  }, [])
+  
+  // useEffect(()=>{
+  //   setTimeout(2000);
+  // }, [])
 
 
   useEffect(()=>{
@@ -117,11 +133,11 @@ const FarmlandRegister = ({ user }) => {
 
   }, [farmland, isError, isSuccess, message, navigate, dispatch])
 
-  useEffect(()=>{
-    if (!user || !farmer) {
-      navigate('/')
-    }
-  })
+  // useEffect(()=>{
+  //   if (!user) {
+  //     navigate('/')
+  //   }
+  // })
 
 
 

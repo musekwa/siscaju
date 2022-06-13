@@ -7,7 +7,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const farmlandsSchema = mongoose.Schema(
   {
     label: { type: String, lowercase: true },
-
+    district: String,
     declaredArea: Number,
     actualArea: {
       type: Number,

@@ -33,6 +33,8 @@ const addFarmland = asyncHandler (async (req, res) => {
     phone: user?.phone
   }
 
+  body['district'] = user?.address?.district;
+
   // create a new farmland document
   let newFarmland = new Farmland(body);
 
@@ -98,12 +100,12 @@ const addFarmland = asyncHandler (async (req, res) => {
 //@access
 const getFarmlands = asyncHandler (async (req, res) => {
   const {
-    query: { farmerId, farmlandId },
+    query: { farmerId, farmlandId, district },
     user,
   } = req;
 
   let farmlands;
-  if (!farmerId && !farmlandId) {
+  if (!farmerId && !farmlandId && !district) {
     // get all registered farmlands
     farmlands = await Farmland.find({}).populate("farmer");
   } else if (farmerId && !farmlandId) {
@@ -117,6 +119,9 @@ const getFarmlands = asyncHandler (async (req, res) => {
       _id: ObjectId(farmlandId),
       farmer: ObjectId(farmerId),
     }).populate("farmer");
+  }
+  else if (district) {
+    farmlands = await Farmland.find({ district: district }).populate("farmer");
   }
   if (!farmlands) {
     res.status(404);
