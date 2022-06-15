@@ -7,23 +7,22 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const farmlandsSchema = mongoose.Schema(
   {
     label: { type: String, lowercase: true },
+    province: String,
     district: String,
+    territory: String,
     declaredArea: Number,
     actualArea: {
       type: Number,
       default: function () {
         // get an array of all the areas for each division
         if (this.divisions && this.divisions.length) {
-          let plantedAreas = this.divisions.map(
-            (division) => division.plantedArea
-          );
+          let plantedAreas = this.divisions.map((division) => division.plantedArea);
 
           plantedAreas = plantedAreas.filter(area=>!isNaN(area))
 
           if (plantedAreas.length === 0) {
             return 0;
           }
-
           // return the sum of the trees
           return plantedAreas.reduce(function (acc, el) {
             return acc + el;
@@ -137,28 +136,26 @@ const farmlandsSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-
 farmlandsSchema.pre('save', async function(next){
-  try {
-   let farmer = await Farmer.findById(this.farmer);
+  // try {
+  //  let farmer = await Farmer.findById(this.farmer);
 
-    if (farmer) { 
-      if (this.totalTrees >= 250 || this.actualArea > 5){
-        farmer.category = "Produtor comercial";
+  //   if (farmer) { 
+  //     if (this.totalTrees >= 250 || this.actualArea > 5){
+  //       farmer.category = "Produtor comercial";
         
-      }
-      else if (this.totalTrees > 0) {
-        farmer.category = "Produtor familiar";
-      }
-      farmer.totalTrees = this.totalTrees;
-    }
-    await farmer.save()
-    next();
-  } catch(error){
-    next();
-  }
+  //     }
+  //     else if (this.totalTrees > 0) {
+  //       farmer.category = "Produtor familiar";
+  //     }
+  //     farmer.totalTrees = this.totalTrees;
+  //   }
+  //   await farmer.save()
+  //   next();
+  // } catch(error){
+  //   next();
+  // }
 })
-
 
 const Farmland = mongoose.model("Farmland", farmlandsSchema);
 

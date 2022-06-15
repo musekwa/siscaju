@@ -15,6 +15,8 @@ import FarmlandDivisionRegister from "./pages/farmlands/FarmlandDivisionRegister
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
+import Farmer from "./pages/farmers/Farmer";
+import Farmland from "./pages/farmlands/Farmland";
 
 function App() {
 
@@ -34,8 +36,10 @@ function App() {
         <Route path="/farmlands" element={<FarmlandRegister user={user} />} />
         <Route path="/divisions" element={<FarmlandDivisionRegister user={user} />} />
         <Route path="/farmers-list" element={<FarmersList user={user} />} />
-        <Route path="farmlands-list" element={<FarmlandsList user={user} />} />
-        <Route path="farmland-add" element={<FarmlandAdd user={user} />} />
+        <Route path="/farmlands-list" element={<FarmlandsList user={user} />} />
+        <Route path="/farmland-add" element={<FarmlandAdd user={user} />} />
+        <Route path="/farmers/:farmerId" element={<Farmer user={user} />} />
+        <Route path="/farmland" element={<Farmland user={user} />} />
       </Route>
 
       {/* <Route

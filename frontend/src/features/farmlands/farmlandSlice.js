@@ -37,12 +37,15 @@ export const farmlandsApi = createApi({
       query: () => `/`,
     }),
     getFarmlandsByDistrict: builder.query({
-      query: (district)=>`?district=${district}`
-    })
+      query: (district) => `?district=${district}`,
+    }),
+    getFarmlandsBy: builder.query({
+      query: (filterBy) => `?from=${filterBy}`,
+    }),
   }),
 });
 
-export const { useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery } = farmlandsApi;
+export const { useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery, useGetFarmlandsByQuery } = farmlandsApi;
 
 
 

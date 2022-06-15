@@ -16,6 +16,10 @@ import {
 import { ManageSearch, Search as SearchIcon } from '@mui/icons-material';
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { resetUser } from "../features/auth/authSlice";
+import { toast, ToastContainer } from "react-toastify";
+import Spinner from "./Spinner";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -75,11 +79,31 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
 
   const [open, setOpen] = useState(false)
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
+   const { user: inStateUSer, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const onLogout = ()=>{
-  //   localStorage.removeItem('user');
-  //   navigate('/login')
+    localStorage.removeItem('user');
+    dispatch(resetUser(inStateUSer))
+    navigate('/')
+  }
+
+  useEffect(()=>{
+
+    if (!user && !inStateUSer) {
+      toast.info("Sessão terminada!", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_CENTER,
+      })
+    }
+
+  }, [navigate, open, inStateUSer, user, isError, isSuccess, message, dispatch]);
+
+  if (isLoading ){
+    return <Spinner />
   }
 
     
@@ -156,7 +180,7 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
         }}
       >
         <MenuItem onClick={() => {}}>Minha conta</MenuItem>
-        <MenuItem onClick={onLogout}>Terminar a sessão</MenuItem>
+        <MenuItem onClick={()=>onLogout()}>Terminar a sessão</MenuItem>
         <MenuItem onClick={() => {}}>Configurações</MenuItem>
       </Menu>
     </AppBar>

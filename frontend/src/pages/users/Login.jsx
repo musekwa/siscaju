@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import { purple } from "@mui/material/colors";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -64,9 +64,15 @@ function Login() {
         position: toast.POSITION.TOP_CENTER,
       });
       navigate("/");
+      
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  // if (isSuccess) {
+  //   window.location.reload(false)
+  //   return <Navigate to={'/'} replace />;
+  // }
 
   // const onChange = (e) => {
   //   setFormData((prevState) => ({

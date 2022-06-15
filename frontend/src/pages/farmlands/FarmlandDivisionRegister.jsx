@@ -12,7 +12,7 @@ import Footer from '../../components/Footer'
 import { useSelector, useDispatch } from 'react-redux'
 import { farmlandDivisionRegister, reset } from '../../features/farmlandDivisions/farmlandDivisionSlice'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
 
 
@@ -62,10 +62,15 @@ const FarmlandDivisionRegister = ({ user }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const location = useLocation();
+
+  // const { farmer: farmerFromState, farmland: farmlandFromState } = location.state;
+  // console.log('farmer: ', farmerFromState)
+  // console.log('farmland: ', farmlandFromState)
 
   // const { user } = useSelector((state)=>state.auth)
-  const { farmer } = useSelector((state)=>state.farmer)
-  const { farmland } = useSelector((state)=>state.farmland)
+  const { farmer, isLoading: isFarmerLoading, isError: isFarmerError, isSuccess: isFarmerSuccess, message: farmerMessage } = useSelector((state)=>state.farmer)
+  const { farmland, isLoading: isFarmlandLoading, isError: isFarmlandError, isSuccess: isFarmlandSuccess, message: farmlandMessage } = useSelector((state)=>state.farmland)
   const { farmlandDivision, isError, isSuccess, isLoading, message } = useSelector((state)=>state.farmlandDivision)
 
 
@@ -182,7 +187,7 @@ const FarmlandDivisionRegister = ({ user }) => {
     dispatch(farmlandDivisionRegister(normalizedDivisionData))
   }
 
-  if (isLoading) {
+  if (isLoading || isFarmerLoading || isFarmlandLoading) {
     return (
       <Spinner />
     )

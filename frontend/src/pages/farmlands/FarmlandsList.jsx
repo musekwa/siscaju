@@ -1,5 +1,5 @@
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -11,9 +11,9 @@ import Navbar from '../../components/Navbar';
 import NotFound from '../NotFound'
 import { Box, Fab, Grid, Stack, Table, TableCell, TableRow, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
-import {  useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery  } from '../../features/farmlands/farmlandSlice'
+import {  useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery, useGetFarmlandsByQuery  } from '../../features/farmlands/farmlandSlice'
 import { useGetFarmersQuery, useGetFarmersByDistrictQuery } from '../../features/farmers/farmerSlice'
 
 import Spinner from '../../components/Spinner'
@@ -23,12 +23,31 @@ const FarmlandsList = ({ user })=> {
 
     // const [farmlandsList, setFarmlandsList] = useState([])
     const navigate = useNavigate()
+    const location = useLocation()
+    const [reload, setReload] = useState(false)  
 
-    const { data, error, isLoading } = useGetFarmlandsByDistrictQuery(user?.address?.district)
+    let filterBy = user?.role === 'Extensionista' 
+                ? user?.address?.district 
+                : user?.role === 'Gestor' 
+                ? user?.address?.province
+                : user?.role === 'Produtor'
+                ? user?.address?.territory : null;
+    const { data, error, isLoading } = useGetFarmlandsByQuery(filterBy)
+
+    
+    useEffect(()=>{
+        
+    }, [])
 
     if (isLoading) {
         return <Spinner />
     }
+
+
+    // setTimeout(()=>{
+    //     navigate(0);
+    // }, 1000)
+    // navigate(0);
 
         
     const onAddFarmland = ()=>{
@@ -43,9 +62,10 @@ const FarmlandsList = ({ user })=> {
         return new Date().getFullYear() - Math.ceil(sum / divisions?.length)
     }
 
-    const getRegistrationDate = (date)=>{
-        let newDate = new Date(date).toDateString().split(' ')
-        return newDate.slice(1).join(" ")
+    const normalizeDate = (date)=>{
+        return new Date(date).getDate() + '/'
+             + (new Date(date).getMonth() + 1) + '/' 
+             + new Date(date).getFullYear()
     }
 
 
@@ -54,7 +74,7 @@ const FarmlandsList = ({ user })=> {
     }
 
   return (
-    <Box>
+    <Box >
         <Navbar pageDescription={user?.address?.district} isManageSearch={true} isSearchIcon={true}  />
         <Tooltip onClick={onAddFarmland} title="Adicine produtor" sx={{ position: "fixed", bottom: 60, right: 25 }}>
             <Fab  aria-label="add" color="rebecca">
@@ -101,7 +121,7 @@ const FarmlandsList = ({ user })=> {
                     </Fragment>
                 }
                 secondary={
-                    <Typography  component="div" sx={{ width: "100%" }}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmland?.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmland?.user?.fullname}`}</span></Typography>
+                    <Typography  component="div" sx={{ width: "100%" }}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${normalizeDate(farmland?.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmland?.user?.fullname}`}</span></Typography>
                 }
 
                 />

@@ -8,6 +8,14 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
 
   const navigate = useNavigate();
 
+  // if (farmer && farmland && farmlandDivision) {
+  //   console.log('farmland')
+  // }
+  // if (farmer && farmland && farmlandDivision) {
+  //   console.log('farmland division')
+  // }
+
+  // console.log('farmland division')
   return (
     <Modal
         keepMounted
@@ -28,41 +36,48 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: "300px",
-            height: "70vh",
+            height: "50vh",
             bgcolor: 'background.paper',
             border: '2px solid rebeccapurple',
             boxShadow: 24,
-            p: 1,
+            p: 2,
           }}>
-             <br />
             
-              { (farmer && !farmlandDivision) &&
+              { (farmer && farmland)  &&
+              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "rebeccapurple",  width: "100%", height: "70px", }}>
                 <Typography 
-                  sx={{ textAlign: "center"  }}
+                  sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1,  }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
-                  >Pomar de <Box component="span" style={{ color: "rebeccapurple", width: "100%"}}> {`${farmer?.fullname}`}</Box> localizado
-                 <span style={{ color: "rebeccapurple"}}> {`${farmland?.label}`}</span>!
+                  color="#eee"
+                  >{ `Pomar de ${farmer?.fullname}:`} <br /> {`${farmland?.label}!`}
                 </Typography> 
+              </Box>
               }
+              
+
 
               { (farmer && farmlandDivision) &&
+              <Box sx={{position: "absolute", top: 0, left: 0, backgroundColor: "rebeccapurple",  width: "100%", height: "70px", }}>
                 <Typography 
-                  sx={{ textAlign: "center", }}
+                  sx={{ textAlign: "center", width: "250px", ml: 3, mt: 1, }}
                   id="keep-mounted-modal-title" 
                   variant='body1'
-                  >Pomar de <Box component="span" style={{ color: "rebeccapurple", width: "100%", }}> {`${farmer?.fullname}`}</Box> localizado
-                 <span style={{ color: "rebeccapurple"}}> {`${farmland?.label}`}</span>!
+                  color="#eee"
+                  >Pomar de {farmer?.fullname}: <br /> {farmland?.label}!
                 </Typography> 
+                </Box>
               }
 
-          <Typography variant="body2" sx={{ mt: 7, textAlign: "center" }}>
+            
+
+          <Typography variant="body2" sx={{ mt: 8, textAlign: "center" }}>
            Adicionar...
           </Typography>
           <Grid container sx={{ mt: 3,  }}>
             <Grid item xs={6} sx={{ textAlign: "left"}} >
               <Button onClick={()=>{
-                navigate('/divisions')
+                navigate('/divisions', { state: { farmer, farmland }})
                 setOpen(false)
               }}>
                 <Box sx={{ textAlign: "center",  color: "rebeccapurple"}}>
@@ -85,7 +100,7 @@ const FarmlandRegisterModal = ({ open, setOpen,  farmer, farmland, farmlandDivis
               </Button>
             </Grid>
           </Grid>
-          <Grid container sx={{ mt: 7 }}>
+          <Grid container sx={{ mt: 4 }}>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Button onClick={()=>{
                 navigate('/')

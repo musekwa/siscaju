@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import FarmerRegisterModal from '../components/FarmerRegisterModal.jsx'
 import FarmlandRegisterModal from '../components/FarmlandRegisterModal'
 import Footer from '../components/Footer'
@@ -24,7 +24,10 @@ const Item = styled(Box)(({ theme }) => ({
 const Dashboard = ({ user }) => {
 
   // const [transition, setTransition] = useState(true)
-  const [myState, setMyState] = useState(false)
+  // const [myState, setMyState] = useState(false)
+  const navigate = useNavigate();
+  const location = useLocation()
+  const [reload, setReload] = useState(false)
 
   let { 
     data, 
@@ -36,18 +39,31 @@ const Dashboard = ({ user }) => {
 
   // console.log('performance: ', data)
 
+    useEffect(()=>{
+      setReload((prevState)=>!prevState)
+    }, [])
+
   if (isLoading || isFetching) {
     return <Spinner />
   }
 
 
+  
+
+
 
 
   return (
-    <Box>
-      <Navbar pageDescription={"Meu Painel"} user={user} />
+    <Box >
+      <Navbar pageDescription={
+        user?.role === 'Gestor' 
+        ? user?.address.province 
+        : user?.role === 'Extensionista' 
+        ? user?.address.district 
+        : user?.role === 'Produtor' 
+        ? user?.address.territory: null } user={user} />
     {/* <Zoom in={transition} style={{ transitionDelay: transition ? '500ms': '100ms' }}> */}
-        <Box sx={{ flexGrow: 1, marginTop: "45px", marginBottom: "20px", }} >
+        <Box sx={{ flexGrow: 1, marginTop: "35px", marginBottom: "20px", }} >
         <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
           <Grid item xs={4}>
             <Item sx={{}}>        
@@ -81,8 +97,8 @@ const Dashboard = ({ user }) => {
           
           <Divider sx={{}} />
 
-        <Typography variant="body1" sx={{ textAlign: "left", margin: "25px"}}>Desempenho pessoal</Typography>
-        <Box sx={{ margin: "25px", }}>
+        <Typography variant="body1" sx={{ textAlign: "left", margin: "15px"}}>Desempenho pessoal ({user?.fullname})</Typography>
+        <Box sx={{ margin: "15px", }}>
         <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
           <Grid item sx={{ }} xs={4} >
             
@@ -109,8 +125,8 @@ const Dashboard = ({ user }) => {
           </Box>
 
           <Divider sx={{}} />
-        <Typography variant="body1" sx={{ textAlign: "left", margin: "25px"}}>Desempenho distrital</Typography>
-        <Box sx={{ margin: "25px", }}>
+        <Typography variant="body1" sx={{ textAlign: "left", margin: "15px"}}>Desempenho distrital ({user?.address.district})</Typography>
+        <Box sx={{ margin: "15px", }}>
         <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
           <Grid item sx={{ }} xs={4} >
             
@@ -135,7 +151,40 @@ const Dashboard = ({ user }) => {
 
           </Grid>
           </Box>
-        {/* </Zoom> */}
+
+    { user?.role === 'Gestor' ? 
+        (<>
+          <Divider sx={{}} />
+          <Typography variant="body1" sx={{ textAlign: "left", margin: "15px"}}>Desempenho provincial ({user?.address.province})</Typography>
+          <Box sx={{ margin: "15px", }}>
+          <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
+            <Grid item sx={{ }} xs={4} >
+              
+            <Link to='/farmers' sx={{}}>
+              <Typography variant="body1" sx={{}}>{data?.province?.farmers?.length || 0}</Typography>
+              <Typography variant="body1" sx={{}}>Produtores<br />registados</Typography>
+            </Link>
+            </Grid>
+            <Grid item sx={{  }} xs={4}>
+            <Link to='/farmers' sx={{}}>
+              <Typography variant="body1" sx={{}}>{data?.province?.farmlands?.length || 0}</Typography>
+              <Typography variant="body1" sx={{}}>Pomares<br />registados</Typography>
+            </Link>
+            </Grid>
+
+            <Grid item sx={{  }} xs={4}>
+            <Link to='/farmers' sx={{ }}>
+              <Typography variant="body1" sx={{ }}>{0}</Typography>
+              <Typography variant="body1" sx={{ }}>Pomares<br />Monitorados</Typography>
+            </Link>
+            </Grid>
+
+          </Grid>
+          </Box>
+        </>)
+        : null
+      } 
+
         <Footer />
 
     </Box>

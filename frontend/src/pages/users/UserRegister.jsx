@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { register, reset } from "../../features/auth/authSlice";
 import Spinner from "../../components/Spinner";
@@ -89,9 +89,11 @@ function UserRegister() {
         position: toast.POSITION.TOP_CENTER,
       });
       navigate("/");
+      
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
+
 
 
   useEffect(() => {
@@ -111,6 +113,11 @@ function UserRegister() {
       }))
     }
   }, [address.district]);
+
+  // if (isSuccess) {
+  //   window.location.reload(false)
+  //    return <Navigate to={'/'} replace />
+  // }
 
   // const onChange = (e) => {
   //   setFormData((prevState) => ({
@@ -216,6 +223,10 @@ function UserRegister() {
           mb: "10px",
         }}
       >
+        {/* <Typography color="primary" sx={{ fontSize: "19px", textAlign: "right", marginRight: "20px"}}>
+            <Link to="/login" >login</Link>
+        </Typography> */}
+
         <Typography
           variant="h6"
           fontWeight={200}
@@ -224,6 +235,7 @@ function UserRegister() {
         >
           Registar-se
         </Typography>
+       
         <Box component="form" noValidate autoComplete="off" onSubmit={onSubmit}>
           <div style={{ padding: "20px 10px 15px 10px" }}>
             <TextField

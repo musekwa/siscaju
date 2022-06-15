@@ -12,6 +12,7 @@ import Farmer from "../models/farmer.model.js";
 import Farmland from "../models/farmland.model.js";
 import UserPerformance from '../models/userPerformance.model.js'
 import DistrictPerformance from '../models/districtPerformance.model.js'
+import ProvincePerformance from "../models/provincePerformance.model.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -20,61 +21,76 @@ const ObjectId = mongoose.Types.ObjectId;
 //@access
 const getFarmers = asyncHandler (async (req, res) => {
   const { user } = req;
-  const { district } = req.query;
+  const { district, from } = req.query;
 
   // console.log("farmers from district: ", district);
 
-
-  let farmers = await Farmer.find({ "address.district": district });
-
-  
-  // let farmlands = await Farmland.find({})
-
-  // farmers = farmers.map((farmer)=>{
-  //   let cashewTrees = 0;
-
-  //   // add the number of cashew trees this farmer owns 
-  //   if (farmer.farmlands && farmer.farmlands.length > 0) {
-  //     let foundFarmland = farmer.farmlands.find(farmlandId=>ObjectId(farmlands._id) === ObjectId(farmlandId))
-  //     cashewTrees += foundFarmland?.totalTrees;
-  //     farmer.trees = cashewTrees 
-  //     console.log('trees: ', farmer)     
-  //   }
-  //   return farmers;
-  // })
-
-
-
-
-  // try {
-  // switch (user?.role) {
-  //   case "Extensionista":
-  //     farmers = await Farmer.find({
-  //       district: { adress: { district } },
-  //     }).populate("farmlands");
-  //     break;
-  //   case "Produtor":
-  //     farmers = await Farmer.findById(ObjectId(user._id)).populate(
-  //   "farmlands"
-  // );
-  //     break;
-  //   case "Gestor":
-  //     farmers = await Farmer.find({});
-  //     break;
-  //   default:
-  //     res.status(401);
-  //     throw new Error("Nao autorizado");
-  // }
-  // farmers = await Farmer.find({});
-  
-  // sort by the update date
-  if (farmers){
-      farmers = farmers.sort(function(a, b){
-          return new Date(b.updatedAt) - new Date(a.updatedAt)
-      })
+  let farmers;
+  if (user?.role === "Produtor") {
+    farmers = await Farmer.find({ "address.territory": from }).populate('farmlands');
   }
+  else if (user?.role === "Extensionista"){
+    farmers = await Farmer.find({ "address.district": from }).populate(
+      "farmlands"
+    );
+  }
+  else {
+    farmers = await Farmer.find({ "address.province": from }).populate(
+      "farmlands"
+    );
+  }
+  
+  
+  if (farmers) {
+      // if (from === 'province'){
+      //   farmers = await Farmer.find({ "address.province": from });
+      // }else if (from === 'district'){
 
-  console.log('farmers: ', farmers)
+      // }else if (from === 'territory'){
+
+      // }
+
+      // let farmlands = await Farmland.find({})
+
+      // farmers = farmers.map((farmer)=>{
+      //   let cashewTrees = 0;
+
+      //   // add the number of cashew trees this farmer owns
+      //   if (farmer.farmlands && farmer.farmlands.length > 0) {
+      //     let foundFarmland = farmer.farmlands.find(farmlandId=>ObjectId(farmlands._id) === ObjectId(farmlandId))
+      //     cashewTrees += foundFarmland?.totalTrees;
+      //     farmer.trees = cashewTrees
+      //     console.log('trees: ', farmer)
+      //   }
+      //   return farmers;
+      // })
+
+      // try {
+      // switch (user?.role) {
+      //   case "Extensionista":
+      //     farmers = await Farmer.find({
+      //       district: { adress: { district } },
+      //     }).populate("farmlands");
+      //     break;
+      //   case "Produtor":
+      //     farmers = await Farmer.findById(ObjectId(user._id)).populate(
+      //   "farmlands"
+      // );
+      //     break;
+      //   case "Gestor":
+      //     farmers = await Farmer.find({});
+      //     break;
+      //   default:
+      //     res.status(401);
+      //     throw new Error("Nao autorizado");
+      // }
+      // farmers = await Farmer.find({});
+
+      // sort by the update date
+      farmers = farmers.sort(function (a, b) {
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      });
+    }
 
   return res.status(200).json(farmers);
 });
@@ -93,11 +109,11 @@ const addFarmer = asyncHandler (async (req, res) => {
     fullname: user?.fullname,
     email: user?.email,
     phone: user?.phone,
-  }
+  };
 
   body.address.province = user.address.province;
   body.address.district = user.address.district;
-  body['user'] = registeredBy;  // add the user property (registeredBy)
+  body["user"] = registeredBy; // add the user property (registeredBy)
 
   const newFarmer = new Farmer(body);
   const savedFarmer = await newFarmer.save();
@@ -134,8 +150,29 @@ const addFarmer = asyncHandler (async (req, res) => {
     districtPerformance.farmers.push(ObjectId(savedFarmer._id));
     await districtPerformance.save();
   }
+
+  // -----------------------------------------------------
+  // save performance by province
+  let provincePerformance = await ProvincePerformance.findOne({
+    province: user?.address?.province,
+  });
+
+  if (!provincePerformance) {
+    let newProvincePerformace = new ProvincePerformance({
+      province: user?.address?.province,
+      farmers: new Array(ObjectId(savedFarmer._id)),
+    });
+    await newProvincePerformace.save();
+  } else {
+    provincePerformance.farmers.push(ObjectId(savedFarmer._id));
+    await provincePerformance.save();
+  }
+
   return res.status(201).json(savedFarmer);
 });
+
+
+
 
 //@desc
 //@route

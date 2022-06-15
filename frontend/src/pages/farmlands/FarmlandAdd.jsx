@@ -14,14 +14,22 @@ import Footer from '../../components/Footer';
 import { Add, AddCircle } from '@mui/icons-material';
 import { farmers} from '../../fakeData/farmers.js'
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useGetFarmersQuery, useGetFarmersByDistrictQuery } from '../../features/farmers/farmerSlice';
+import { useGetFarmersQuery, useGetFarmersByDistrictQuery, useGetFarmersByQuery } from '../../features/farmers/farmerSlice';
 import Spinner from '../../components/Spinner';
 import SearchModal from '../../components/SearchModal';
 import { toast } from 'react-toastify'
 
 const FarmlandAdd = ({ user }) => {
 
-    const { data, isError, error, isLoading, isFetching } = useGetFarmersByDistrictQuery(user?.address?.district);
+
+    let filterBy = user?.role === 'Extensionista' 
+                ? user?.address?.district 
+                : user?.role === 'Gestor' 
+                ? user?.address?.province
+                : user?.role === 'Produtor'
+                ? user?.address?.territory : null;
+
+    const { data, isError, error, isLoading, isFetching } = useGetFarmersByQuery(filterBy);
     const navigate = useNavigate()
 
     if (isLoading || isFetching) {

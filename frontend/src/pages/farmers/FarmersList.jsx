@@ -11,10 +11,10 @@ import Navbar from '../../components/Navbar';
 import NotFound from '../NotFound';
 import { Box, Fab, ListItemButton, Stack, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
-import { Add } from '@mui/icons-material';
+import { Add, CoPresentSharp } from '@mui/icons-material';
 import { farmers} from '../../fakeData/farmers.js'
-import { useNavigate } from 'react-router-dom';
-import { useGetFarmersQuery, useGetFarmersByDistrictQuery} from '../../features/farmers/farmerSlice';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useGetFarmersQuery, useGetFarmersByDistrictQuery, useGetFarmersByQuery } from '../../features/farmers/farmerSlice';
 import Spinner from '../../components/Spinner';
 import SearchModal from '../../components/SearchModal';
 
@@ -24,22 +24,51 @@ const FarmersList = ({ user })=> {
 
     // const [farmersList, setFarmersList] = useState(null)
 
-    let { data, error, isLoading } = useGetFarmersByDistrictQuery(user?.address?.district);
+    let filterBy = user?.role === 'Extensionista' 
+                    ? user?.address?.district 
+                    : user?.role === 'Gestor' 
+                    ? user?.address?.province
+                    : user?.role === 'Produtor'
+                    ? user?.address?.territory : null;
+    let { data, error, isLoading } = useGetFarmersByQuery(filterBy);
 
     const navigate = useNavigate()
+    const location = useLocation()
+    const [reload, setReload] = useState(false)
 
     const onAddFarmer = ()=>{
         navigate('/farmers')
     }
 
-    const getRegistrationDate = (date)=>{
-        let newDate = new Date(date).toDateString().split(' ')
-        return newDate.slice(1).join(" ")
+
+    const GetTotalTrees = (farmlands) => {
+        // get all the declared areas for all the farmlands
+        let trees = farmlands?.map(f=>f?.totalTrees)
+       
+        return trees.reduce((ac, el)=>ac + el, 0);
     }
+
+    // const getRegistrationDate = (date)=>{
+    //     let newDate = new Date(date).toDateString().split(' ')
+    //     return newDate.slice(1).join(" ")
+    // }
+
+    const normalizeDate = (date)=>{
+        return new Date(date).getDate() + '/'
+             + (new Date(date).getMonth() + 1) + '/' 
+             + new Date(date).getFullYear()
+    }
+
+
+    
+    useEffect(()=>{
+      setReload((prevState)=>!prevState)
+    }, [])
 
     if (isLoading) {
         return <Spinner />
     }
+
 
     if (!data) {
         return  <NotFound />
@@ -57,6 +86,7 @@ const FarmersList = ({ user })=> {
             {
                 data.map((farmer, key)=>(
             <Box key={farmer._id.toString()} >
+            <Link to={`/farmers/${farmer._id}`}>
             <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
                 <ListItemAvatar>
@@ -72,7 +102,7 @@ const FarmersList = ({ user })=> {
                                     <Typography component="span" variant='body2'>{`Pomares: ${farmer?.farmlands?.length}`}</Typography>
                                 </Box>
                                 <Box sx={{ width: "50%"}}>
-                                 <Typography component="span" variant='body2'>{`Cajueiros: ${farmer?.totalTrees}`}</Typography>
+                                 <Typography component="span" variant='body2'>Cajueiros: {GetTotalTrees(farmer?.farmlands)}</Typography>
                                 </Box>
                             </Stack>
                             <Stack direction="row">
@@ -85,11 +115,12 @@ const FarmersList = ({ user })=> {
                     }
                     secondary={
                         
-                        <Typography component="div" sx={{ width: "100%"}}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${getRegistrationDate(farmer.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmer?.user?.fullname}`}</span></Typography> 
+                        <Typography component="div" sx={{ width: "100%"}}><span style={{textAlign: "rigth", fontSize: "11px"}}>Registo:{`${normalizeDate(farmer.createdAt)}`}</span>   <span style={{textAlign: "rigth", fontSize: "11px"}}>{`por ${farmer?.user?.fullname}`}</span></Typography> 
                     }
                 />
                 {/* </ListItemButton> */}
             </ListItem>
+            </Link>
             <Divider variant="inset" component="li" />
             </Box>))
             }

@@ -1,7 +1,7 @@
 export const districtsByProvince = {
   Tete: [
     "Angónia",
-   " Cahora-Bassa",
+    " Cahora-Bassa",
     "Changara",
     "Chifunde",
     "Chiuta",
@@ -43,6 +43,16 @@ export const districtsByProvince = {
     "Matutuíne",
     "Moamba",
     "Namaacha",
+  ],
+
+  "Maputo Cidade": [
+    "KaMpfumu",
+    "Nlhamankulu",
+    "KaMaxakeni",
+    "KaMavota",
+    "KaMubukwana",
+    "KaTembe",
+    "KaNyaka",
   ],
 
   Manica: [
@@ -157,7 +167,7 @@ export const districtsByProvince = {
     "Pemba",
     "Quissanga",
   ],
-  
+
   Zambézia: [
     "Alto Molócuè",
     "Chinde",

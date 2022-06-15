@@ -41,11 +41,14 @@ export const farmersApi = createApi({
     }),
     getFarmersByDistrict: builder.query({
       query: (district)=>`?district=${district}`
+    }),
+    getFarmersBy: builder.query({
+      query: (filterBy)=>`?from=${filterBy}`
     })
   }),
 });
 
-export const { useGetFarmersQuery, useGetFarmerByIdQuery, useGetFarmersByDistrictQuery } = farmersApi;
+export const { useGetFarmersQuery, useGetFarmerByIdQuery, useGetFarmersByDistrictQuery , useGetFarmersByQuery } = farmersApi;
 
 
 

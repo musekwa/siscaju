@@ -21,7 +21,7 @@ export const performancesApi = createApi({
     refetchOnMountOrArgChange: 1,
     endpoints: (builder)=>({
         getPerformances: builder.query({
-            query: ()=> `?userId=${user._id}&district=${user?.address?.district}`
+            query: ()=> `?userId=${user._id}&district=${user?.address?.district}&province=${user?.address?.province}`
         }),
     }),
 })

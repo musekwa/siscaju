@@ -2,6 +2,7 @@
 export const administrativePosts = {
   // niassa
 
+  Chimbonila: ["Chimbonila", "Lione"],
   Cuamba: ["Cuamba", "Etatara", "Lurio"],
   Lago: ["Cobue", "Lunho", "Maniamba", "Metangula"],
   Lichinga: ["Chimbonila", "Lione", "Lichinga", "Meponda"],
@@ -42,6 +43,8 @@ export const administrativePosts = {
   Eráti: ["Namapa", "Alua", "Namiroa"],
   "Ilha de Moçambique": ["Ilha de Moçambique", "Lumbo"],
   Lalaua: ["Lalaua", "Meti"],
+  Larde: ["Larde", "Mucuali"],
+  Liúpo: ["Liúpo", "Quinga"],
   Malema: ["Malema", "Chihulo", "Mutuali"],
   Meconta: ["Meconta", "Corrane", "Namialo", "7 de Abril"],
   Mecubúri: ["Mecubúri", "Milhana", "Muite", "Namina"],
@@ -190,15 +193,75 @@ export const administrativePosts = {
 
   // maputo
 
-  Boane: ["Boane", "Matola-Rio", ],
+  Boane: ["Boane", "Matola-Rio"],
   Magude: ["Magude", "Mapulanguene", "Motaze", "Mahel", "Panjane"],
-  Manhiça: ["Manhiça", "Calanga", "Ilha de Josina Machel", "Maluana", "Xinavane", "3 de Fevereiro"],
+  Manhiça: [
+    "Manhiça",
+    "Calanga",
+    "Ilha de Josina Machel",
+    "Maluana",
+    "Xinavane",
+    "3 de Fevereiro",
+  ],
   Marracuene: ["Marracuene", "Machubo", ""],
   Matola: ["Matola", "Infulene", "Machava"],
   Matutuíne: ["Missevene", "Catembe", "Catuane", "Machangulo", "Zitundo"],
   Moamba: ["Moamba", "Pessene", "Ressano Garcia", "Sabie"],
-  Namaacha: ["Namaacha", "Changalane",],
+  Namaacha: ["Namaacha", "Changalane"],
 
   // maputo cidade
-  Maputo: ["Maputo"]
+  KaMpfumu: [
+    "Alto Maé",
+    "Bairro Central",
+    "Coop",
+    "Malhangalene",
+    "Polana-Cimento",
+    "Sommerschield",
+  ],
+
+  Nlhamankulu: [
+    "Aeroporto",
+    "Chamanculo",
+    "Malanga",
+    "Minkadjuine",
+    "Munhuana",
+    "Unidade 7",
+    "Xipamanine",
+  ],
+
+  KaMaxakeni: ["Mafalala", "Maxaquene", "Polana Caniço", "Urbanização"],
+
+  KaMavota: [
+    "3 de Fevereiro",
+    "Albazine",
+    "Costa do Sol",
+    "F.P.L.M.",
+    "Ferroviário",
+    "Hulene",
+    "Laulane",
+    "Mahotas",
+    "Mavalane",
+  ],
+
+  KaMubukwana: [
+    "25 de Junho A",
+    "25 de Junho B",
+    "Bagamoyo",
+    "George Dimitrov",
+    "Inhagóia",
+    "Jardim",
+    "Luis Cabral",
+    "Magoanine",
+    "Malhazine",
+    "Nsalene",
+    "Zimpeto",
+  ],
+
+  KaTembe: ["Inguide", "Incassane", "Guachene", "Chali", "Chamissava"],
+
+  KaNyaka: [
+    "Ribzwene", 
+    "Inguane",
+    "Nhanquene",
+  ]
 };
