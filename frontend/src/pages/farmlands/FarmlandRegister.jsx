@@ -229,6 +229,8 @@ const FarmlandRegister = ({ user }) => {
       // sending the farmerId to be used as a query param in the URL (backend)
       farmerId: farmer._id
     }
+
+    // console.log('normalized farmland: ', normalizedFarmlandData);
     // pass the farmerId as query param to be attached to the URL
     dispatch(farmlandRegister(normalizedFarmlandData))
   }

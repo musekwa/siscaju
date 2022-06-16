@@ -32,7 +32,9 @@ const Farmer = ({ user }) => {
 
     const location = useLocation()
    
-    const { farmerId } = useParams()
+    const { farmer } = location.state;
+
+
     
     let filterBy = user?.role === 'Extensionista' 
                     ? user?.address?.district 
@@ -41,15 +43,11 @@ const Farmer = ({ user }) => {
                     : user?.role === 'Produtor'
                     ? user?.address?.territory : null;
 
-    let { data : farmers, error: farmersError, isLoading: farmersIsLoading } = useGetFarmersByQuery(filterBy);
     let { data: farmlands, error: farmlandsError, isLoading: farmlandsIsLoading } = useGetFarmlandsByQuery(filterBy)
 
 
-    // get farmer by farmerId from the store
-    let farmer = farmers?.find(f => f?._id === farmerId);
-
     // get all ther farmlands associated to this farmer
-    let foundFarmlands = farmlands?.filter(farmland=>farmland.farmer._id === farmerId)
+    let foundFarmlands = farmlands?.filter(farmland=>farmland.farmer._id === farmer._id)
 
     // normalize date format: dd/mm/aaaa
     const normalizeDate = (date)=>{
@@ -75,7 +73,7 @@ const Farmer = ({ user }) => {
         }
     }
 
-    if(farmlandsIsLoading || farmersIsLoading) {
+    if(farmlandsIsLoading) {
         return <Spinner />
     }
 
@@ -92,6 +90,7 @@ const Farmer = ({ user }) => {
         justifyContent: "center",
         maxWidth: "960px",
         marginTop: "45px",
+        marginLeft: "15px"
       }}
     >
 
@@ -99,22 +98,21 @@ const Farmer = ({ user }) => {
      
       <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
         <Avatar sx={{ width: "50px", height: "50px"}} src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-        <Box sx={{ textAlign: "center", width: "100%", marginRight: "5px" }}>
+        <Box sx={{ textAlign: "center", width: "50%", marginRight: "5px" }}>
             <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
             <Typography variant='body2'>({`${farmer?.category}`})</Typography>
-        </Box>
-        <Box sx={{ marginRight: "5px" }}>
-            <Button sx={{ }}>
-                <Edit fontSize='medium' sx={{ color: "rebeccapurple"}} />
-                {/* Actualizar */}
-            </Button>
         </Box>
       </UserStack>
     </Box>
 
-    <Divider sx={{ mt: "10px", mb: "10px", }} />
+    <Divider sx={{ mt: "10px", mb: "5px", }} />
 
-    <Box sx={{ maxWidth: "960px", padding: "10px" }}>
+    <Box sx={{ maxWidth: "960px", padding: "0px 5px 5px 5px",  marginLeft: "15px" }}>
+    <Box sx={{width: "100%", marginRight: "0px 5px 5px 5px", textAlign: "right" }}>
+      <Button sx={{ width: "50px"}}>
+          <Edit fontSize='small' sx={{ color: "rebeccapurple"}} />
+      </Button>
+    </Box>
 
     {/* data nascimento */}
     <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
@@ -188,7 +186,7 @@ const Farmer = ({ user }) => {
       {/* hectares */}
     <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área Total Plantada:
+        Área total plantada:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         {`${GetTotalArea()?.actualArea}`}
@@ -199,7 +197,7 @@ const Farmer = ({ user }) => {
       {/* hectares */}
     <Stack direction="row" sx={{ padding: "5px 5px 5px 5px"}} gap={2}>
       <Box sx={{ width: "50%", textAlign: 'left'}} >
-        Área Total Declarada:
+        Área total declarada:
       </Box>
       <Box sx={{width: "50%", textAlign: 'left'}}>
         {`${GetTotalArea()?.declaredArea}`}

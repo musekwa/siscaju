@@ -1,5 +1,5 @@
 
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, startTransition } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -53,8 +53,9 @@ const FarmlandAdd = ({ user }) => {
 
     const onAddFarm = (farmerId)=>{
         let farmer = data.find(farmer => farmer._id === farmerId)
-
-        navigate('/farmlands', { state: {farmer: farmer }})
+        startTransition(()=>{
+            navigate('/farmlands', { state: {farmer: farmer }})
+        })
     }
 
 

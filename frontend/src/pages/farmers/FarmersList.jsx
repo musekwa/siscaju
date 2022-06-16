@@ -1,5 +1,5 @@
 
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, startTransition } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -22,8 +22,6 @@ import SearchModal from '../../components/SearchModal';
 
 const FarmersList = ({ user })=> {
 
-    // const [farmersList, setFarmersList] = useState(null)
-
     let filterBy = user?.role === 'Extensionista' 
                     ? user?.address?.district 
                     : user?.role === 'Gestor' 
@@ -37,8 +35,9 @@ const FarmersList = ({ user })=> {
     const [reload, setReload] = useState(false)
 
     const onAddFarmer = ()=>{
+        startTransition(()=>{
         navigate('/farmers')
-    }
+    })}
 
 
     const GetTotalTrees = (farmlands) => {
@@ -48,17 +47,11 @@ const FarmersList = ({ user })=> {
         return trees.reduce((ac, el)=>ac + el, 0);
     }
 
-    // const getRegistrationDate = (date)=>{
-    //     let newDate = new Date(date).toDateString().split(' ')
-    //     return newDate.slice(1).join(" ")
-    // }
-
     const normalizeDate = (date)=>{
         return new Date(date).getDate() + '/'
              + (new Date(date).getMonth() + 1) + '/' 
              + new Date(date).getFullYear()
     }
-
 
     
     useEffect(()=>{
@@ -82,11 +75,20 @@ const FarmersList = ({ user })=> {
                 <Add fontSize='large' color="white" />
             </Fab>
         </Tooltip>
+        {
+            (data && data.length === 0) && (
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh", }}>
+                    <Box sx={{ width: "600px"}}>
+                    <Typography>Nenhum produtor deste distrito foi registado!</Typography>
+                    </Box>
+                </Box>
+            )
+        }
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
                 data.map((farmer, key)=>(
             <Box key={farmer._id.toString()} >
-            <Link to={`/farmers/${farmer._id}`}>
+            <Link to="/farmer" state={{ farmer }}>
             <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
                 <ListItemAvatar>

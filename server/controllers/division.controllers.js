@@ -37,6 +37,15 @@ const CategorizeFarmer = (farmlands) => {
 };
 
 
+const categorizeSpacing = (spacing) => {
+  if (spacing["x"] && spacing["y"] && spacing["x"] === spacing["y"]) {
+    return "regular";
+  } else {
+    return "irregular";
+  }
+};
+
+
 //@desc 
 //@route 
 //@access
@@ -53,6 +62,10 @@ const addDivision = asyncHandler (async (req, res) => {
   }
 
   let farmland = await await Farmland.findById(ObjectId(farmlandId));
+  
+  let spacing = categorizeSpacing(body.spacing);
+  body.spacing['category'] = spacing;
+  
   farmland.divisions.push(body);
 
   // get farmland's owner

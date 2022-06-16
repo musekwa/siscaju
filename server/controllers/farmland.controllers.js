@@ -42,6 +42,14 @@ const CategorizeFarmer = (farmlands) => {
   }
 };
 
+const categorizeSpacing = (spacing) => {
+  if ((spacing['x'] && spacing['y']) && (spacing['x'] === spacing['y']) ){
+    return "regular";
+  } else {
+    return "irregular";
+  }
+}
+
 
 const GetTotalTrees = (farmlands) => {
   // get all the declared areas for all the farmlands
@@ -68,6 +76,14 @@ const addFarmland = asyncHandler (async (req, res) => {
 
   body["district"] = user?.address?.district;
 
+  let division = body.divisions[0];
+
+  let spacing = categorizeSpacing(division.spacing);
+ 
+  division.spacing['category'] = spacing;
+  body.divisions[0] = division;
+
+  
   // create a new farmland document
   let newFarmland = new Farmland(body);
 

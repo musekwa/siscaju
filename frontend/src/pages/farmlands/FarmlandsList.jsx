@@ -11,7 +11,7 @@ import Navbar from '../../components/Navbar';
 import NotFound from '../NotFound'
 import { Box, Fab, Grid, Stack, Table, TableCell, TableRow, Tooltip } from '@mui/material';
 import Footer from '../../components/Footer';
-import { Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Navigate, useNavigate, useLocation, Link } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import {  useGetFarmlandsQuery, useGetFarmlandsByDistrictQuery, useGetFarmlandsByQuery  } from '../../features/farmlands/farmlandSlice'
 import { useGetFarmersQuery, useGetFarmersByDistrictQuery } from '../../features/farmers/farmerSlice'
@@ -81,11 +81,22 @@ const FarmlandsList = ({ user })=> {
                 <Add fontSize='large' color="white" />
             </Fab>
         </Tooltip>
+        {
+            (data && data.length === 0) && (
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center ", width: "100%", height: "90vh",  }}>
+                    <Box sx={{ width: "600px"}}>
+                    <Typography>Nenhum pomar deste distrito foi registado!</Typography>
+                    </Box>
+                </Box>
+            )
+        }
         <List sx={{ marginTop: "45px", width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {
             data.map((farmland, key)=>(
             <Box key={farmland?._id.toString()}>
+            <Link to="/farmland" state={{ farmland, farmer: farmland.farmer }}>
             <ListItem alignItems="flex-start">
+                
                 <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
@@ -125,7 +136,9 @@ const FarmlandsList = ({ user })=> {
                 }
 
                 />
+               
             </ListItem>
+            </Link>
             <Divider variant="inset" component="li" />
             </Box>
             ))

@@ -142,7 +142,7 @@ function UserRegister() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (fullname.split(" ").length < 2) {
+    if ((fullname.split(" ").length < 2) || !fullname.trim())  {
       toast.error("Nome deve ser completo", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -166,7 +166,7 @@ function UserRegister() {
       });
       return;
     }
-    if (password !== password2) {
+    if ((password !== password2) || !password || !password2) {
       toast.error("Passwords não correspondem", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -178,8 +178,9 @@ function UserRegister() {
       });
       return;
     }
+    
+
     if (!(roles.indexOf(role) > -1)) {
-      console.log('indexOf role: ', roles.indexOf(role))
       toast.error("Perfil inválido", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -192,11 +193,26 @@ function UserRegister() {
       return;
     }
 
+    if (!address.province || !address.district) {
+
+        toast.error("Endereço incompleto!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+      });
+
+      return ;
+    }
+
     const normalizedUserData = {
       ...userData,
     };
     
-    dispatch(register(userData));
+    dispatch(register(normalizedUserData));
   };
 
   if (isLoading) {

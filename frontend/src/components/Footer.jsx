@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, startTransition } from 'react'
 import {
   Dashboard,
   Forest,
@@ -37,30 +37,29 @@ const Footer = ( ) => {
  const navigate = useNavigate()
  useEffect(() => {
    ref.current.ownerDocument.body.scrollTop = 0;
-  //  if (value === 2) {
-  //   setItemList(farmers);
-  //  }
-  //  else if (value === 3) {
-  //   setItemList(farmlands);
-  //  }
    
  }, [value, setItemList]);
 
     const toDashboard = ()=>{
+      startTransition(()=>{
         navigate('/')
+      })
     }
 
     const toFarmersList = ()=>{
+      startTransition(()=>{
       navigate('/farmers-list')
-    }
+    })}
 
     const toFarmlandsList = ()=>{
+      startTransition(()=>{
       navigate('/farmlands-list')
-    }
+    })}
 
     const toMonitorings = ()=>{
+      startTransition(()=>{
       navigate('/to-be-defined')
-    }
+    })}
 
   return (
     <Box sx={{ pb: 7, display: { xs: "block", sm: "none" } }} ref={ref}>

@@ -6,12 +6,12 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import FarmerRegisterModal from '../components/FarmerRegisterModal.jsx'
-import FarmlandRegisterModal from '../components/FarmlandRegisterModal'
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
-import Spinner from '../components/Spinner'
-import { useGetPerformancesQuery } from '../features/performance/performanceSlice'
+import FarmerRegisterModal from '../../components/FarmerRegisterModal.jsx.jsx'
+import FarmlandRegisterModal from '../../components/FarmlandRegisterModal'
+import Footer from '../../components/Footer'
+import Navbar from '../../components/Navbar'
+import Spinner from '../../components/Spinner'
+import { useGetPerformancesQuery } from '../../features/performance/performanceSlice'
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -27,7 +27,7 @@ const Dashboard = ({ user }) => {
   // const [myState, setMyState] = useState(false)
   const navigate = useNavigate();
   const location = useLocation()
-  const [reload, setReload] = useState(false)
+  // const [reload, setReload] = useState(false)
 
   let { 
     data, 
@@ -39,9 +39,9 @@ const Dashboard = ({ user }) => {
 
   // console.log('performance: ', data)
 
-    useEffect(()=>{
-      setReload((prevState)=>!prevState)
-    }, [])
+    // useEffect(()=>{
+    //   setReload((prevState)=>!prevState)
+    // }, [])
 
   if (isLoading || isFetching) {
     return <Spinner />

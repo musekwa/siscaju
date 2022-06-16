@@ -3,7 +3,7 @@ import { Box, Divider, Paper, Stack, styled, Typography } from "@mui/material";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Monitorings from './Monitorings'
-import Dashboard from './Dashboard'
+import Dashboard from './dashboard/Dashboard'
 import Farmlands from './farmlands/Farmlands'
 import Farmers from './farmers/Farmers'
 import { farmers } from "../fakeData/farmers";
