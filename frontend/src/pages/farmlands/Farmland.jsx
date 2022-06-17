@@ -92,7 +92,7 @@ const Farmland = ({ user }) => {
         sowingYear: division.sowingYear,
         spacing: (division?.spacing?.category === 'irregular') ? 'irregular' : `regular (${division?.spacing?.x} x ${division?.spacing?.y})`,
         divisionType: (new Date().getFullYear() - division?.sowingYear) >= 5 ? 'Parcela Antiga' : 'Parcela Nova',  
-        plantingTechniques:  division?.plantingTechniques.seedling  ? 'sementes policlonal' : `enxertia ${division?.plantingTechniques?.grafting}`,
+        plantingTechniques:  division?.plantingTechniques.seedling === 'sementes'  ? '[sementes policlonal]' : `enxertia: [${division?.plantingTechniques?.grafting}]`,
       }
     }
 
@@ -121,7 +121,7 @@ const Farmland = ({ user }) => {
      
       <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
         <Avatar sx={{ width: "50px", height: "50px"}} src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-        <Box sx={{ textAlign: "center", width: "50%", marginRight: "5px" }}>
+        <Box sx={{ textAlign: "center", width: "80%", marginRight: "5px" }}>
             <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
             <Typography variant='body2'>({`${farmer?.category}`})</Typography>
         </Box>
@@ -220,7 +220,7 @@ const Farmland = ({ user }) => {
               Área plantada:
             </Box>
             <Box sx={{width: "50%", textAlign: 'left'}}>
-              {`${getFromDivision(division)?.plantedArea}`}
+              {`${getFromDivision(division)?.plantedArea} hectares`}
             </Box>
           </Stack>
 
@@ -229,7 +229,7 @@ const Farmland = ({ user }) => {
               Cajueiros:
             </Box>
             <Box sx={{width: "50%", textAlign: 'left'}}>
-              {`${getFromDivision(division)?.trees}`}
+              {`${getFromDivision(division)?.trees} árvores`}
             </Box>
           </Stack>
 
@@ -247,7 +247,7 @@ const Farmland = ({ user }) => {
               Técnica de plantio:
             </Box>
             <Box sx={{width: "50%", textAlign: 'left'}}>
-              {`[${getFromDivision(division)?.plantingTechniques.toString()}]`}
+              {`${getFromDivision(division)?.plantingTechniques.toString()}`}
             </Box>
           </Stack>
         </Fragment>

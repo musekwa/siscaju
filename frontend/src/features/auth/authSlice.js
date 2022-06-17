@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import authService from "./authService";
 
 // get user from localsStorage
@@ -11,6 +12,11 @@ const initialState = {
   isLoading: false,
   message: "",
 };
+
+
+
+
+
 
 // register user
 export const register = createAsyncThunk(

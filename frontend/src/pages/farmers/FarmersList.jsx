@@ -55,8 +55,12 @@ const FarmersList = ({ user })=> {
 
     
     useEffect(()=>{
-      setReload((prevState)=>!prevState)
-    }, [])
+        const timeId = setTimeout(()=>{
+
+        }, 2000)
+        return clearTimeout(timeId)
+    //   setReload((prevState)=>!prevState)
+    }, [location])
 
     if (isLoading) {
         return <Spinner />

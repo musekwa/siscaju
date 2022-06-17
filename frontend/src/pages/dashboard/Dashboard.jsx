@@ -3,7 +3,7 @@ import { Forest, LegendToggle, PersonAdd } from '@mui/icons-material'
 import { Box, Divider, Grid, Typography, Zoom } from '@mui/material'
 import { styled } from '@mui/system'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import FarmerRegisterModal from '../../components/FarmerRegisterModal.jsx.jsx'
@@ -23,38 +23,55 @@ const Item = styled(Box)(({ theme }) => ({
 
 const Dashboard = ({ user }) => {
 
-  // const [transition, setTransition] = useState(true)
-  // const [myState, setMyState] = useState(false)
   const navigate = useNavigate();
   const location = useLocation()
-  // const [reload, setReload] = useState(false)
+  const [isPending, startTransition] = useTransition();
+  // const { user } = location.state;
+
+  // console.log('transported user: ', user)
+
+  const [performance, setPerformance] = useState(null)
 
   let { 
     data, 
     isLoading, 
     isFetching,
-    isError}  = useGetPerformancesQuery(
-      { refetchOnMountOrArgChange: true }
-    )
+    isSuccess,
+    isError}  = useGetPerformancesQuery()
 
-  // console.log('performance: ', data)
 
-    // useEffect(()=>{
-    //   setReload((prevState)=>!prevState)
-    // }, [])
 
-  if (isLoading || isFetching) {
-    return <Spinner />
-  }
 
+  useEffect(()=>{
+    // handleReload()
+    const timeId = setTimeout(()=>{
+      setPerformance((prevState)=>({
+        ...prevState,
+        data
+      }))
+    }, 2000)
+
+    return clearTimeout(timeId);
+  }, [location])
 
   
+    // reload once
+    // window.onload = function() {
+    //   if(!window.location.hash) {
+    //     window.location = window.location + '/#loaded';
+    //     window.location.reload(true);
+    //   }
+    // }
 
+  if (isLoading) {
+    return <Spinner />
+  }
 
 
 
   return (
     <Box >
+      { isLoading && <Spinner />}
       <Navbar pageDescription={
         user?.role === 'Gestor' 
         ? user?.address.province 
@@ -67,7 +84,7 @@ const Dashboard = ({ user }) => {
         <Grid container spacing={{ xs: 4, sm: 6, md: 8 }} sx={{ display: "flex", justifyContent: "space-around"}}>
           <Grid item xs={4}>
             <Item sx={{}}>        
-              <Link to='/farmers' sx={{}}>
+              <Link to='/farmers' >
                 <PersonAdd fontSize="large" sx={{ color: "rebeccapurple" }}  />
                 <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Registar<br />Produtor</Typography>
               </Link>
@@ -76,7 +93,7 @@ const Dashboard = ({ user }) => {
 
           <Grid item xs={4} sx={{}}>
             <Item sx={{}}> 
-          <Link to='/farmland-add' sx={{} }>
+          <Link to='/farmland-add' >
             <Forest fontSize="large" sx={{ color: "rebeccapurple" }}  />
             <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Registar<br />Pomar</Typography>
           </Link>
@@ -85,7 +102,7 @@ const Dashboard = ({ user }) => {
 
           <Grid item xs={4} sx={{}}>
             <Item>
-          <Link to='/monitorings' sx={{}}>
+          <Link to='/monitorings' >
             <LegendToggle fontSize="large" sx={{ color: "rebeccapurple" }}  />
             <Typography variant="body1" sx={{ color: "rebeccapurple" }}>Monitorar<br />Pomar</Typography>
           </Link>

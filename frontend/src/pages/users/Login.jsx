@@ -154,7 +154,7 @@ function Login() {
                 required
                 fullWidth
                 label="Email"
-                id="fullWidth"
+                id="fullWidth-1"
                 name="email"
                 type="email"
                 placeholder="Email"
@@ -174,7 +174,7 @@ function Login() {
                 required
                 fullWidth
                 label="Password"
-                id="fullWidth"
+                id="fullWidth-2"
                 name="password"
                 type="password"
                 placeholder="Password"

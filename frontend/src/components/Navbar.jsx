@@ -77,9 +77,20 @@ const Search = styled("div")(({theme})=>({
 
 const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
 
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
    const { user: inStateUSer, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -151,7 +162,7 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
  
         </Stack>
         <Tooltip title={`${user?.fullname.split(' ')[0]}`}>
-        <Icons onClick={(e) => setOpen(true)}>
+        <Icons onClick={handleClick}>
           <Avatar
             onClick={() => {}}
             sx={{ width: "40px", height: "40px",  }}
@@ -159,7 +170,7 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
           />
         </Icons>
         </Tooltip>
-        <UserBox onClick={(e) => setOpen(true)}>
+        <UserBox>
           <Avatar
             onClick={() => {}}
             sx={{ width: "40px", height: "40px" }}
@@ -168,21 +179,23 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
           <Typography variant="body2">{user?.fullname.split(' ')[0]}</Typography>
         </UserBox>
       </StyledToolbar>
+      {/* <Box onClick={handleClick}> */}
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
-        anchorEl={""}
+        anchorEl={anchorEl}
         open={open}
-        onClose={(e) => setOpen(false)}
+        onClose={handleClose}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={() => {}}>Minha conta</MenuItem>
+        <MenuItem  onClick={() => {}}>Minha conta</MenuItem>
         <MenuItem onClick={()=>onLogout()}>Terminar a sessão</MenuItem>
         <MenuItem onClick={() => {}}>Configurações</MenuItem>
       </Menu>
+      {/* </Box> */}
     </AppBar>
     // </Box>
   );

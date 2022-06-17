@@ -10,6 +10,7 @@ import farmlandDivisionReducer from '../features/farmlandDivisions/farmlandDivis
 import { farmlandsApi } from "../features/farmlands/farmlandSlice";
 import { farmersApi } from '../features/farmers/farmerSlice';
 import { performancesApi } from '../features/performance/performanceSlice';
+import { usersApi } from '../features/auth/userSlice';
 
 
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
     farmlandDivision: farmlandDivisionReducer,
 
     // RQT React Query
+    [usersApi.reducerPath]: usersApi.reducer,
     [farmersApi.reducerPath]: farmersApi.reducer,
     [farmlandsApi.reducerPath]: farmlandsApi.reducer,
     [performancesApi.reducerPath]: performancesApi.reducer,
@@ -29,7 +31,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware)=>getDefaultMiddleware()
                                             .concat(farmersApi.middleware)
                                             .concat(farmlandsApi.middleware)
-                                            .concat(performancesApi.middleware),
+                                            .concat(performancesApi.middleware)
+                                            .concat(usersApi.middleware),
 });
 
 setupListeners(store.dispatch)

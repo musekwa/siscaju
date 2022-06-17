@@ -10,6 +10,7 @@ import { genders } from "../../app/genders";
 import { districtsByProvince as districts } from "../../app/districts";
 import { administrativePosts as adminPosts } from "../../app/administrativePosts";
 import { BootstrapButton } from "../../components/Buttons";
+import { useRegisterMutation } from "../../features/auth/userSlice";
 
 import {
   Autocomplete,
@@ -71,10 +72,38 @@ function UserRegister() {
     (state) => state.auth
   );
 
+  // const [register, result] = useRegisterMutation();
+
+  // const { data: user, isLoading, isError, error, isSuccess, isUninitialized } = result;
+
+  // console.log('result: ', result)
+
+  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const toastId = useRef(null);
+
+
+  // useEffect(() => {
+  //   if (isError || error) {
+  //     // let errorMessage = message ? message : 'O registo falhou'
+  //     toast.error(error, {
+  //       autoClose: 5000,
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+  //   } else if (isSuccess) {
+  //       toast.success(`Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`, {
+  //       autoClose: 5000,
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+  //     navigate("/", { state: { user }});
+      
+  //   }
+  //   dispatch(reset());
+  // }, [user, isError, isSuccess, error, navigate, dispatch]);
+
 
   useEffect(() => {
     if (isError) {
@@ -88,7 +117,7 @@ function UserRegister() {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
-      navigate("/");
+      navigate("/", {state: { user }});
       
     }
     dispatch(reset());
@@ -139,7 +168,7 @@ function UserRegister() {
     return false;
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if ((fullname.split(" ").length < 2) || !fullname.trim())  {
@@ -213,6 +242,8 @@ function UserRegister() {
     };
     
     dispatch(register(normalizedUserData));
+    // await register(normalizedUserData);
+    
   };
 
   if (isLoading) {
@@ -341,7 +372,7 @@ function UserRegister() {
                 required
                 size="small"
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo-1"
                 value={role}
                 options={roles}
                 onChange={(event, newRole)=>{
@@ -367,7 +398,7 @@ function UserRegister() {
                 required
                 size="small"
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo-2"
                 value={gender}
                 options={genders}
                 onChange={(event, newGender)=>{
@@ -398,7 +429,7 @@ function UserRegister() {
                 required
                 size="small"
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo-3"
                 options={provinces || ['']}
                 value={address?.province}
                 onChange={(event, newProvince)=>{
@@ -432,7 +463,7 @@ function UserRegister() {
                 required
                 size="small"
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo-4"
                 value={address?.district}
                 options={
                   address?.province
@@ -490,7 +521,7 @@ function UserRegister() {
                 required
                 size="small"
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo-5"
                 value={address?.territory}
                 options={
                   address?.district
@@ -529,6 +560,8 @@ function UserRegister() {
                     helperText="residência"
                   />
                 )}
+                isOptionEqualToValue={(option, value) =>
+                      value === undefined || value === "" || option === value }
               />
             </div>
             <div style={{ width: "49%", padding: "10px 10px 15px 10px" }}>

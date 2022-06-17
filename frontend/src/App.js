@@ -16,9 +16,10 @@ import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
 import Farmer from "./pages/farmers/Farmer";
 import Farmland from "./pages/farmlands/Farmland";
 
-import React, { Suspense, lazy, } from 'react';
-import { Routes, Route, } from "react-router-dom";
+import React, { Suspense, lazy, useEffect, useState, } from 'react';
+import { Routes, Route, useLocation, } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import { useUserByIdQuery } from "./features/auth/userSlice";
 
 // import Dashboard from "./pages/Dashboard";
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
@@ -26,8 +27,25 @@ const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
 function App() {
 
+  const location = useLocation()
+  
   // const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  // const { state} = useSelector((state)=>state)
+  // const { data: user } = useUserByIdQuery()
+
+  // const [user, setUser] = useState(null);
+
+  // useEffect(()=>{
+
+  //   if (location?.state) {
+  //     const { user: newUser } = location.state
+  //     setUser(newUser)
+  //     localStorage.setItem("user", JSON.stringify(newUser));
+  //     return ;
+  //   }
+
+  // }, [user, location])
 
   return (
     <>

@@ -230,7 +230,7 @@ const FarmlandRegister = ({ user }) => {
       farmerId: farmer._id
     }
 
-    // console.log('normalized farmland: ', normalizedFarmlandData);
+    console.log('normalized farmland: ', normalizedFarmlandData);
     // pass the farmerId as query param to be attached to the URL
     dispatch(farmlandRegister(normalizedFarmlandData))
   }
