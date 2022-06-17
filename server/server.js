@@ -37,26 +37,26 @@ app.use(compress());
 app.use(helmet());
 
 // Protection using helmet
-// app.use(helmet.hidePoweredBy())
-// app.use(helmet.frameguard({ action: "deny" }));
-// app.use(helmet.xssFilter());
-// app.use(helmet.noSniff());
+app.use(helmet.hidePoweredBy())
+app.use(helmet.frameguard({ action: "deny" }));
+app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
 
 app.use(cors());
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // serve frontend
-// if (config.env === "production") {
-//   app.use(express.static(path.join(__dirname, "../frontend/build")));
+if (config.env === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-//   app.get("*", (req, res) =>
-//     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"))
-//   );
-// } else {
-//   app.get("/", (req, res) => res.send("Please set to production"));
-// }
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => res.send("Please set to production"));
+}
 
 export {
   app,
