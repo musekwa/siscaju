@@ -1,8 +1,9 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseURL } from "..";
 
 
-const baseURL = `http://localhost:8080/performances` 
+// const baseURL = `http://localhost:8080/performances` 
 
 let user = JSON.parse(localStorage.getItem("user"));
 
@@ -21,7 +22,7 @@ export const performancesApi = createApi({
     refetchOnMountOrArgChange: 1,
     endpoints: (builder)=>({
         getPerformances: builder.query({
-            query: ()=> `?userId=${user?._id}&district=${user?.address?.district}&province=${user?.address?.province}`
+            query: ()=> `/performances?userId=${user?._id}&district=${user?.address?.district}&province=${user?.address?.province}`
         }),
     }),
 })

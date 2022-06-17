@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseURL } from "..";
 
 const API_URL = "http://localhost:8080/farmlands";
 // const LOGIN_URL = "http://localhost:8080/login";
@@ -12,7 +13,7 @@ const farmlandRegister = async (farmlandData) => {
 
   try {
     // URL pattern: http://localhost:8080/farmlands?farmerId=43rr3h85tds6u8
-    const response = await axios.post(API_URL + `?farmerId=${farmlandData.farmerId}`, farmlandData, {
+    const response = await axios.post(baseURL + `/farmlands?farmerId=${farmlandData.farmerId}`, farmlandData, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },

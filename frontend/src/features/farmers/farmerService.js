@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import { baseURL } from "..";
 
 const API_URL = "http://localhost:8080/farmers";
 // const LOGIN_URL = "http://localhost:8080/login";
@@ -11,7 +12,7 @@ const addFarmer = async (farmerData) => {
   
     user = JSON.parse(localStorage.getItem("user"));
     try {
-        const response = await axios.post(API_URL, farmerData, {
+        const response = await axios.post(baseURL + "/farmers", farmerData, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -27,7 +28,7 @@ const addFarmer = async (farmerData) => {
 const getFarmers = async () => {
   user = JSON.parse(localStorage.getItem("user"));
   try {
-    const response = await axios.post(API_URL, {
+    const response = await axios.post(baseURL + "/farmers", {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },

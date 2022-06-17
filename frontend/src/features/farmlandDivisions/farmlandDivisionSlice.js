@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import farmlandDivisionService from "./farmlandDivisionService";
+import { baseURL } from "..";
 
 // get user from localsStorage
 // const user = JSON.parse(localStorage.getItem("user"));

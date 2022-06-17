@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseURL } from "..";
 
 const API_URL = "http://localhost:8080/farmlands";
 // const LOGIN_URL = "http://localhost:8080/login";
@@ -12,7 +13,7 @@ const farmlandDivisionRegister = async (divisionData) => {
   try {
     // URL pattern: http://localhost:8080/farmlands/:farmelandId/divisions
     const response = await axios.post(
-      API_URL + `/${divisionData.farmlandId}/divisions`,
+      baseURL + `farmlands/${divisionData.farmlandId}/divisions`,
       divisionData,
       {
         headers: {

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseURL } from "..";
 import axios from 'axios';
 
 
@@ -9,16 +10,16 @@ const LOGIN_URL = "http://localhost:8080/login";
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/",
+    baseUrl: baseURL,
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
     users: builder.query({
-      query: () => "/users",
+      query: () => baseURL + "/users",
     }),
     login: builder.mutation({
       query: (credentials) => ({
-        url: "/login",
+        url: baseURL + "/login",
         method: "POST",
         body: credentials,
       }),
@@ -36,7 +37,7 @@ export const usersApi = createApi({
     }),
     register: builder.mutation({
       query: (userData) => ({
-        url: "/register",
+        url: baseURL + "/register",
         method: "POST",
         body: userData,
       }),
@@ -59,7 +60,7 @@ export const usersApi = createApi({
       ) {},
     }),
     userById: builder.query({
-      query: (userId) => `/users/${userId}`,
+      query: (userId) => baseURL + `/users/${userId}`,
     }),
   }),
 });

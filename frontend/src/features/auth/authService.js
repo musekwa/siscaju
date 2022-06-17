@@ -1,11 +1,12 @@
 import axios from "axios";
+import { baseURL } from "..";
 
 const API_URL = "http://localhost:8080/users";
 const LOGIN_URL = "http://localhost:8080/login";
 
 // register user
 const register = async (userData) => {
-    const response = await axios.post(API_URL, userData);
+    const response = await axios.post(baseURL + "/users", userData);
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -15,7 +16,7 @@ const register = async (userData) => {
 // login user
 const updateRegister = async (userData) => {
   try {
-    const response = await axios.post(LOGIN_URL, userData);
+    const response = await axios.post(baseURL + "/login", userData);
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -27,7 +28,7 @@ const updateRegister = async (userData) => {
 
 // login user
 const login = async (userData) => {
-  const response = await axios.post(LOGIN_URL, userData);
+  const response = await axios.post(baseURL + "/login", userData);
   // const response = await axios.get("https://dummyjson.com/users");
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));

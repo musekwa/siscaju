@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { baseURL } from "..";
 import farmerService from "./farmerService";
 
 
-const baseURL = `http://localhost:8080/farmers`
+// const baseURL = `http://localhost:8080/farmers`
 
 
 // get user from localsStorage
@@ -34,16 +35,16 @@ export const farmersApi = createApi({
   refetchOnMountOrArgChange: 1,
   endpoints: (builder) => ({
     getFarmers: builder.query({
-      query: () => `/`,
+      query: () => baseURL + `/farmers`,
     }),
     getFarmerById: builder.query({
-      query: (farmerId)=>`/${farmerId}`
+      query: (farmerId)=> baseURL + `farmers/${farmerId}`
     }),
     getFarmersByDistrict: builder.query({
-      query: (district)=>`?district=${district}`
+      query: (district)=> baseURL + `/farmers?district=${district}`
     }),
     getFarmersBy: builder.query({
-      query: (filterBy)=>`?from=${filterBy}`
+      query: (filterBy)=> baseURL + `/farmers?from=${filterBy}`
     })
   }),
 });
