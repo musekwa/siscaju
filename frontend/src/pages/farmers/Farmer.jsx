@@ -97,7 +97,7 @@ const Farmer = ({ user }) => {
       {/* Start Farmer's Profile */}
      
       <UserStack direction="row" onClick={()=>(true)} sx={{ m: "10px", }}>
-        <Avatar sx={{ width: "50px", height: "50px"}} src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+        <Avatar sx={{ width: "50px", height: "50px"}} src="" />
         <Box sx={{ textAlign: "center", width: "80%", marginRight: "5px" }}>
             <Typography variant='body1'>{`${farmer?.fullname}`}</Typography>
             <Typography variant='body2'>({`${farmer?.category}`})</Typography>

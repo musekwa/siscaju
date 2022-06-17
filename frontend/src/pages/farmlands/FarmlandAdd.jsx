@@ -58,10 +58,6 @@ const FarmlandAdd = ({ user }) => {
         })
     }
 
-
-
-    // console.log(data)
-
   return (
         <Box>
         <Navbar pageDescription={"Produtores"} isManageSearch={true} isSearchIcon={true} />
@@ -72,7 +68,7 @@ const FarmlandAdd = ({ user }) => {
             <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
                 <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar alt="Remy Sharp" src="" />
                 </ListItemAvatar>
                 <ListItemText
                     primary= {

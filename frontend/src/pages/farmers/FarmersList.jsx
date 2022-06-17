@@ -96,7 +96,7 @@ const FarmersList = ({ user })=> {
             <ListItem alignItems="flex-start" >
                 {/* <ListItemButton> */}
                 <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar alt="Remy Sharp"  />
                 </ListItemAvatar>
                 <ListItemText
                     primary= {
